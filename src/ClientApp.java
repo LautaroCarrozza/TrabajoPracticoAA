@@ -1,14 +1,13 @@
 public class ClientApp {
 
     private static int currentCliente;
-    static ServerInterface server;
+    private static ServerInterface server;
 
     public static void main(String[] args) {
 
     server = new ServerMock();
     server.setUpTest();
     iniciarSesion();
-
     }
 
     private static void mostrarMenu() {
@@ -58,7 +57,7 @@ public class ClientApp {
         System.out.println("Bienvenido a AustralisAirlines: ingrese su numero de Cliente ");
         System.out.println();
         try{
-             currentCliente = Scanner.getInt("Numero de cliente: ");
+            currentCliente = Scanner.getInt("Numero de cliente: ");
             server.validarSesion(currentCliente);
         }
         catch (RuntimeException e){

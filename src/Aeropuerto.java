@@ -1,12 +1,24 @@
 public class Aeropuerto {
-    String codigo;
-    String ubicacion;
-    String nombre;
+    private String codigo;
+    private String ubicacion;
+    private String nombre;
 
     public Aeropuerto(String codigo, String ubicacion, String nombre) {
         this.codigo = codigo;
         this.ubicacion = ubicacion;
         this.nombre = nombre;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public String getNombre() {
+        return nombre;
     }
 
     @Override

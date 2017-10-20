@@ -1,8 +1,8 @@
 public class Asiento {
 
     private String categoria;
-     int fila;
-     char columna;
+    private int fila;
+    private char columna;
 
     public Asiento(String categoria, int fila, int columnaINT) {
         this.categoria = categoria;
@@ -16,5 +16,13 @@ public class Asiento {
     @Override
     public String toString() {
         return "Fila:  " + fila + " Columna: " + columna + " Categoria: " + categoria;
+    }
+
+    public int getFila() {
+        return fila;
+    }
+
+    public char getColumna() {
+        return columna;
     }
 }

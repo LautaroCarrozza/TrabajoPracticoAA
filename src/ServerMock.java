@@ -1,46 +1,43 @@
-import com.sun.xml.internal.bind.v2.TODO;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class ServerMock implements ServerInterface{
 
-    List<Cliente> clientes = new ArrayList<>();
-    List<Vuelo> vuelos = new ArrayList<>();
+    private List<Cliente> clientes = new ArrayList<>();
+    private List<Vuelo> vuelos = new ArrayList<>();
 
-     public void setUpTest(){
+    public void setUpTest(){
         Aeropuerto AEP = new Aeropuerto("AEP", "Buenos Aires", "Aeroparque");
         Aeropuerto MTV = new Aeropuerto("MTV", "Montevideo", "A.I de Montevideo");
-        TipoDeAvion tipoDeAvion = new TipoDeAvion(5, 5, "737");
+        TipoDeAvion tipoDeAvion = new TipoDeAvion(5,2 , "737");
         Avion tango01 = new Avion("001", tipoDeAvion);
-        Vuelo vuelo = new Vuelo(AEP, MTV, 10, 10, 2017, tango01, "001");
+        Vuelo vuelo = new Vuelo(AEP, MTV, 25, 10, 2017, tango01, 101);
         Cliente cliente = new Cliente(123, "Lauti", 123);
         Cliente cliente2 = new Cliente(124, "Lauti", 124);
         Reserva reserva = new Reserva(cliente, vuelo);
         cliente.addReserva(reserva);
         Aeropuerto AAA = new Aeropuerto("MTV", "Montevideo", "A.I. Montevideo");
         Aeropuerto BBB = new Aeropuerto("JFK", "Nueva York", "J.F Kennedy");
-        Vuelo vuelo2 = new Vuelo(AAA, BBB, 11, 10, 2017, tango01, "002");
+        Vuelo vuelo2 = new Vuelo(AAA, BBB, 11, 10, 2017, tango01, 102);
         Reserva reserva2 = new Reserva(cliente, vuelo2);
         cliente.addReserva(reserva2);
         vuelos.add(vuelo);
         vuelos.add(vuelo2);
+        addCliente(cliente);
+        addCliente(cliente2);
     }
 
-     public void validarSesion(int numero) {
+    public void validarSesion(int numero) {
         for (Cliente c : clientes) {
-            if(c.numeroDeCliente == numero){
+            if(c.getNumeroDeCliente() == numero){
                 return;
             }
         }
         throw new RuntimeException("Numero de cliente invalido");
-
-
-        // TODO: 9/10/17
     }
 
-     public String printReservas(int numeroDeCliente){
+    public String printReservas(int numeroDeCliente){
 
         String result =  "";
 
@@ -62,43 +59,35 @@ public class ServerMock implements ServerInterface{
         return result;
     }
 
-     public  void addCliente(Cliente cliente) {
+    public  void addCliente(Cliente cliente) {
         clientes.add(cliente);
     }
 
-    public String buscarVuelo(int dia, int mes, int ano, String lugarSalida, String lugarLlegada, int cantidadPersonas, String categoria) {
+    public List<Vuelo> buscarVuelos(int dia, int mes, int ano, String lugarSalida, String lugarLlegada, int cantidadPersonas, String categoria){
         Date fechaSalida = new Date(dia, mes, ano);
-        // TODO: 18/10/2017 change to actual implemetantion
+//      TODO: 18/10/2017 change to actual implemetantion
         List<Vuelo> posiblesVuelos = new ArrayList<>();
-        String result;
-        for (Vuelo v:vuelos) {
-            if(v.getProximaSalida().equals(fechaSalida) && v.aeropuertoSalida.ubicacion.equals(lugarSalida) && v.aeropuertoLlegada.ubicacion.equals(lugarLlegada) && v.cantidadAsientosDisponibles(categoria) >= cantidadPersonas){
-                posiblesVuelos.add(v);
+
+        for (Vuelo vuelo: vuelos) {
+            if (vuelo.getFechaSalida().equals(fechaSalida) && vuelo.getUbicacionSalida().equals(lugarSalida) && vuelo.getUbicacionLlegada().equals(lugarLlegada)
+                    && vuelo.cantidadAsientosDisponibles(categoria) >= cantidadPersonas){
+                posiblesVuelos.add(vuelo);
             }
         }
-        result = "Posibles vuelos: \n ";
-        int count = 1;
-        for (Vuelo v :posiblesVuelos) {
-            result +=  count + "-  " + v.toString() + "\n";
-            count ++;
-        }
-        return result;
+        if (posiblesVuelos.size() == 0){throw new RuntimeException("No existen vuelos");}
+        return posiblesVuelos;
     }
 
-    public void comprarPasaje(int codigoVuelo, int codigoCliente, String asiento) {
-        for (Vuelo v: vuelos) {
-            if(v.codigoDeVuelo.equals(codigoVuelo)){
-                int fila = asiento.charAt(0) * 10 + asiento.charAt(1);
-                char columna = asiento.charAt(2);
-                v.ocupar(fila, columna);
-            }
-        }
+    public void comprarPasaje(int codigoVuelo, int codigoCliente, int fila, char columna) {
+        Vuelo vuelo = getVuelo(codigoVuelo);
+        Asiento asiento = vuelo.getAsiento(fila, columna);
+        if (!vuelo.getOcupacion(asiento)){vuelo.ocupar(asiento);}
+        else{throw new RuntimeException("El asiento esta ocupado");}
     }
 
-    @Override
-    public Vuelo getVuelo(String codigoDeVuelo) {
+    public Vuelo getVuelo(int codigoDeVuelo) {
         for (Vuelo v:vuelos) {
-            if (v.codigoDeVuelo.equals(codigoDeVuelo)){
+            if (v.getCodigoDeVuelo()== (codigoDeVuelo)){
                 return v;
             }
         }

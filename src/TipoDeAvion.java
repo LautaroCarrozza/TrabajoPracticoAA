@@ -3,8 +3,10 @@ import java.util.List;
 
 public class TipoDeAvion {
 
-    int cantidadFilasEconomy;
-    int cantidadAsientosPorFilaEconomy;
+    private int cantidadFilasEconomy;
+    private int cantidadAsientosPorFilaEconomy;
+    private ArrayList<ArrayList<Asiento>> asientos = new ArrayList<ArrayList<Asiento>>();
+    private String nombre;
 
 
     public TipoDeAvion(int caantidadFilasEconomy, int cantidadAsientosPorFilaEconomy, String nombre) {
@@ -14,8 +16,7 @@ public class TipoDeAvion {
         this.nombre = nombre;
     }
 
-    ArrayList<ArrayList<Asiento>> asientos = new ArrayList<ArrayList<Asiento>>();
-    String nombre;
+
 
     public int getCantidadAsientosPorFilaEconomy() {
         return cantidadAsientosPorFilaEconomy;

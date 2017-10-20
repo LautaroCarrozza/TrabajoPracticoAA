@@ -1,5 +1,5 @@
 public class EmpleadoAdministrativo extends Persona {
-    AreaAdministrativa area;
+    private AreaAdministrativa area;
 
     public EmpleadoAdministrativo(int dni, String nombre) {
         super(dni, nombre);
