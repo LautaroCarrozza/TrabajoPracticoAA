@@ -17,6 +17,6 @@ public class VueloTest {
         Calendar testDay = Calendar.getInstance();
         testDay.set(2017, 11, 25);
         Vuelo vuelo = server.getVuelo(101);
-        assertEquals(testDay.DATE, vuelo.getFechaSalida().DATE);
+        assertEquals(testDay.get(Calendar.DAY_OF_MONTH), vuelo.getFechaSalida().get(Calendar.DAY_OF_MONTH));
     }
 }
