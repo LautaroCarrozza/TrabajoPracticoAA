@@ -5,6 +5,9 @@ public class ClientApp {
 
     private static int currentCliente;
     private static ServerInterface server;
+    private static  List<Vuelo> posiblesVuelos;
+    private static String category = "";
+    private static int vueloDeseado;
 
     public static void main(String[] args) {
 
@@ -93,7 +96,6 @@ public class ClientApp {
         System.out.println("3- First");
         System.out.println("9- Volver al menu");
 
-        String category = "";
         while (category.isEmpty()) {
             int option = 0;
             option = Scanner.getInt("Ingrese la categoria para su pasaje:");
@@ -121,7 +123,7 @@ public class ClientApp {
         System.out.println();
         System.out.println();
 
-        List<Vuelo> posiblesVuelos = server.buscarVuelos(dia, mes, ano, lugarDeSalida, lugarDeLlegada, cantidadDePersonas, category);
+        posiblesVuelos = server.buscarVuelos(dia, mes, ano, lugarDeSalida, lugarDeLlegada, cantidadDePersonas, category);
         if(!posiblesVuelos.equals(null)) {
             for (int i = 0; i < posiblesVuelos.size(); i++) {
                 System.out.println(i + "- " + posiblesVuelos.get(i));
@@ -139,7 +141,7 @@ public class ClientApp {
             int option = Scanner.getInt("Ingrese su opcion: ");
             switch (option) {
                 case 1:
-                    System.out.println("TODO comprar vuelo"); // TODO: 24/10/17 comprar vuelo;
+                    comprarPasaje();
                     ok = true;
                     break;
                 case 9:
@@ -150,6 +152,32 @@ public class ClientApp {
                     System.out.println("Opcion invalida");
             }
         }
+
+    }
+
+    private static void comprarPasaje() {
+
+        try {
+             vueloDeseado = Scanner.getInt("¿Que vuelo desea comprar?");
+            System.out.println(posiblesVuelos.get(vueloDeseado).asientosDisponibles(category));
+
+
+        int fila = Scanner.getInt("¿En que fila desea viajar?: ");
+        char columna = Scanner.getChar("¿En que asiento de la fila desea viajar?: ");
+
+        server.comprarPasaje(posiblesVuelos.get(vueloDeseado).getCodigoDeVuelo(), currentCliente, fila, columna);
+
+        System.out.println("La compra se realizo exitosamente");
+        category = "";
+        posiblesVuelos = null;
+        mostrarMenu();
+
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            comprarPasaje();
+        }
+
 
     }
 }
