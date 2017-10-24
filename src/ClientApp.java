@@ -85,7 +85,7 @@ public class ClientApp {
 
     public static void buscarVuelo() {
         int dia = Scanner.getInt("Ingrese el dia de la fecha del viaje: ");
-        int mes = Scanner.getInt("Ingrese el mes de la fecha del viaje: ") - 1;
+        int mes = Scanner.getInt("Ingrese el mes de la fecha del viaje: ");
         int ano = Scanner.getInt("Ingrese el año de la fecha del viaje: ");
 
         System.out.println("1- Economy");
@@ -114,21 +114,29 @@ public class ClientApp {
                     System.out.println("Categoria invalida");
             }
         }
+
         String lugarDeSalida = Scanner.getString("Ingrese el lugar de partida: ");
         String lugarDeLlegada = Scanner.getString("Ingrese el lugar de llegada: ");
         int cantidadDePersonas = Scanner.getInt("Ingrese la cantidad de pasajeros");
+        System.out.println();
+        System.out.println();
 
         List<Vuelo> posiblesVuelos = server.buscarVuelos(dia, mes, ano, lugarDeSalida, lugarDeLlegada, cantidadDePersonas, category);
-
-        for (int i = 0; i < posiblesVuelos.size(); i++) {
-            System.out.println(i + "- " + posiblesVuelos.get(i));
+        if(!posiblesVuelos.equals(null)) {
+            for (int i = 0; i < posiblesVuelos.size(); i++) {
+                System.out.println(i + "- " + posiblesVuelos.get(i));
+            }
         }
 
-        System.out.println("1- Comprar vuelo: (numero del vuelo en la lista");
+        System.out.println();
+        System.out.println();
+
+        System.out.println("1- Comprar vuelo: (numero del vuelo en la lista) ");
         System.out.println("9- Volver al menu");
-        int option = Scanner.getInt("Ingrese su opcion: ");
+
         boolean ok = false;
         while (!ok) {
+            int option = Scanner.getInt("Ingrese su opcion: ");
             switch (option) {
                 case 1:
                     System.out.println("TODO comprar vuelo"); // TODO: 24/10/17 comprar vuelo;

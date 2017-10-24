@@ -16,7 +16,6 @@ public class Vuelo {
         this.aeropuertoLlegada = aeropuertoLlegada;
         this.avion = avion;
         this.codigoDeVuelo = codigoDeVuelo;
-
         for (Asiento a : avion.getAsientos()) {
             ocupacion.put(a, false);
         }
@@ -54,7 +53,7 @@ public class Vuelo {
     @Override
     public String toString() {
 
-        String result = "Fecha: " + fechaSalida + "  Desde: " + aeropuertoSalida.getUbicacion() + "  Hasta: " + aeropuertoLlegada.getUbicacion()
+        String result = "Fecha: " + fechaSalida.get(Calendar.DAY_OF_MONTH) + "/" + (fechaSalida.get(Calendar.MONTH)+1)  + "/" + fechaSalida.get(Calendar.YEAR) + "  Desde: " + aeropuertoSalida.getUbicacion() + "  Hasta: " + aeropuertoLlegada.getUbicacion()
                 + " Codigo: " + codigoDeVuelo;
 
         return result;

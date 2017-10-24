@@ -8,25 +8,30 @@ public class ServerMock implements ServerInterface{
     private List<Vuelo> vuelos = new ArrayList<>();
 
     public void setUpTest(){
-        Aeropuerto AEP = new Aeropuerto("AEP", "Buenos Aires", "Aeroparque");
-        Aeropuerto MTV = new Aeropuerto("MTV", "Montevideo", "A.I de Montevideo");
-        TipoDeAvion tipoDeAvion = new TipoDeAvion(5,2 , "737");
-        Avion tango01 = new Avion("001", tipoDeAvion);
-        Vuelo vuelo = new Vuelo(AEP, MTV, 25, 10, 2017, tango01, 101);
-        Cliente cliente = new Cliente(123, "Lauti", 123);
-        Cliente cliente2 = new Cliente(124, "Lauti", 124);
-        Reserva reserva = new Reserva(cliente, vuelo);
-        cliente.addReserva(reserva);
-        Aeropuerto AAA = new Aeropuerto("MTV", "Montevideo", "A.I. Montevideo");
-        Aeropuerto BBB = new Aeropuerto("JFK", "Nueva York", "J.F Kennedy");
-        Vuelo vuelo2 = new Vuelo(AAA, BBB, 11, 10, 2017, tango01, 102);
-        Reserva reserva2 = new Reserva(cliente, vuelo2);
-        cliente.addReserva(reserva2);
-        vuelos.add(vuelo);
-        vuelos.add(vuelo2);
-        addCliente(cliente);
-        addCliente(cliente2);
+
+
+        Cliente clienteA = new Cliente(1, "a", 1);
+        Cliente clienteB = new Cliente(2, "b", 2);
+
+        addCliente(clienteA);
+        addCliente(clienteB);
+
+        Aeropuerto aeropuertoA = new Aeropuerto("aaa", "aaa", "aaa");
+        Aeropuerto aeropuertoB = new Aeropuerto("bbb", "bbb", "bbb");
+
+        TipoDeAvion tipoDeAvionA = new TipoDeAvion(50, 6, "a");
+
+        Avion avionA = new Avion("1", tipoDeAvionA);
+
+        Vuelo vueloA = new Vuelo(aeropuertoA, aeropuertoB, 1, 1, 2017, avionA, 1);
+        addVuelo(vueloA);
+
+        Reserva reservaA = new Reserva(clienteA, vueloA);
+        clienteA.addReserva(reservaA);
+
     }
+
+    public void addVuelo(Vuelo vuelo){vuelos.add(vuelo);}
 
     public void validarSesion(int numero) {
         for (Cliente c : clientes) {
@@ -64,12 +69,11 @@ public class ServerMock implements ServerInterface{
     }
 
     public List<Vuelo> buscarVuelos(int dia, int mes, int ano, String lugarSalida, String lugarLlegada, int cantidadPersonas, String categoria){
-        Calendar fechaSalida = Calendar.getInstance();
-        fechaSalida.set(ano, mes -1, dia);
+
         List<Vuelo> posiblesVuelos = new ArrayList<>();
 
         for (Vuelo vuelo: vuelos) {
-            if (vuelo.getFechaSalida().equals(fechaSalida) && vuelo.getUbicacionSalida().equals(lugarSalida) && vuelo.getUbicacionLlegada().equals(lugarLlegada)
+            if (vuelo.getFechaSalida().get(Calendar.DAY_OF_MONTH) == dia && (vuelo.getFechaSalida().get(Calendar.MONTH)+1 ) == mes && vuelo.getFechaSalida().get(Calendar.YEAR)  == ano && vuelo.getUbicacionSalida().equals(lugarSalida) && vuelo.getUbicacionLlegada().equals(lugarLlegada)
                     && vuelo.cantidadAsientosDisponibles(categoria) >= cantidadPersonas){
                 posiblesVuelos.add(vuelo);
             }

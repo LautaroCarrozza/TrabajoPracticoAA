@@ -9,7 +9,7 @@ public class Reserva {
 
     @Override
     public String toString() {
-        return "\n" + "Codigo de vuelo: " + vuelo.getCodigoDeVuelo() + "\n" +  "   Fecha: " + vuelo.getFechaSalida() + "\n" + "   Desde: "
+        return "\n" + "Codigo de vuelo: " + vuelo.getCodigoDeVuelo() + "\n" +  "  Fecha: " + vuelo.getFechaSalida() + "\n" + "   Desde: "
                 + vuelo.getUbicacionSalida() + "\n" + "  Hasta: " + vuelo.getUbicacionLlegada() + "\n" ;
 
     }
