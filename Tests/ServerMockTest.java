@@ -19,4 +19,10 @@ public class ServerMockTest {
         server.comprarPasaje(101, 124, 3, 'B');
 
     }
+    @Test
+    public void test02 (){
+        String string = "";
+        assertEquals(true, string.isEmpty());
+
+    }
 }

@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 public class ServerMock implements ServerInterface{
@@ -64,8 +64,8 @@ public class ServerMock implements ServerInterface{
     }
 
     public List<Vuelo> buscarVuelos(int dia, int mes, int ano, String lugarSalida, String lugarLlegada, int cantidadPersonas, String categoria){
-        Date fechaSalida = new Date(dia, mes, ano);
-//      TODO: 18/10/2017 change to actual implemetantion
+        Calendar fechaSalida = Calendar.getInstance();
+        fechaSalida.set(ano, mes -1, dia);
         List<Vuelo> posiblesVuelos = new ArrayList<>();
 
         for (Vuelo vuelo: vuelos) {
