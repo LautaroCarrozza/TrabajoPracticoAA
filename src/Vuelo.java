@@ -63,10 +63,10 @@ public class Vuelo {
         ocupacion.put(asiento, true);
     }
 
-    public String asientosDisponibles() {
+    public String asientosDisponibles(String categoria) {
         List<Asiento> asientosDisponibles = new ArrayList<>();
         for (Asiento a : avion.getAsientos()) {
-            if (ocupacion.get(a)) {
+            if (!ocupacion.get(a) && a.getCategoria().equals(categoria)) {
                 asientosDisponibles.add(a);
             }
         }
@@ -74,7 +74,8 @@ public class Vuelo {
         String result = "Asientos disponibles: ";
         int count = 1;
         for (Asiento a : asientosDisponibles) {
-            result += count + " " + a;
+            result += count + " " + a +  "  \n" ;
+            count ++;
         }
         return result;
     }

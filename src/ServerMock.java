@@ -19,7 +19,7 @@ public class ServerMock implements ServerInterface{
         Aeropuerto aeropuertoA = new Aeropuerto("aaa", "aaa", "aaa");
         Aeropuerto aeropuertoB = new Aeropuerto("bbb", "bbb", "bbb");
 
-        TipoDeAvion tipoDeAvionA = new TipoDeAvion(50, 6, "a");
+        TipoDeAvion tipoDeAvionA = new TipoDeAvion(10, 2, "a");
 
         Avion avionA = new Avion("1", tipoDeAvionA);
 

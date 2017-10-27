@@ -25,4 +25,8 @@ public class Asiento {
     public char getColumna() {
         return columna;
     }
+
+    public String getCategoria() {
+        return categoria;
+    }
 }
