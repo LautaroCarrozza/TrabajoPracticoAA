@@ -73,8 +73,8 @@ public class ServerMock implements ServerInterface{
         List<Vuelo> posiblesVuelos = new ArrayList<>();
 
         for (Vuelo vuelo: vuelos) {
-            if (vuelo.getFechaSalida().get(Calendar.DAY_OF_MONTH) == dia && (vuelo.getFechaSalida().get(Calendar.MONTH)+1 ) == mes && vuelo.getFechaSalida().get(Calendar.YEAR)  == ano && vuelo.getUbicacionSalida().equals(lugarSalida) && vuelo.getUbicacionLlegada().equals(lugarLlegada)
-                    && vuelo.cantidadAsientosDisponibles(categoria) >= cantidadPersonas){
+            if (vuelo.getFechaSalida().getDayOfMonth() == dia && (vuelo.getFechaSalida().getMonthValue() == mes && vuelo.getFechaSalida().getYear() == ano && vuelo.getUbicacionSalida().equals(lugarSalida) && vuelo.getUbicacionLlegada().equals(lugarLlegada)
+                    && vuelo.cantidadAsientosDisponibles(categoria) >= cantidadPersonas)){
                 posiblesVuelos.add(vuelo);
             }
         }

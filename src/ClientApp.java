@@ -98,7 +98,7 @@ public class ClientApp {
 
         while (category.isEmpty()) {
             int option = 0;
-            option = Scanner.getInt("Ingrese la categoria para su pasaje:");
+            option = Scanner.getInt("Ingrese la categoria para su pasaje: ");
             switch (option) {
                 case 1:
                     category = "Economy";
@@ -119,7 +119,7 @@ public class ClientApp {
 
         String lugarDeSalida = Scanner.getString("Ingrese el lugar de partida: ");
         String lugarDeLlegada = Scanner.getString("Ingrese el lugar de llegada: ");
-        int cantidadDePersonas = Scanner.getInt("Ingrese la cantidad de pasajeros");
+        int cantidadDePersonas = Scanner.getInt("Ingrese la cantidad de pasajeros: ");
         System.out.println();
         System.out.println();
 
@@ -158,7 +158,7 @@ public class ClientApp {
     private static void comprarPasaje() {
 
         try {
-             vueloDeseado = Scanner.getInt("¿Que vuelo desea comprar?");
+             vueloDeseado = Scanner.getInt("¿Que vuelo desea comprar? : ");
             System.out.println(posiblesVuelos.get(vueloDeseado).asientosDisponibles(category));
 
 

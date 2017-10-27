@@ -1,17 +1,17 @@
+import java.time.LocalDate;
 import java.util.*;
 
 public class Vuelo {
 
     private Aeropuerto aeropuertoSalida;
     private Aeropuerto aeropuertoLlegada;
-    private Calendar fechaSalida;
+    private LocalDate fechaSalida;
     private Avion avion;
     private int codigoDeVuelo;
     private Map<Asiento, Boolean> ocupacion = new HashMap<>();
 
     public Vuelo(Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, int dia, int mes, int ano, Avion avion, int codigoDeVuelo) {
-        fechaSalida = Calendar.getInstance();
-        fechaSalida.set(ano, mes - 1, dia);
+        fechaSalida = LocalDate.of(ano,mes,dia);
         this.aeropuertoSalida = aeropuertoSalida;
         this.aeropuertoLlegada = aeropuertoLlegada;
         this.avion = avion;
@@ -31,7 +31,7 @@ public class Vuelo {
         return aeropuertoLlegada.getUbicacion();
     }
 
-    public Calendar getFechaSalida() {
+    public LocalDate getFechaSalida() {
 
         return fechaSalida;
     }
@@ -43,7 +43,7 @@ public class Vuelo {
     public int cantidadAsientosDisponibles(String categoria) {
         int result = 0;
         for (Asiento a : avion.getAsientos()) {
-            if (!ocupacion.get(a)) {
+            if (!ocupacion.get(a) && a.getCategoria().equals(categoria)) {
                 result++;
             }
         }
@@ -53,8 +53,8 @@ public class Vuelo {
     @Override
     public String toString() {
 
-        String result = "Fecha: " + fechaSalida.get(Calendar.DAY_OF_MONTH) + "/" + (fechaSalida.get(Calendar.MONTH)+1)  + "/" + fechaSalida.get(Calendar.YEAR) + "  Desde: " + aeropuertoSalida.getUbicacion() + "  Hasta: " + aeropuertoLlegada.getUbicacion()
-                + " Codigo: " + codigoDeVuelo;
+        String result = "Fecha: " + fechaSalida.getMonthValue() + "/" + (fechaSalida.getDayOfMonth()  + "/" + fechaSalida.getYear() + "  Desde: " + aeropuertoSalida.getUbicacion() + "  Hasta: " + aeropuertoLlegada.getUbicacion()
+                + " Codigo: " + codigoDeVuelo);
 
         return result;
     }
