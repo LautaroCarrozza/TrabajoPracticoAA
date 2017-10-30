@@ -1,14 +1,13 @@
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class ServerMock implements ServerInterface{
 
     private List<Cliente> clientes = new ArrayList<>();
     private List<Vuelo> vuelos = new ArrayList<>();
+    private List<Reserva> reservas = new ArrayList<>();
 
     public void setUpTest(){
-
 
         Cliente clienteA = new Cliente(1, "a", 1);
         Cliente clienteB = new Cliente(2, "b", 2);
@@ -19,15 +18,12 @@ public class ServerMock implements ServerInterface{
         Aeropuerto aeropuertoA = new Aeropuerto("aaa", "aaa", "aaa");
         Aeropuerto aeropuertoB = new Aeropuerto("bbb", "bbb", "bbb");
 
-        TipoDeAvion tipoDeAvionA = new TipoDeAvion(10, 2, "a");
+        TipoDeAvion tipoDeAvionA = new TipoDeAvion(10, 2, 5, 2, 2, 2, "Australis-Airlines 01");
 
         Avion avionA = new Avion("1", tipoDeAvionA);
 
         Vuelo vueloA = new Vuelo(aeropuertoA, aeropuertoB, 1, 1, 2017, avionA, 1);
         addVuelo(vueloA);
-
-        Reserva reservaA = new Reserva(clienteA, vueloA);
-        clienteA.addReserva(reservaA);
 
     }
 
@@ -82,11 +78,18 @@ public class ServerMock implements ServerInterface{
         return posiblesVuelos;
     }
 
-    public void comprarPasaje(int codigoVuelo, int codigoCliente, int fila, char columna) {
+    public void comprarAsiento(int codigoVuelo, int codigoCliente, List<Asiento> asientos, int cantidadDePersnas, String categoria) {
         Vuelo vuelo = getVuelo(codigoVuelo);
-        Asiento asiento = vuelo.getAsiento(fila, columna);
-        if (!vuelo.getOcupacion(asiento)){vuelo.ocupar(asiento);}
-        else{throw new RuntimeException("El asiento esta ocupado");}
+        for (Asiento asiento:asientos) {
+            if (!vuelo.getOcupacion(asiento)){
+                vuelo.ocupar(asiento);
+            }
+            else{throw new RuntimeException("El asiento esta ocupado");}
+        }
+
+        Reserva nuevaReserva = new Reserva(getCliente(codigoCliente), vuelo, cantidadDePersnas, categoria, asientos );
+        reservas.add(nuevaReserva);
+        getCliente(codigoCliente).addReserva(nuevaReserva);
     }
 
     public Vuelo getVuelo(int codigoDeVuelo) {
@@ -96,5 +99,13 @@ public class ServerMock implements ServerInterface{
             }
         }
         throw new RuntimeException("No existen vuelos con ese codigo");
+    }
+
+    public  Cliente getCliente(int numeroDeCliente){
+        for (Cliente c :
+                clientes) {
+            if(c.getNumeroDeCliente() == numeroDeCliente){return c;}
+        }
+        throw new RuntimeException("No existe el cliente");
     }
 }

@@ -1,4 +1,4 @@
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientApp {
@@ -7,10 +7,10 @@ public class ClientApp {
     private static ServerInterface server;
     private static  List<Vuelo> posiblesVuelos;
     private static String category = "";
-    private static int vueloDeseado;
-
+    private static int intVueloDeseado;
+    private static int cantidadDePersonas;
+    private static Vuelo vueloDeseado;
     public static void main(String[] args) {
-
         server = new ServerMock();
         server.setUpTest();
         iniciarSesion();
@@ -98,13 +98,13 @@ public class ClientApp {
 
         while (category.isEmpty()) {
             int option = 0;
-            option = Scanner.getInt("Ingrese la categoria para su pasaje: ");
+            option = Scanner.getInt("Ingrese la categoria para su(s) pasaje: ");
             switch (option) {
                 case 1:
                     category = "Economy";
                     break;
                 case 2:
-                    category = "Bussines";
+                    category = "Bussiness";
                     break;
                 case 3:
                     category = "First";
@@ -119,11 +119,11 @@ public class ClientApp {
 
         String lugarDeSalida = Scanner.getString("Ingrese el lugar de partida: ");
         String lugarDeLlegada = Scanner.getString("Ingrese el lugar de llegada: ");
-        int cantidadDePersonas = Scanner.getInt("Ingrese la cantidad de pasajeros: ");
+        cantidadDePersonas = Scanner.getInt("Ingrese la cantidad de pasajeros: ");
         System.out.println();
         System.out.println();
-
         posiblesVuelos = server.buscarVuelos(dia, mes, ano, lugarDeSalida, lugarDeLlegada, cantidadDePersonas, category);
+
         if(!posiblesVuelos.equals(null)) {
             for (int i = 0; i < posiblesVuelos.size(); i++) {
                 System.out.println(i + "- " + posiblesVuelos.get(i));
@@ -132,7 +132,6 @@ public class ClientApp {
 
         System.out.println();
         System.out.println();
-
         System.out.println("1- Comprar vuelo: (numero del vuelo en la lista) ");
         System.out.println("9- Volver al menu");
 
@@ -152,32 +151,45 @@ public class ClientApp {
                     System.out.println("Opcion invalida");
             }
         }
-
     }
 
     private static void comprarPasaje() {
 
         try {
-             vueloDeseado = Scanner.getInt("¿Que vuelo desea comprar? : ");
-            System.out.println(posiblesVuelos.get(vueloDeseado).asientosDisponibles(category));
+            intVueloDeseado = Scanner.getInt("¿Que vuelo desea comprar? : ");
+            vueloDeseado = posiblesVuelos.get(intVueloDeseado);
+            System.out.println(vueloDeseado.asientosDisponibles(category));
+            List<Asiento> asientos = new ArrayList<>();
 
+            for (int i = 0; i <cantidadDePersonas ; i++) {
+                asientos.add(seleccionarAsiento());
+            }
 
-        int fila = Scanner.getInt("¿En que fila desea viajar?: ");
-        char columna = Scanner.getChar("¿En que asiento de la fila desea viajar?: ");
-
-        server.comprarPasaje(posiblesVuelos.get(vueloDeseado).getCodigoDeVuelo(), currentCliente, fila, columna);
-
-        System.out.println("La compra se realizo exitosamente");
-        category = "";
-        posiblesVuelos = null;
-        mostrarMenu();
-
+            server.comprarAsiento(vueloDeseado.getCodigoDeVuelo(), currentCliente,asientos,cantidadDePersonas , category);
+            System.out.println("La compra se realizo exitosamente");
+            category = "";
+            posiblesVuelos = null;
+            mostrarMenu();
         }
         catch (Exception e){
             System.out.println(e.getMessage());
             comprarPasaje();
         }
+    }
 
-
+    private static Asiento seleccionarAsiento(){
+        Asiento asiento= null;
+        try {
+            int fila = Scanner.getInt("¿En que fila desea viajar?: ");
+            char columna = Scanner.getChar("¿En que asiento de la fila desea viajar?: ");
+            asiento =   vueloDeseado.getAsiento(fila, columna);
+        }
+        catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            seleccionarAsiento();
+        }
+        finally {
+            return asiento;
+        }
     }
 }

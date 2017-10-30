@@ -22,16 +22,6 @@ public class ServerMockTest {
 
     }
 
-
-
-    @Test (expected = RuntimeException.class)
-    public void asientoNoSeVendeDosVeces(){
-        ServerInterface server = new ServerMock();
-        server.setUpTest();
-        server.comprarPasaje(101, 123, 3, 'B');
-        server.comprarPasaje(101, 124, 3, 'B');
-
-    }
     @Test
     public void test02 (){
         String string = "";

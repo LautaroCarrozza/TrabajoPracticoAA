@@ -5,17 +5,39 @@ public class TipoDeAvion {
 
     private int cantidadFilasEconomy;
     private int cantidadAsientosPorFilaEconomy;
+    private int cantidadFilasBussiness;
+    private int cantidadAsientosPorFilaBussiness;
+    private int cantidadFilasFirst;
+    private int cantidadDeAsientosPorFilaFirst;
     private ArrayList<ArrayList<Asiento>> asientos = new ArrayList<ArrayList<Asiento>>();
     private String nombre;
 
 
-    public TipoDeAvion(int caantidadFilasEconomy, int cantidadAsientosPorFilaEconomy, String nombre) {
-        this.cantidadFilasEconomy = caantidadFilasEconomy;
+    public TipoDeAvion(int cantidadFilasEconomy, int cantidadAsientosPorFilaEconomy, int cantidadFilasBussiness, int cantidadAsientosPorFilaBussiness, int cantidadFilasFirst, int cantidadDeAsientosPorFilaFirst, String nombre) {
+        this.cantidadFilasEconomy = cantidadFilasEconomy;
         this.cantidadAsientosPorFilaEconomy = cantidadAsientosPorFilaEconomy;
-        this.asientos = asientos;
+        this.cantidadFilasBussiness = cantidadFilasBussiness;
+        this.cantidadAsientosPorFilaBussiness = cantidadAsientosPorFilaBussiness;
+        this.cantidadFilasFirst = cantidadFilasFirst;
+        this.cantidadDeAsientosPorFilaFirst = cantidadDeAsientosPorFilaFirst;
         this.nombre = nombre;
     }
 
+    public int getCantidadFilasBussiness() {
+        return cantidadFilasBussiness;
+    }
+
+    public int getCantidadAsientosPorFilaBussiness() {
+        return cantidadAsientosPorFilaBussiness;
+    }
+
+    public int getCantidadFilasFirst() {
+        return cantidadFilasFirst;
+    }
+
+    public int getCantidadDeAsientosPorFilaFirst() {
+        return cantidadDeAsientosPorFilaFirst;
+    }
 
 
     public int getCantidadAsientosPorFilaEconomy() {
