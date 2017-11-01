@@ -17,14 +17,19 @@ public class ServerMock implements ServerInterface{
 
         Aeropuerto aeropuertoA = new Aeropuerto("aaa", "aaa", "aaa");
         Aeropuerto aeropuertoB = new Aeropuerto("bbb", "bbb", "bbb");
+        Aeropuerto aeropuertoC = new Aeropuerto("ccc", "ccc", "ccc");
 
         TipoDeAvion tipoDeAvionA = new TipoDeAvion(10, 2, 5, 2, 2, 2, "Australis-Airlines 01");
+        TipoDeAvion tipoDeAvionB = new TipoDeAvion(10, 2, 5, 2, 2, 2, "Australis-Airlines 02");
 
         Avion avionA = new Avion("1", tipoDeAvionA);
+        Avion avionB = new Avion("2", tipoDeAvionB);
 
-        Vuelo vueloA = new Vuelo(aeropuertoA, aeropuertoB, 1, 1, 2017, avionA, 1);
+        Vuelo vueloA = new Vuelo(aeropuertoA, aeropuertoB, 1, 1, 2018, avionA, 1);
+        Vuelo vueloB = new Vuelo(aeropuertoA, aeropuertoB, 1, 1, 2018, avionA, 2);
+
+        addVuelo(vueloB);
         addVuelo(vueloA);
-
     }
 
     public void addVuelo(Vuelo vuelo){vuelos.add(vuelo);}
@@ -78,18 +83,14 @@ public class ServerMock implements ServerInterface{
         return posiblesVuelos;
     }
 
-    public void comprarAsiento(int codigoVuelo, int codigoCliente, List<Asiento> asientos, int cantidadDePersnas, String categoria) {
+    public void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersnas, String categoria) {
         Vuelo vuelo = getVuelo(codigoVuelo);
-        for (Asiento asiento:asientos) {
+
             if (!vuelo.getOcupacion(asiento)){
                 vuelo.ocupar(asiento);
             }
             else{throw new RuntimeException("El asiento esta ocupado");}
-        }
 
-        Reserva nuevaReserva = new Reserva(getCliente(codigoCliente), vuelo, cantidadDePersnas, categoria, asientos );
-        reservas.add(nuevaReserva);
-        getCliente(codigoCliente).addReserva(nuevaReserva);
     }
 
     public Vuelo getVuelo(int codigoDeVuelo) {

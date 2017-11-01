@@ -5,11 +5,13 @@ public class ClientApp {
 
     private static int currentCliente;
     private static ServerInterface server;
-    private static  List<Vuelo> posiblesVuelos;
+    private static List<Vuelo> posiblesVuelos;
     private static String category = "";
     private static int intVueloDeseado;
     private static int cantidadDePersonas;
     private static Vuelo vueloDeseado;
+    private static List<Asiento> asientosSeleccionados = new ArrayList<Asiento>();
+
     public static void main(String[] args) {
         server = new ServerMock();
         server.setUpTest();
@@ -124,52 +126,67 @@ public class ClientApp {
         System.out.println();
         posiblesVuelos = server.buscarVuelos(dia, mes, ano, lugarDeSalida, lugarDeLlegada, cantidadDePersonas, category);
 
-        if(!posiblesVuelos.equals(null)) {
             for (int i = 0; i < posiblesVuelos.size(); i++) {
-                System.out.println(i + "- " + posiblesVuelos.get(i));
-            }
+                System.out.println((i+1) + "- " + posiblesVuelos.get(i));
+            }///imprimo la lista de buelos disponibles con esas especificaciones.
+
+        System.out.println();
+        System.out.println();
+
+        try{
+            mostrarMenuCompraPasaje();
         }
+        catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            mostrarMenuCompraPasaje();
+        }
+    }
 
-        System.out.println();
-        System.out.println();
-        System.out.println("1- Comprar vuelo: (numero del vuelo en la lista) ");
+
+    private static void mostrarMenuCompraPasaje(){
+        System.out.println("1- Comprar pasaje: (numero del vuelo en la lista) ");
         System.out.println("9- Volver al menu");
-
-        boolean ok = false;
-        while (!ok) {
-            int option = Scanner.getInt("Ingrese su opcion: ");
-            switch (option) {
-                case 1:
-                    comprarPasaje();
-                    ok = true;
-                    break;
-                case 9:
-                    ok = true;
-                    borrarPantalla();
-                    mostrarMenu();
-                default:
-                    System.out.println("Opcion invalida");
-            }
+        int option = Scanner.getInt("Ingrese su opcion: ");
+        switch (option) {
+            case 1:
+                comprarPasaje();
+                break;
+            case 9:
+                category = "";
+                posiblesVuelos = null;
+                borrarPantalla();
+                mostrarMenu();
+            default:
+                throw new RuntimeException("Opcion invalida");
         }
     }
 
     private static void comprarPasaje() {
 
         try {
-            intVueloDeseado = Scanner.getInt("¿Que vuelo desea comprar? : ");
+            intVueloDeseado = Scanner.getInt("¿Que vuelo desea comprar? : ") -1 ;/// -1 por que los vuelos empiezan con 0 y se los imprime con un +1
             vueloDeseado = posiblesVuelos.get(intVueloDeseado);
-            System.out.println(vueloDeseado.asientosDisponibles(category));
-            List<Asiento> asientos = new ArrayList<>();
+            List<Asiento> asientosDisponibles = vueloDeseado.asientosDisponibles(category);
 
-            for (int i = 0; i <cantidadDePersonas ; i++) {
-                asientos.add(seleccionarAsiento());
+            System.out.println("Asientos disponibles: ");
+            System.out.println();
+            int count = 1;
+            for (Asiento asiento : asientosDisponibles) {
+                System.out.println( count + " " + asiento);
+                count ++;
             }
 
-            server.comprarAsiento(vueloDeseado.getCodigoDeVuelo(), currentCliente,asientos,cantidadDePersonas , category);
+
+            for (int i = 0; i < cantidadDePersonas; i++) {
+                Asiento asiento = seleccionarAsiento();
+                server.comprarAsiento(vueloDeseado.getCodigoDeVuelo(), currentCliente, asiento ,cantidadDePersonas , category);
+            }
+
             System.out.println("La compra se realizo exitosamente");
             category = "";
             posiblesVuelos = null;
             mostrarMenu();
+
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -178,18 +195,20 @@ public class ClientApp {
     }
 
     private static Asiento seleccionarAsiento(){
-        Asiento asiento= null;
+
         try {
             int fila = Scanner.getInt("¿En que fila desea viajar?: ");
             char columna = Scanner.getChar("¿En que asiento de la fila desea viajar?: ");
-            asiento =   vueloDeseado.getAsiento(fila, columna);
+             if( vueloDeseado.getAsiento(fila, columna).getCategoria().equals(category) && !vueloDeseado.getOcupacion(vueloDeseado.getAsiento(fila, columna))){
+                 return vueloDeseado.getAsiento(fila, columna);
+             }
+            throw new RuntimeException("Seleccion de asiento invalida");
         }
+
         catch (RuntimeException e){
             System.out.println(e.getMessage());
             seleccionarAsiento();
         }
-        finally {
-            return asiento;
-        }
+        return null; ///preguntar necesidad de esta declaracioon
     }
 }
