@@ -2,18 +2,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Reserva {
-    private Cliente cliente;
-    private int cantidadDePersonas;
-    private Vuelo vuelo;
-    private String categoria;
-    List<Asiento> asientos = new ArrayList<>();
 
-    public Reserva(Cliente cliente, Vuelo vuelo, int cantidadDePersonas, String categoria, List<Asiento> asientos) {
-        this.cliente = cliente;
-        this.vuelo = vuelo;
-        this.cantidadDePersonas = cantidadDePersonas;
-        this.categoria = categoria;
-        this.asientos = asientos;
+    List<Pasaje> pasajes;
+    Vuelo vuelo = pasajes.get(0).getVuelo();
+    List<Asiento> asientos = new ArrayList<>();
+    int cantidadDePersonas = pasajes.size();
+    String categoria = pasajes.get(0).getCategoria();
+
+    public Reserva(List<Pasaje> pasajes) {
+        this.pasajes = pasajes;
+        for (Pasaje pasaje:pasajes
+             ) {
+            asientos.add(pasaje.getAsiento());
+        }
     }
 
     @Override
@@ -22,8 +23,8 @@ public class Reserva {
                 + vuelo.getUbicacionSalida() + "\n" + "  Hasta: " + vuelo.getUbicacionLlegada() + "\n" + "  Cantidad de personas: " + cantidadDePersonas + "\n" + "  Categoria: " + categoria
                 + "\n  Asientos: ";
 
-        for (Asiento asiento:asientos
-             ) {
+        for (Asiento asiento: asientos
+                ) {
             result += "\n   "+ asiento;
         }
 

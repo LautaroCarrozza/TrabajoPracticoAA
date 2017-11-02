@@ -142,14 +142,13 @@ public class ClientApp {
         }
     }
 
-
     private static void mostrarMenuCompraPasaje(){
         System.out.println("1- Comprar pasaje: (numero del vuelo en la lista) ");
         System.out.println("9- Volver al menu");
         int option = Scanner.getInt("Ingrese su opcion: ");
         switch (option) {
             case 1:
-                comprarPasaje();
+                comprarPasajes();
                 break;
             case 9:
                 category = "";
@@ -161,7 +160,7 @@ public class ClientApp {
         }
     }
 
-    private static void comprarPasaje() {
+    private static void comprarPasajes() {
 
         try {
             intVueloDeseado = Scanner.getInt("¿Que vuelo desea comprar? : ") -1 ;/// -1 por que los vuelos empiezan con 0 y se los imprime con un +1
@@ -182,6 +181,8 @@ public class ClientApp {
                 server.comprarAsiento(vueloDeseado.getCodigoDeVuelo(), currentCliente, asiento ,cantidadDePersonas , category);
             }
 
+            server.guardarReserva(currentCliente, vueloDeseado);
+
             System.out.println("La compra se realizo exitosamente");
             category = "";
             posiblesVuelos = null;
@@ -190,7 +191,7 @@ public class ClientApp {
         }
         catch (Exception e){
             System.out.println(e.getMessage());
-            comprarPasaje();
+            comprarPasajes();
         }
     }
 
@@ -202,13 +203,13 @@ public class ClientApp {
              if( vueloDeseado.getAsiento(fila, columna).getCategoria().equals(category) && !vueloDeseado.getOcupacion(vueloDeseado.getAsiento(fila, columna))){
                  return vueloDeseado.getAsiento(fila, columna);
              }
+
             throw new RuntimeException("Seleccion de asiento invalida");
         }
 
         catch (RuntimeException e){
             System.out.println(e.getMessage());
-            seleccionarAsiento();
+            return seleccionarAsiento();
         }
-        return null; ///preguntar necesidad de esta declaracioon
     }
 }

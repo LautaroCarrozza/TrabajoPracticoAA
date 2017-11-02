@@ -21,4 +21,9 @@ public class Cliente extends Persona{
     public void addReserva(Reserva reserva){
         reservas.add(reserva);
     }
+
+    public void guardarReserva(List<Pasaje> pasajes) {
+        Reserva reserva = new Reserva(pasajes);
+        reservas.add(reserva);
+    }
 }

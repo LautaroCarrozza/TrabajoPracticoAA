@@ -6,6 +6,7 @@ public class ServerMock implements ServerInterface{
     private List<Cliente> clientes = new ArrayList<>();
     private List<Vuelo> vuelos = new ArrayList<>();
     private List<Reserva> reservas = new ArrayList<>();
+    private List<Pasaje> pasajes = new ArrayList<>();
 
     public void setUpTest(){
 
@@ -88,9 +89,10 @@ public class ServerMock implements ServerInterface{
 
             if (!vuelo.getOcupacion(asiento)){
                 vuelo.ocupar(asiento);
+                Pasaje pasaje = new Pasaje(vuelo, asiento, getCliente(codigoCliente));
+                pasajes.add(pasaje);
             }
             else{throw new RuntimeException("El asiento esta ocupado");}
-
     }
 
     public Vuelo getVuelo(int codigoDeVuelo) {
@@ -100,6 +102,17 @@ public class ServerMock implements ServerInterface{
             }
         }
         throw new RuntimeException("No existen vuelos con ese codigo");
+    }
+
+    @Override
+    public void guardarReserva(int codigoCliente, Vuelo vuelo) {
+        List<Pasaje> pasajesReservados = new ArrayList<>();
+        for (Pasaje pasaje:pasajes) {
+            if (pasaje.getCliente().getNumeroDeCliente() == codigoCliente && pasaje.getVuelo().equals(vuelo)){
+                pasajesReservados.add(pasaje);
+            }
+        }
+        getCliente(codigoCliente).guardarReserva(pasajesReservados);
     }
 
     public  Cliente getCliente(int numeroDeCliente){
