@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class Vuelo {
@@ -9,9 +10,11 @@ public class Vuelo {
     private Avion avion;
     private int codigoDeVuelo;
     private Map<Asiento, Boolean> ocupacion = new HashMap<>();
+    private LocalDateTime horarioSalida;
 
-    public Vuelo(Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, int dia, int mes, int ano, Avion avion, int codigoDeVuelo) {
-        fechaSalida = LocalDate.of(ano,mes,dia);
+    public Vuelo(Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, int dia, int mes, int ano, int hora, int minutos, Avion avion, int codigoDeVuelo) {
+        this.fechaSalida = LocalDate.of(ano,mes,dia);
+        this.horarioSalida = fechaSalida.atTime(hora, minutos);
         this.aeropuertoSalida = aeropuertoSalida;
         this.aeropuertoLlegada = aeropuertoLlegada;
         this.avion = avion;
@@ -53,8 +56,8 @@ public class Vuelo {
     @Override
     public String toString() {
 
-        String result = "Fecha: " + fechaSalida.getMonthValue() + "/" + (fechaSalida.getDayOfMonth()  + "/" + fechaSalida.getYear() + "  Desde: " + aeropuertoSalida.getUbicacion() + "  Hasta: " + aeropuertoLlegada.getUbicacion()
-                + " Codigo: " + codigoDeVuelo);
+        String result = "Fecha: " + fechaSalida.getMonthValue() + "/" + (fechaSalida.getDayOfMonth()  + "/" + fechaSalida.getYear() +", Horario De Salida: "+ horarioSalida.getHour() +":" + horarioSalida.getMinute() +",  Desde: " + aeropuertoSalida.getUbicacion() + ",  Hasta: " + aeropuertoLlegada.getUbicacion()
+                + ", Codigo: " + codigoDeVuelo);
 
         return result;
     }

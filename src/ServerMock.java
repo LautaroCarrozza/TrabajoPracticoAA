@@ -26,8 +26,8 @@ public class ServerMock implements ServerInterface{
         Avion avionA = new Avion("1", tipoDeAvionA);
         Avion avionB = new Avion("2", tipoDeAvionB);
 
-        Vuelo vueloA = new Vuelo(aeropuertoA, aeropuertoB, 1, 1, 2018, avionA, 1);
-        Vuelo vueloB = new Vuelo(aeropuertoA, aeropuertoB, 1, 1, 2018, avionA, 2);
+        Vuelo vueloA = new Vuelo(aeropuertoA, aeropuertoB, 1, 1, 2018,14,30, avionA, 1);
+        Vuelo vueloB = new Vuelo(aeropuertoA, aeropuertoB, 1, 1, 2018,18,25, avionA, 2);
 
         addVuelo(vueloB);
         addVuelo(vueloA);
