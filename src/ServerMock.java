@@ -4,9 +4,13 @@ import java.util.List;
 public class ServerMock implements ServerInterface{
 
     private List<Cliente> clientes = new ArrayList<>();
+    private List<Empleado> empleados = new ArrayList<>();
     private List<Vuelo> vuelos = new ArrayList<>();
     private List<Reserva> reservas = new ArrayList<>();
     private List<Pasaje> pasajes = new ArrayList<>();
+    private List<TipoDeAvion> tiposDeAvion = new ArrayList<>();
+    private List<Avion> aviones = new ArrayList<>();
+    private List<Aeropuerto> aeropuertos= new ArrayList<>();
 
     public void setUpTest(){
 
@@ -15,6 +19,9 @@ public class ServerMock implements ServerInterface{
 
         addCliente(clienteA);
         addCliente(clienteB);
+
+        Empleado empleado1 = new Empleado(2020130044, "Fernando Miodosky", 1, true);
+        addEmpleado(empleado1);
 
         Aeropuerto aeropuertoA = new Aeropuerto("aaa", "aaa", "aaa");
         Aeropuerto aeropuertoB = new Aeropuerto("bbb", "bbb", "bbb");
@@ -26,16 +33,9 @@ public class ServerMock implements ServerInterface{
         Avion avionA = new Avion("1", tipoDeAvionA);
         Avion avionB = new Avion("2", tipoDeAvionB);
 
-        Vuelo vueloA = new Vuelo(aeropuertoA, aeropuertoB, 1, 1, 2018,14,30, avionA, 1);
-        Vuelo vueloB = new Vuelo(aeropuertoA, aeropuertoB, 1, 1, 2018,18,25, avionA, 2);
-
-        addVuelo(vueloB);
-        addVuelo(vueloA);
     }
 
-    public void addVuelo(Vuelo vuelo){vuelos.add(vuelo);}
-
-    public void validarSesion(int numero) {
+    public void validarSesionCliente(int numero) {
         for (Cliente c : clientes) {
             if(c.getNumeroDeCliente() == numero){
                 return;
@@ -66,7 +66,11 @@ public class ServerMock implements ServerInterface{
         return result;
     }
 
-    public  void addCliente(Cliente cliente) {
+    public void addEmpleado(Empleado empleado){
+        empleados.add(empleado);
+    }
+
+    public void addCliente(Cliente cliente) {
         clientes.add(cliente);
     }
 
@@ -104,7 +108,6 @@ public class ServerMock implements ServerInterface{
         throw new RuntimeException("No existen vuelos con ese codigo");
     }
 
-    @Override
     public void guardarReserva(int codigoCliente, Vuelo vuelo) {
         List<Pasaje> pasajesReservados = new ArrayList<>();
         for (Pasaje pasaje:pasajes) {
@@ -113,6 +116,59 @@ public class ServerMock implements ServerInterface{
             }
         }
         getCliente(codigoCliente).guardarReserva(pasajesReservados);
+    }
+
+    public void validarSesionEmpleado(int currentSesion) {
+        for (Empleado empleado: empleados ) {
+            if (empleado.getCodigoEmpleado() == currentSesion)return;
+        }
+        throw new RuntimeException("Codigo de empleado invalido");
+    }
+
+    public TipoDeAvion getTipoDeAvion(String tipoDeAvion) {
+        for (TipoDeAvion t:tiposDeAvion
+             ) {
+            if (t.getNombre().equals(tipoDeAvion)){return t;}
+        }
+        throw new RuntimeException("No existe el tipo de avion");
+    }
+
+    public void addAvion(String codigo, String tipoDeAvionStr) {
+        TipoDeAvion tipoDeAvion = getTipoDeAvion(tipoDeAvionStr);
+        Avion avion = new Avion(codigo, tipoDeAvion);
+        aviones.add(avion);
+    }
+
+    public void addTipoDeAvion(int cantidadFilasEconomy, int cantidadAsientosPorFilaDeEconomy, int cantidadFilasBussiness, int cantidadAsientosPorFilaDeBussiness, int cantidadFilasFirst, int cantidadAsientosPorFilaDeFirst, String nombre) {
+        TipoDeAvion tipoDeAvion = new TipoDeAvion(cantidadFilasEconomy, cantidadAsientosPorFilaDeEconomy, cantidadFilasBussiness, cantidadAsientosPorFilaDeBussiness, cantidadFilasFirst, cantidadAsientosPorFilaDeFirst, nombre);
+        tiposDeAvion.add(tipoDeAvion);
+    }
+
+    public void addAeropuerto(String codigoDeAeropuerto, String ubicacion, String nombre) {
+        Aeropuerto aeropuerto = new Aeropuerto(codigoDeAeropuerto, ubicacion, nombre);
+        aeropuertos.add(aeropuerto);
+    }
+
+    public void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes, String plane, int flightCode) {
+        Vuelo vuelo = new Vuelo(getAeropuerto(aeropuertoDeSalida), getAeropuerto(aeropuertoDeLlegada), dia, mes, ano, hours, minutes, getAvion(plane), flightCode);
+    }
+
+    private Aeropuerto getAeropuerto(String aeropuerto) {
+        for (Aeropuerto a:aeropuertos
+             ) {
+           if (a.getCodigo().equals(aeropuerto)){return a;}
+        }
+        throw  new RuntimeException("El aeropuerto no existe");
+    }
+
+    private Avion getAvion(String plane) {
+        for (Avion a:aviones
+             ) {
+            if (a.getCodigo().equals(plane)){
+                return a;
+            }
+        }
+        throw new RuntimeException("No existe el avion");
     }
 
     public  Cliente getCliente(int numeroDeCliente){

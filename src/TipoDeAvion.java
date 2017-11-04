@@ -47,4 +47,8 @@ public class TipoDeAvion {
     public int getCantidadFilasEconomy() {
         return cantidadFilasEconomy;
     }
+
+    public String getNombre() {
+        return nombre;
+    }
 }

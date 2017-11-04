@@ -69,7 +69,7 @@ public class ClientApp {
         System.out.println();
         try {
             currentCliente = Scanner.getInt("Numero de cliente: ");
-            server.validarSesion(currentCliente);
+            server.validarSesionCliente(currentCliente);
         } catch (RuntimeException e) {
             borrarPantalla();
             System.out.println(e.getMessage());
