@@ -33,6 +33,9 @@ public class ServerMock implements ServerInterface{
         Avion avionA = new Avion("1", tipoDeAvionA);
         Avion avionB = new Avion("2", tipoDeAvionB);
 
+        Vuelo vuelo = new Vuelo(aeropuertoA, aeropuertoB, 1, 1, 2018, 20, 15, avionA, 1);
+        vuelos.add(vuelo);
+
     }
 
     public void validarSesionCliente(int numero) {
@@ -74,13 +77,13 @@ public class ServerMock implements ServerInterface{
         clientes.add(cliente);
     }
 
-    public List<Vuelo> buscarVuelos(int dia, int mes, int ano, String lugarSalida, String lugarLlegada, int cantidadPersonas, String categoria){
+    public List<Vuelo> buscarVuelos(int dia, int mes, int ano, String lugarSalida, String lugarLlegada, int cantidadPersonas){
 
         List<Vuelo> posiblesVuelos = new ArrayList<>();
 
         for (Vuelo vuelo: vuelos) {
             if (vuelo.getFechaSalida().getDayOfMonth() == dia && (vuelo.getFechaSalida().getMonthValue() == mes && vuelo.getFechaSalida().getYear() == ano && vuelo.getUbicacionSalida().equals(lugarSalida) && vuelo.getUbicacionLlegada().equals(lugarLlegada)
-                    && vuelo.cantidadAsientosDisponibles(categoria) >= cantidadPersonas)){
+                    && vuelo.cantidadAsientosDisponibles() >= cantidadPersonas)){
                 posiblesVuelos.add(vuelo);
             }
         }
@@ -115,7 +118,7 @@ public class ServerMock implements ServerInterface{
                 pasajesReservados.add(pasaje);
             }
         }
-        getCliente(codigoCliente).guardarReserva(pasajesReservados);
+        getCliente(codigoCliente).guardarReserva(pasajesReservados, vuelo);
     }
 
     public void validarSesionEmpleado(int currentSesion) {

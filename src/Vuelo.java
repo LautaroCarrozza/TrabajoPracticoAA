@@ -43,10 +43,10 @@ public class Vuelo {
         return codigoDeVuelo;
     }
 
-    public int cantidadAsientosDisponibles(String categoria) {
+    public int cantidadAsientosDisponibles() {
         int result = 0;
         for (Asiento a : avion.getAsientos()) {
-            if (!ocupacion.get(a) && a.getCategoria().equals(categoria)) {
+            if (!ocupacion.get(a)) {
                 result++;
             }
         }
@@ -66,10 +66,10 @@ public class Vuelo {
         ocupacion.put(asiento, true);
     }
 
-    public List<Asiento> asientosDisponibles(String categoria) {
+    public List<Asiento> asientosDisponibles() {
         List<Asiento> asientosDisponibles = new ArrayList<>();
         for (Asiento a : avion.getAsientos()) {
-            if (!ocupacion.get(a) && a.getCategoria().equals(categoria)) {
+            if (!ocupacion.get(a) ) {
                 asientosDisponibles.add(a);
             }
         }

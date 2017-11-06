@@ -93,38 +93,14 @@ public class ClientApp {
         int mes = Scanner.getInt("Ingrese el mes de la fecha del viaje: ");
         int ano = Scanner.getInt("Ingrese el año de la fecha del viaje: ");
 
-        System.out.println("1- Economy");
-        System.out.println("2- Bussiness");
-        System.out.println("3- First");
-        System.out.println("9- Volver al menu");
 
-        while (category.isEmpty()) {
-            int option = 0;
-            option = Scanner.getInt("Ingrese la categoria para su(s) pasaje: ");
-            switch (option) {
-                case 1:
-                    category = "Economy";
-                    break;
-                case 2:
-                    category = "Bussiness";
-                    break;
-                case 3:
-                    category = "First";
-                    break;
-                case 9:
-                    borrarPantalla();
-                    mostrarMenu();
-                default:
-                    System.out.println("Categoria invalida");
-            }
-        }
 
         String lugarDeSalida = Scanner.getString("Ingrese el lugar de partida: ");
         String lugarDeLlegada = Scanner.getString("Ingrese el lugar de llegada: ");
         cantidadDePersonas = Scanner.getInt("Ingrese la cantidad de pasajeros: ");
         System.out.println();
         System.out.println();
-        posiblesVuelos = server.buscarVuelos(dia, mes, ano, lugarDeSalida, lugarDeLlegada, cantidadDePersonas, category);
+        posiblesVuelos = server.buscarVuelos(dia, mes, ano, lugarDeSalida, lugarDeLlegada, cantidadDePersonas);
 
             for (int i = 0; i < posiblesVuelos.size(); i++) {
                 System.out.println((i+1) + "- " + posiblesVuelos.get(i));
@@ -165,14 +141,12 @@ public class ClientApp {
         try {
             intVueloDeseado = Scanner.getInt("¿Que vuelo desea comprar? : ") -1 ;/// -1 por que los vuelos empiezan con 0 y se los imprime con un +1
             vueloDeseado = posiblesVuelos.get(intVueloDeseado);
-            List<Asiento> asientosDisponibles = vueloDeseado.asientosDisponibles(category);
+            List<Asiento> asientosDisponibles = vueloDeseado.asientosDisponibles();
 
             System.out.println("Asientos disponibles: ");
             System.out.println();
-            int count = 1;
             for (Asiento asiento : asientosDisponibles) {
-                System.out.println( count + " " + asiento);
-                count ++;
+                System.out.println(asiento);
             }
 
 
@@ -196,20 +170,20 @@ public class ClientApp {
     }
 
     private static Asiento seleccionarAsiento(){
-
         try {
             int fila = Scanner.getInt("¿En que fila desea viajar?: ");
             char columna = Scanner.getChar("¿En que asiento de la fila desea viajar?: ");
-             if( vueloDeseado.getAsiento(fila, columna).getCategoria().equals(category) && !vueloDeseado.getOcupacion(vueloDeseado.getAsiento(fila, columna))){
+             if( !vueloDeseado.getOcupacion(vueloDeseado.getAsiento(fila, columna))){
                  return vueloDeseado.getAsiento(fila, columna);
              }
-
-            throw new RuntimeException("Seleccion de asiento invalida");
+            else {
+                 throw new RuntimeException("Seleccion de asiento invalida");
+             }
         }
-
         catch (RuntimeException e){
             System.out.println(e.getMessage());
-            return seleccionarAsiento();
+            return  seleccionarAsiento();
         }
+
     }
 }

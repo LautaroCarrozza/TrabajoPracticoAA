@@ -6,7 +6,7 @@ public interface ServerInterface {
     void validarSesionCliente(int numero);
     String printReservas(int numeroDeCliente);
     void addCliente(Cliente cliente);
-    List<Vuelo> buscarVuelos(int dia, int mes, int ano, String lugarSalida, String lugarLlegada, int cantidadPersonas, String categoria);
+    List<Vuelo> buscarVuelos(int dia, int mes, int ano, String lugarSalida, String lugarLlegada, int cantidadPersonas);
     void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersonas, String categoria);
     Vuelo getVuelo(int codigoDeVuelo);
     void addEmpleado(Empleado empleado);

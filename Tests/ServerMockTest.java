@@ -10,7 +10,7 @@ public class ServerMockTest {
         ServerInterface server = new ServerMock();
         server.setUpTest();
 
-        System.out.println(server.buscarVuelos(1,1,2018,"aaa", "bbb", 1, "Economy"));
+        System.out.println(server.buscarVuelos(1,1,2018,"aaa", "bbb", 1));
     }
 
     @Test
@@ -18,7 +18,7 @@ public class ServerMockTest {
         ServerInterface server = new ServerMock();
         server.setUpTest();
 
-        System.out.println(server.getVuelo(1).cantidadAsientosDisponibles("Economy"));
+        System.out.println(server.getVuelo(1).cantidadAsientosDisponibles());
 
     }
 
