@@ -92,7 +92,6 @@ public class EmployeeApp {
 
         server.guardarReserva(currentClient, vueloDeseado);
 
-
     }
 
     private static void seleccionarVuelo() {
@@ -127,7 +126,7 @@ public class EmployeeApp {
             }
         }
         catch (RuntimeException e){
-            e.getMessage();
+            System.out.println(e.getMessage());
             venderAsiento();
         }
 
@@ -138,7 +137,7 @@ public class EmployeeApp {
             server.buscarVuelos(diaSalida, mesSalida, anoSalida,currentDesde,currentHasta, cantidadDePasajeros);
         }
         catch (RuntimeException e){
-            e.getMessage();
+            System.out.println(e.getMessage());
             mostrarMenu();
         }
     }
@@ -232,13 +231,14 @@ public class EmployeeApp {
         String tipoDeAvion = Scanner.getString("Ingrese el tipo de avion para este avion: ");
         try {
             server.addAvion(codigoAvion, tipoDeAvion);
+            System.out.println("Avion cargado");
+            mostrarMenu();
         }
         catch (RuntimeException e){
             System.out.println(e.getMessage());
             mostrarMenu();
         }
-            System.out.println("Avion cargado");
-            mostrarMenu();
+
 
     }
 

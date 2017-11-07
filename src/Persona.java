@@ -11,4 +11,8 @@ public abstract class Persona {
     public String getNombre() {
         return nombre;
     }
+
+    public int getDni() {
+        return dni;
+    }
 }
