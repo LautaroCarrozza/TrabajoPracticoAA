@@ -109,7 +109,7 @@ public class ClientApp {
 
             for (int i = 0; i < posiblesVuelos.size(); i++) {
                 System.out.println((i+1) + "- " + posiblesVuelos.get(i));
-            }///imprimo la lista de buelos disponibles con esas especificaciones.
+            }///imprimo la lista de vuelos disponibles con esas especificaciones.
 
         System.out.println();
         System.out.println();

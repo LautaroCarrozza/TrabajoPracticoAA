@@ -21,6 +21,7 @@ public interface ServerInterface {
     Cliente getCliente(int numeroCliente);
     void validarCliente(int numeroCliente);
     void validarLugarDePartida(String lugarDePartida);
+    void validarLugarDeLlegada(String lugarDeLlegada);
 }
 
 

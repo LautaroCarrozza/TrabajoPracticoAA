@@ -179,6 +179,24 @@ public class ServerMock implements ServerInterface{
         }
     }
 
+    @Override
+    public void validarLugarDePartida(String lugarDePartida) {
+        for (Aeropuerto a: aeropuertos
+             ) {
+            if (lugarDePartida==a.getCodigo());{return;}
+        }
+        throw new RuntimeException("No existe ese aeropuerto");
+    }
+
+    @Override
+    public void validarLugarDeLlegada(String lugarDeLlegada) {
+        for (Aeropuerto a: aeropuertos
+                ) {
+            if (lugarDeLlegada==a.getCodigo());{return;}
+        }
+        throw new RuntimeException("No existe ese aeropuerto");
+    }
+
     public List<Reserva> getReservas(int numeroDeCliente) {
         return getCliente(numeroDeCliente).getReservas();
     }
