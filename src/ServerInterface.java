@@ -4,7 +4,7 @@ public interface ServerInterface {
 
     void setUpTest();
     void validarSesionCliente(int numero);
-    String printReservas(int numeroDeCliente);
+    List<Reserva> getReservas(int numeroDeCliente);
     void addCliente(Cliente cliente);
     List<Vuelo> buscarVuelos(int dia, int mes, int ano, String lugarSalida, String lugarLlegada, int cantidadPersonas);
     void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersonas, String categoria);
@@ -17,6 +17,10 @@ public interface ServerInterface {
     void addTipoDeAvion(int cantidadFilasEconomy, int cantidadAsientosPorFilaDeEconomy, int cantidadFilasBussiness, int cantidadAsientosPorFilaDeBussiness, int cantidadFilasFirst, int cantidadAsientosPorFilaDeFirst, String nombre);
     void addAeropuerto(String codigoDeAeropuerto, String ubicacion, String nombre);
     void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes, String plane, int flightCode);
+    Empleado getEmployee(int currentSesion);
+    Cliente getCliente(int numeroCliente);
+    void validarCliente(int numeroCliente);
+    void validarLugarDePartida(String lugarDePartida);
 }
 
 

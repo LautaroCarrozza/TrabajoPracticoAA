@@ -11,7 +11,8 @@ public class EmployeeApp {
        iniciarSesion();
     }
     private static ServerInterface server;
-    private static int currentSesion;
+    private static int currentSesion, currentClient;
+    public static String currentDesde;
 
     private static void iniciarSesion(){
 
@@ -74,7 +75,36 @@ public class EmployeeApp {
     }
 
     private static void venderPasaje() {
-        // TODO: 3/11/17
+
+        venderACliente();
+        venderDesde();
+
+        // TODO: 7/11/17   vendeHasta();
+        // TODO: 7/11/17 venderCuando();
+        // TODO: 7/11/17venderACuantosPasajeros();
+        // TODO: 7/11/17for (int i = 0; i < cantidadPasajeros ; i++) {
+        // TODO: 7/11/17// TODO: 7/11/17    venderAsiento();
+
+
+        // TODO: 7/11/17server.guardarReserva(currentClient, vuelo);
+
+
+    }
+
+    private static void venderDesde() {
+        currentDesde = Scanner.getString("Ingrese lugar de partida: ");
+        server.validarLugarDePartida(currentDesde);
+    }
+
+    private static void venderACliente() {
+        try{
+            currentClient = Scanner.getInt("Ingresar el numero del cliente");
+            server.validarCliente(currentClient);
+        }
+        catch(RuntimeException e){
+            System.out.println(e.getMessage());
+            venderACliente();
+        }
     }
 
     private static void ingresarVuelo() {

@@ -60,7 +60,12 @@ public class ClientApp {
 
     private static void verReservas() {
 
-        System.out.println(server.printReservas(currentCliente));
+        List<Reserva> reservas= server.getReservas(currentCliente);
+
+                for (Reserva r :reservas) {
+                    System.out.println(r);
+                }
+
         mostrarMenu();
     }
 

@@ -15,7 +15,7 @@ public class Asiento {
 
     @Override
     public String toString() {
-        return "Fila:  " + fila + " Columna: " + columna + " Categoria: " + categoria;
+        return " Fila:  " + fila + " Columna: " + columna + " Categoria: " + categoria;
     }
 
     public int getFila() {

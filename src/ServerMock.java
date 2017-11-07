@@ -47,28 +47,6 @@ public class ServerMock implements ServerInterface{
         throw new RuntimeException("Numero de cliente invalido");
     }
 
-    public String printReservas(int numeroDeCliente){
-
-        String result =  "";
-
-        for (Cliente c: clientes ) {
-            if(c.getNumeroDeCliente() == numeroDeCliente ){
-                Cliente cliente = c;
-
-                if(cliente.getReservas().size() == 0){
-                    result =  "El cliente no cuenta con reservas";
-                    break;
-                }
-
-                System.out.println(c.getNombre());
-                for (Reserva r :cliente.getReservas()) {
-                    result += r;
-                }
-            }
-        }
-        return result;
-    }
-
     public void addEmpleado(Empleado empleado){
         empleados.add(empleado);
     }
@@ -156,6 +134,15 @@ public class ServerMock implements ServerInterface{
         Vuelo vuelo = new Vuelo(getAeropuerto(aeropuertoDeSalida), getAeropuerto(aeropuertoDeLlegada), dia, mes, ano, hours, minutes, getAvion(plane), flightCode);
     }
 
+    @Override
+    public Empleado getEmployee(int currentSesion) {
+        for (Empleado e :
+                empleados) {
+            if(e.getCodigoEmpleado() == currentSesion){return e;}
+        }
+        throw  new RuntimeException("No existe el empleado");
+    }
+
     private Aeropuerto getAeropuerto(String aeropuerto) {
         for (Aeropuerto a:aeropuertos
              ) {
@@ -180,5 +167,19 @@ public class ServerMock implements ServerInterface{
             if(c.getNumeroDeCliente() == numeroDeCliente){return c;}
         }
         throw new RuntimeException("No existe el cliente");
+    }
+
+    public void validarCliente(int numeroCliente){
+        for (Cliente c: clientes
+             ) {
+            if (c.getNumeroDeCliente() == numeroCliente) {
+                return;
+            }
+            throw new RuntimeException("El cliente no existe");
+        }
+    }
+
+    public List<Reserva> getReservas(int numeroDeCliente) {
+        return getCliente(numeroDeCliente).getReservas();
     }
 }
