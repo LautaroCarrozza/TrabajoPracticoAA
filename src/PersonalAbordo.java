@@ -24,14 +24,6 @@ public class PersonalAbordo extends Persona {
         this.numeroDeEmpleado = numeroDeEmpleado;
     }
 
-    public PersonalAbordo(int dni, String nombre, String cargo) {
-        super(dni, nombre);
-        this.cargo = cargo;
-    }
-    public void addVuelo(Vuelo vuelo){
-        vuelos.add(vuelo);
-    }
-
     @Override
     public String toString() {
         String result = "Nombre: " + getNombre() + "\n" + "Vuelos: ";

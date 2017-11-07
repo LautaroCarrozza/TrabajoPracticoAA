@@ -61,7 +61,6 @@ public class PersonalAbordoApp {
         iniciarSesion();
     }
 
-
     public static void borrarPantalla() {
         // TODO: 9/10/17
 

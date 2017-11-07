@@ -5,11 +5,11 @@ public interface ServerInterface {
     void setUpTest();
     void validarSesionCliente(int numero);
     List<Reserva> getReservas(int numeroDeCliente);
-    void addCliente(Cliente cliente);
+    void addCliente(int dni, String nombre, int numeroDeCliente);
     List<Vuelo> buscarVuelos(int dia, int mes, int ano, String lugarSalida, String lugarLlegada, int cantidadPersonas);
     void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersonas, String categoria);
     Vuelo getVuelo(int codigoDeVuelo);
-    void addEmpleado(Empleado empleado);
+    void addEmpleado(int dni, String nombre, int codigoEmpleado, boolean habilitadoParaVender);
     void guardarReserva(int codigoCliente, Vuelo vuelo);
     void validarSesionEmpleado(int currentSesion);
     TipoDeAvion getTipoDeAvion(String tipoDeAvion);
