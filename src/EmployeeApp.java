@@ -90,9 +90,7 @@ public class EmployeeApp {
             venderAsiento();
         }
 
-
-
-        // TODO: 7/11/17server.guardarReserva(currentClient, vuelo);
+        server.guardarReserva(currentClient, vueloDeseado);
 
 
     }
@@ -121,6 +119,7 @@ public class EmployeeApp {
             int fila = Scanner.getInt("Ingresar flia deseada: ");
             char columna = Scanner.getChar("Ingresar columna deseada: ");
             if( !vueloDeseado.getOcupacion(vueloDeseado.getAsiento(fila, columna))){
+                vueloDeseado.ocupar(vueloDeseado.getAsiento(fila, columna));
                 return;
             }
             else {
