@@ -1,5 +1,7 @@
 import com.sun.xml.internal.bind.v2.TODO;
 
+import java.util.List;
+
 public class EmployeeApp {
 
 
@@ -11,8 +13,9 @@ public class EmployeeApp {
        iniciarSesion();
     }
     private static ServerInterface server;
-    private static int currentSesion, currentClient;
-    public static String currentDesde;
+    private static int currentSesion, currentClient, diaSalida, mesSalida, anoSalida, cantidadDePasajeros;
+    public static String currentDesde, currentHasta;
+    public static Vuelo vueloDeseado;
 
     private static void iniciarSesion(){
 
@@ -77,13 +80,16 @@ public class EmployeeApp {
     private static void venderPasaje() {
 
         venderACliente();
+        venderACuantosPasajeros();
         venderDesde();
+        venderHasta();
+        venderCuando();
+        validarVuelo();
+        seleccionarVuelo();
+        for (int i = 0; i < cantidadDePasajeros; i++) {
+            venderAsiento();
+        }
 
-        // TODO: 7/11/17   vendeHasta();
-        // TODO: 7/11/17 venderCuando();
-        // TODO: 7/11/17venderACuantosPasajeros();
-        // TODO: 7/11/17for (int i = 0; i < cantidadPasajeros ; i++) {
-        // TODO: 7/11/17// TODO: 7/11/17    venderAsiento();
 
 
         // TODO: 7/11/17server.guardarReserva(currentClient, vuelo);
@@ -91,9 +97,82 @@ public class EmployeeApp {
 
     }
 
+    private static void seleccionarVuelo() {
+        List<Vuelo> vuelosDisponibles = server.buscarVuelos(diaSalida, mesSalida, anoSalida,currentDesde,currentHasta, cantidadDePasajeros);
+        int opcion = 1;
+        for (Vuelo v: vuelosDisponibles
+             ) {
+            System.out.println(opcion +" "+ v);
+            opcion++;
+        }
+        int intVueloDeseado = Scanner.getInt("¿Que vuelo desea comprar? : ") -1 ;/// -1 por que los vuelos empiezan con 0 y se los imprime con un +1
+        vueloDeseado = vuelosDisponibles.get(intVueloDeseado);
+    }
+
+    private static void venderAsiento(){
+        List<Asiento> asientosDisponibles = vueloDeseado.asientosDisponibles();
+
+        System.out.println("Asientos disponibles: ");
+        System.out.println();
+        for (Asiento asiento : asientosDisponibles) {
+            System.out.println(asiento);
+        }
+        try {
+            int fila = Scanner.getInt("Ingresar flia deseada: ");
+            char columna = Scanner.getChar("Ingresar columna deseada: ");
+            if( !vueloDeseado.getOcupacion(vueloDeseado.getAsiento(fila, columna))){
+                return;
+            }
+            else {
+                throw new RuntimeException("Seleccion de asiento no disponible");
+            }
+        }
+        catch (RuntimeException e){
+            e.getMessage();
+            venderAsiento();
+        }
+
+    }
+
+    private static void validarVuelo(){
+        try{
+            server.buscarVuelos(diaSalida, mesSalida, anoSalida,currentDesde,currentHasta, cantidadDePasajeros);
+        }
+        catch (RuntimeException e){
+            e.getMessage();
+            mostrarMenu();
+        }
+    }
+
+    private static void venderACuantosPasajeros(){
+        cantidadDePasajeros = Scanner.getInt("Ingrese la cantidad de pasajeros: ");
+    }
+
+    private static void venderCuando(){
+        diaSalida = Scanner.getInt("Ingrese dia de salida: ");
+        mesSalida = Scanner.getInt("Ingrese mes de salida: ");
+        anoSalida = Scanner.getInt("Ingrese año de salida: ");
+    }
+
+    private static void venderHasta() {
+        try {
+            currentHasta = Scanner.getString("Ingrese lugar de llegada: ");
+            server.validarLugarDeLlegada(currentHasta);
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+            venderHasta();
+        }
+    }
+
     private static void venderDesde() {
-        currentDesde = Scanner.getString("Ingrese lugar de partida: ");
-        server.validarLugarDePartida(currentDesde);
+        try {
+            currentDesde = Scanner.getString("Ingrese lugar de partida: ");
+            server.validarLugarDePartida(currentDesde);
+        }
+        catch(RuntimeException e){
+            System.out.println(e.getMessage());
+            venderDesde();
+        }
     }
 
     private static void venderACliente() {
