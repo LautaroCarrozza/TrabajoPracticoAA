@@ -11,6 +11,7 @@ public class ServerMock implements ServerInterface{
     private List<TipoDeAvion> tiposDeAvion = new ArrayList<>();
     private List<Avion> aviones = new ArrayList<>();
     private List<Aeropuerto> aeropuertos= new ArrayList<>();
+    private List<PersonalAbordo> listaPersonalAbordo = new ArrayList<>();
 
     public void setUpTest(){
 
@@ -23,19 +24,21 @@ public class ServerMock implements ServerInterface{
         Empleado empleado1 = new Empleado(2020130044, "Fernando Miodosky", 1, true);
         addEmpleado(empleado1);
 
+        addPersonalAbordo(12345678,"Lautaro Carrozza","Piloto",1);
+
         Aeropuerto aeropuertoA = new Aeropuerto("aaa", "aaa", "aaa");
         Aeropuerto aeropuertoB = new Aeropuerto("bbb", "bbb", "bbb");
         Aeropuerto aeropuertoC = new Aeropuerto("ccc", "ccc", "ccc");
 
-        TipoDeAvion tipoDeAvionA = new TipoDeAvion(10, 2, 5, 2, 2, 2, "Australis-Airlines 01");
-        TipoDeAvion tipoDeAvionB = new TipoDeAvion(10, 2, 5, 2, 2, 2, "Australis-Airlines 02");
+        TipoDeAvion tipoDeAvionA = new TipoDeAvion(10, 2, 5, 2, 2, 2,3, "Australis-Airlines 01");
+        TipoDeAvion tipoDeAvionB = new TipoDeAvion(10, 2, 5, 2, 2, 2,3, "Australis-Airlines 02");
 
         Avion avionA = new Avion("1", tipoDeAvionA);
         Avion avionB = new Avion("2", tipoDeAvionB);
 
         Vuelo vuelo = new Vuelo(aeropuertoA, aeropuertoB, 1, 1, 2018, 20, 15, avionA, 1);
         vuelos.add(vuelo);
-
+        vuelo.addPersonalAbordo(getPersonalAbordo(1));
     }
 
     public void validarSesionCliente(int numero) {
@@ -120,8 +123,8 @@ public class ServerMock implements ServerInterface{
         aviones.add(avion);
     }
 
-    public void addTipoDeAvion(int cantidadFilasEconomy, int cantidadAsientosPorFilaDeEconomy, int cantidadFilasBussiness, int cantidadAsientosPorFilaDeBussiness, int cantidadFilasFirst, int cantidadAsientosPorFilaDeFirst, String nombre) {
-        TipoDeAvion tipoDeAvion = new TipoDeAvion(cantidadFilasEconomy, cantidadAsientosPorFilaDeEconomy, cantidadFilasBussiness, cantidadAsientosPorFilaDeBussiness, cantidadFilasFirst, cantidadAsientosPorFilaDeFirst, nombre);
+    public void addTipoDeAvion(int cantidadFilasEconomy, int cantidadAsientosPorFilaDeEconomy, int cantidadFilasBussiness, int cantidadAsientosPorFilaDeBussiness, int cantidadFilasFirst, int cantidadAsientosPorFilaDeFirst,int cantidadPersonalAbordo, String nombre) {
+        TipoDeAvion tipoDeAvion = new TipoDeAvion(cantidadFilasEconomy, cantidadAsientosPorFilaDeEconomy, cantidadFilasBussiness, cantidadAsientosPorFilaDeBussiness, cantidadFilasFirst, cantidadAsientosPorFilaDeFirst,cantidadPersonalAbordo, nombre);
         tiposDeAvion.add(tipoDeAvion);
     }
 
@@ -131,7 +134,7 @@ public class ServerMock implements ServerInterface{
     }
 
     public void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes, String plane, int flightCode) {
-        Vuelo vuelo = new Vuelo(getAeropuerto(aeropuertoDeSalida), getAeropuerto(aeropuertoDeLlegada), dia, mes, ano, hours, minutes, getAvion(plane), flightCode);
+        Vuelo vuelo = new Vuelo(getAeropuerto(aeropuertoDeSalida), getAeropuerto(aeropuertoDeLlegada), dia, mes, ano, hours, minutes, getAvion(plane),flightCode);
     }
 
     @Override
@@ -168,7 +171,6 @@ public class ServerMock implements ServerInterface{
         }
         throw new RuntimeException("No existe el cliente");
     }
-
     public void validarCliente(int numeroCliente){
         for (Cliente c: clientes
              ) {
@@ -197,7 +199,34 @@ public class ServerMock implements ServerInterface{
         throw new RuntimeException("No existe ese aeropuerto");
     }
 
+    @Override
+    public void validarSesionEmpleadoAbordo(int currentSesion) {
+        for (PersonalAbordo personalAbordo:listaPersonalAbordo) {
+            if(personalAbordo.getNumeroDeEmpleado() == currentSesion){
+                return;
+            }
+        }
+        throw new RuntimeException("No existe ese numero para personal de abordo");
+    }
+
+    @Override
+    public PersonalAbordo getPersonalAbordo(int numeroDeEmpleado) {
+        for (PersonalAbordo personalAbordo:listaPersonalAbordo) {
+            if(personalAbordo.getNumeroDeEmpleado() == numeroDeEmpleado){
+                return personalAbordo;
+            }
+        }
+        throw new RuntimeException("No existe ese numero para personal de abordo");
+    }
+
+    @Override
+    public void addPersonalAbordo(int dni, String nombre, String cargo, int numeroDeEmpleado) {
+        PersonalAbordo personalAbordo = new PersonalAbordo(dni,nombre,cargo,numeroDeEmpleado);
+        listaPersonalAbordo.add(personalAbordo);
+    }
+
     public List<Reserva> getReservas(int numeroDeCliente) {
         return getCliente(numeroDeCliente).getReservas();
     }
+
 }
