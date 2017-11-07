@@ -11,6 +11,11 @@ public class Vuelo {
     private int codigoDeVuelo;
     private Map<Asiento, Boolean> ocupacion = new HashMap<>();
     private LocalDateTime horarioSalida;
+    List<PersonalAbordo> listaPersonalAbordo = new ArrayList<>();
+
+    public List<PersonalAbordo> getListaPersonalAbordo() {
+        return listaPersonalAbordo;
+    }
 
     public Vuelo(Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, int dia, int mes, int ano, int hora, int minutos, Avion avion, int codigoDeVuelo) {
         this.fechaSalida = LocalDate.of(ano,mes,dia);
@@ -22,8 +27,6 @@ public class Vuelo {
         for (Asiento a : avion.getAsientos()) {
             ocupacion.put(a, false);
         }
-
-
     }
 
     public String getUbicacionSalida() {
@@ -87,5 +90,9 @@ public class Vuelo {
 
     public boolean getOcupacion(Asiento asiento) {
         return ocupacion.get(asiento);
+    }
+
+    public void addPersonalAbordo(PersonalAbordo personalAbordo){
+        listaPersonalAbordo.add(personalAbordo);
     }
 }
