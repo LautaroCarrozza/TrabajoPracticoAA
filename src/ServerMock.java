@@ -1,16 +1,39 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServerMock implements ServerInterface{
 
-    private List<Cliente> clientes = new ArrayList<>();
-    private List<Empleado> empleados = new ArrayList<>();
-    private List<Vuelo> vuelos = new ArrayList<>();
-    private List<Reserva> reservas = new ArrayList<>();
-    private List<Pasaje> pasajes = new ArrayList<>();
-    private List<TipoDeAvion> tiposDeAvion = new ArrayList<>();
-    private List<Avion> aviones = new ArrayList<>();
-    private List<Aeropuerto> aeropuertos= new ArrayList<>();
+     List<Cliente> clientes = new ArrayList<>();
+     List<Empleado> empleados = new ArrayList<>();
+     List<Vuelo> vuelos = new ArrayList<>();
+     List<Reserva> reservas = new ArrayList<>();
+     List<Pasaje> pasajes = new ArrayList<>();
+     List<TipoDeAvion> tiposDeAvion = new ArrayList<>();
+     List<Avion> aviones = new ArrayList<>();
+     List<Aeropuerto> aeropuertos= new ArrayList<>();
+     Object[] lists = {clientes,empleados, vuelos, reservas, pasajes, tiposDeAvion, aviones, aeropuertos};
+
+    Saver clientesSaver ;
+    Saver empleadosSaver ;
+    Saver vuelosSaver ;
+    Saver reservasSaver ;
+    Saver pasajesSaver ;
+    Saver tiposDeAvionSaver;
+    Saver avionesSaver ;
+    Saver aeropuertosSaver ;
+
+
+    public ServerMock() {
+
+        aeropuertosSaver = new Saver("Aeropuertos");
+        aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
+
+
+
+
+
+    }
 
     public void setUpTest(){
 
@@ -127,6 +150,7 @@ public class ServerMock implements ServerInterface{
 
     public void addAeropuerto(String codigoDeAeropuerto, String ubicacion, String nombre) {
         Aeropuerto aeropuerto = new Aeropuerto(codigoDeAeropuerto, ubicacion, nombre);
+        aeropuertosSaver.save(aeropuerto);
         aeropuertos.add(aeropuerto);
     }
 
