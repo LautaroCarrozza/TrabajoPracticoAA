@@ -6,10 +6,8 @@ public class Saver <T extends Saveable> {
 
     private BufferedWriter bufferedWriter;
     private FileWriter fileWriter;
-
     private FileReader fileReader;
     private BufferedReader bufferedReader;
-
     private String fileName;
 
     public Saver (String fileName)  {

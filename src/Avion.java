@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Avion implements  Saveable{
+public class Avion implements Saveable{
     private String codigo;
     private TipoDeAvion tipoDeAvion;
     private List<Asiento> asientos = new ArrayList<>();
