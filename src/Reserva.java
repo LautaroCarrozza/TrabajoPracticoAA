@@ -20,14 +20,13 @@ public class Reserva{
 
     @Override
     public String toString() {
-        String result = "\n" + "Codigo de vuelo: " + vuelo.getCodigoDeVuelo() + "\n" +  "  Fecha: " + vuelo.getFechaSalida() + "\n" + "  Desde: "
-                + vuelo.getUbicacionSalida() + "\n" + "  Hasta: " + vuelo.getUbicacionLlegada() + "\n" + "  Cantidad de personas: " + cantidadDePersonas + "\n  Asientos: ";
-
-        for (Asiento asiento: asientos
-                ) {
-            result += "\n   "+ asiento;
+        String result = "Reserva para " + pasajes.get(0).getCliente().getNombre() +
+                "\n" + ", Desde: " + pasajes.get(0).getVuelo().getUbicacionSalida().toString()
+                + " Hasta: " + pasajes.get(0).getVuelo().getUbicacionLlegada().toString();
+        for (Pasaje pasaje: pasajes
+             ) {
+            result += pasaje.toString();
         }
-
         return result;
     }
 

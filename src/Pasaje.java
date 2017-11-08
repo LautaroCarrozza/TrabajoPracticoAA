@@ -3,6 +3,7 @@ import java.util.List;
 
 public class Pasaje implements Saveable {
     static ServerInterface server = new ServerMock();
+    private int codigo;
     private Vuelo vuelo;
     private Asiento asiento;
     private Cliente cliente;
@@ -11,6 +12,7 @@ public class Pasaje implements Saveable {
         this.vuelo = vuelo;
         this.asiento = asiento;
         this.cliente = cliente;
+        codigo = vuelo.hashCode()*7 + asiento.hashCode()*5 + cliente.hashCode()*11;
     }
 
     public Vuelo getVuelo() {
@@ -25,9 +27,18 @@ public class Pasaje implements Saveable {
         return cliente;
     }
 
+    public int getCodigo() {
+        return codigo;
+    }
+
     @Override
     public String getSavingFormat() {
         return vuelo.getCodigoDeVuelo() + "," + asiento.getCode() + "," + cliente.getNumeroDeCliente() + ".";
+    }
+
+    @Override
+    public String toString() {
+        return asiento.toString();
     }
 
     public static List<Pasaje> build(List<String> elementosStr) {
