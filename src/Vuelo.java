@@ -12,6 +12,7 @@ public class Vuelo implements Saveable{
     private LocalDateTime horarioSalida;
     private List<PersonalAbordo> listaPersonalAbordo = new ArrayList<>();
     private int mes;
+    ServerInterface server = new ServerMock();
 
     public Vuelo(Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, int dia, int mes, int ano, int hora, int minutos, Avion avion, int codigoDeVuelo) {
         this.fechaSalida = LocalDate.of(ano,mes,dia);
@@ -24,7 +25,9 @@ public class Vuelo implements Saveable{
         for (Asiento a : avion.getAsientos()) {
             ocupacion.put(a, false);
         }
-        //validarVueloPorCantidadDePersonas();
+    }
+    public Avion getAvion() {
+        return avion;
     }
 
     public String getUbicacionSalida() {
@@ -102,13 +105,6 @@ public class Vuelo implements Saveable{
 
     public List<PersonalAbordo> getListaPersonalAbordo() {
         return listaPersonalAbordo;
-    }
-
-    public void validarVueloPorCantidadDePersonas(){
-//        if(avion.getTipoDeAvion().getCantidadDePersonalAbordo() <= listaPersonalAbordo.size()){
-//            return;
-//        }
-//        throw new RuntimeException("Cantidad de personal abordo es mayor a la capacidad del tipo de avion");
     }
 
     @Override
@@ -196,8 +192,5 @@ public class Vuelo implements Saveable{
         }
 
         return elementos;
-
-
-
     }
 }

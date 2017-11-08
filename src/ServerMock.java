@@ -303,4 +303,10 @@ public class ServerMock implements ServerInterface{
         clientes = Cliente.build(clientesSaver.get());
         return getCliente(numeroDeCliente).getReservas();
     }
+    public void validarVueloPorCantidadDePersonas(Vuelo vuelo){
+        if(vuelo.getAvion().getTipoDeAvion().getCantidadDePersonalAbordo() <= vuelo.getListaPersonalAbordo().size()){
+            return;
+        }
+        throw new RuntimeException("Cantidad de personal abordo es mayor a la capacidad del tipo de avion");
+    }
 }

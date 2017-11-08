@@ -4,7 +4,7 @@ import java.util.List;
 public class PersonalAbordo extends Persona implements Saveable{
     private String cargo;
     private List<Vuelo> vuelos = new ArrayList<>();
-    int numeroDeEmpleado;
+    private int numeroDeEmpleado;
 
     public String getCargo() {
         return cargo;
