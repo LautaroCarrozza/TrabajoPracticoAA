@@ -29,7 +29,6 @@ public class Cliente extends Persona implements Saveable{
         for (String elemento :elementosStr ) {
             int corte1 = 0;
             int corte2 = 0;
-            int corte3 = 0;
 
             for (int i = 0; i < elemento.length(); i++) {
                 if (elemento.charAt(i) == ','){
@@ -43,15 +42,9 @@ public class Cliente extends Persona implements Saveable{
                     break;
                 }
             }
-            for (int i = corte2 +1 ; i < elemento.length(); i++) {
-                if (elemento.charAt(i) == ','){
-                    corte3 = i;
-                    break;
-                }
-            }
 
-           /// Cliente cliente = new Cliente(elemento.substring(0, corte1),   elemento.substring(corte1 + 1, corte2),   elemento.substring(corte2+1, corte3), elemento.substring(corte3+1, elemento.length()-1));
-           /// elementos.add(cliente);
+           Cliente cliente = new Cliente(Integer.parseInt(elemento.substring(0, corte1)),   elemento.substring(corte1 + 1, corte2),  Integer.parseInt(elemento.substring(corte2+1, elemento.length()-1)));
+           elementos.add(cliente);
 
         }
         return elementos;
@@ -59,7 +52,7 @@ public class Cliente extends Persona implements Saveable{
 
     @Override
     public String getSavingFormat() {
-        return super.dni + "," + super.nombre + "," + numeroDeCliente + ",";
+        return super.dni + "," + super.nombre + "," + numeroDeCliente + ".";
     }
 
 }
