@@ -27,9 +27,10 @@ public class Saver <T extends Saveable> {
         try {
             fileWriter = new FileWriter(fileName, true);
             bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(element.getSavingFormat());
-            bufferedWriter.newLine();
-
+           if (!get().contains(element)) {
+               bufferedWriter.write(element.getSavingFormat());
+               bufferedWriter.newLine();
+           }
             bufferedWriter.close();
         }
         catch (IOException e){
@@ -53,5 +54,24 @@ public class Saver <T extends Saveable> {
         }
         return result;
     }
+
+    public void remove(T element){
+        if (get().contains(element)) {
+            List<String> previous = get();
+            previous.remove(element);
+
+            for (String line : previous) {
+                try {
+                    fileWriter = new FileWriter(fileName, true);
+                    bufferedWriter = new BufferedWriter(fileWriter);
+                    bufferedWriter.write(element.getSavingFormat());
+                    bufferedWriter.newLine();
+
+                    bufferedWriter.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+        }
 
 }
