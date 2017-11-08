@@ -26,6 +26,9 @@ public interface ServerInterface {
     PersonalAbordo getPersonalAbordo(int numeroDeEmpleado);
     void addPersonalAbordo(int dni, String nombre, String cargo, int numeroDeEmpleado);
     void restar();
+    Aeropuerto getAeropuerto(String aeropuerto);
+
+    Avion getAvion(String field8);
 }
 
 

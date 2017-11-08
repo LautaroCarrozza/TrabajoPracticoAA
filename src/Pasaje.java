@@ -24,4 +24,6 @@ public class Pasaje {
     public String getCategoria() {
         return asiento.getCategoria();
     }
+
+
 }

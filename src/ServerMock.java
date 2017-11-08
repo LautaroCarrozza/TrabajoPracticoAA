@@ -35,7 +35,12 @@ public class ServerMock implements ServerInterface{
         clientes = Cliente.build(clientesSaver.get());
         savers.add(clientesSaver);
 
+        vuelosSaver = new Saver("Vuelos");
+        vuelos = Vuelo.build(vuelosSaver.get());
+        savers.add(vuelosSaver);
+
     }
+
 
     public void setUpTest(){
 
@@ -151,6 +156,7 @@ public class ServerMock implements ServerInterface{
 
     public void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes, String plane, int flightCode) {
         Vuelo vuelo = new Vuelo(getAeropuerto(aeropuertoDeSalida), getAeropuerto(aeropuertoDeLlegada), dia, mes, ano, hours, minutes, getAvion(plane), flightCode);
+        vuelosSaver.save(vuelo);
         vuelos.add(vuelo);
     }
 
@@ -163,7 +169,7 @@ public class ServerMock implements ServerInterface{
         throw  new RuntimeException("No existe el empleado");
     }
 
-    private Aeropuerto getAeropuerto(String aeropuerto) {
+    public Aeropuerto getAeropuerto(String aeropuerto) {
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
         for (Aeropuerto a:aeropuertos
              ) {
@@ -172,10 +178,9 @@ public class ServerMock implements ServerInterface{
         throw  new RuntimeException("El aeropuerto no existe");
     }
 
-    private Avion getAvion(String plane) {
-        for (Avion a:aviones
-             ) {
-            if (a.getCodigo().equals(plane)){
+    public Avion getAvion(String codigoAvion) {
+        for (Avion a:aviones) {
+            if (a.getCodigo().equals(codigoAvion)){
                 return a;
             }
         }
