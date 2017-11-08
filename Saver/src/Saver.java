@@ -28,7 +28,7 @@ public class Saver <T extends Saveable> {
             bufferedWriter.close();
         }
         catch (IOException e){
-            System.out.println(e.getMessage());
+
         }
     }
 
@@ -57,7 +57,7 @@ public class Saver <T extends Saveable> {
             bufferedWriter = new BufferedWriter(fileWriter);
         }
         catch (IOException e){
-            System.out.println(e.getMessage());
+
         }
     }
 }

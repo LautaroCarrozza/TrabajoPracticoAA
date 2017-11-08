@@ -9,6 +9,9 @@ public class ServerMockTest {
         ServerMock server = new ServerMock();
         server.addAeropuerto("AEP", "Buenos Aires", "Aeroparque");
         System.out.println(server.aeropuertos);
+        server.addCliente(123, "lauti", 3);
+        System.out.println(server.clientes);
+
     }
 
 }
