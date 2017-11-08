@@ -82,11 +82,15 @@ public class ClientApp {
 
         List<Reserva> reservas = server.getReservas(currentCliente);
 
-        for (Reserva r :reservas) {
-            System.out.println(r);
+        if (reservas.size()!= 0) {
+            for (Reserva r : reservas) {
+                System.out.println(r);
+            }
         }
-
-        mostrarMenu();
+        else {
+            System.out.println("Aun no tiene ninguna reserva");
+            mostrarMenu();
+        }
     }
 
     private static void registroDeCliente(){
@@ -99,11 +103,11 @@ public class ClientApp {
     }
 
     public static void iniciarSesion() {
-        System.out.println("Bienvenido a AustralisAirlines: \n Ingrese su numero de Cliente: ");
+        System.out.println("\nBienvenido a AustralisAirlines");
         System.out.println();
 
         try {
-            currentCliente = Scanner.getInt("Numero de cliente: ");
+            currentCliente = Scanner.getInt("Ingrese su numero de cliente: ");
             server.validarSesionCliente(currentCliente);
         } catch (RuntimeException e) {
             borrarPantalla();
