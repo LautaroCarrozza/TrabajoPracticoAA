@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.List;
 
 public class EmployeeApp {
@@ -195,13 +196,13 @@ public class EmployeeApp {
             String plane = Scanner.getString("Ingrese el codigo del avion a utilizar: ");
             int flightCode = Scanner.getInt("Ingrese el codigo del vuelo: ");
             int cantidadDeSemanas = Scanner.getInt("Durante cuantas semanas va a repetirse el vuelo?");
+            LocalDate localDate = LocalDate.of(ano, mes, dia);
+            server.validarDisponibilidadTripulacion(localDate, server.getAvion(plane).getCantidadDePersonal());
             server.addVuelo(aeropuertoDeSalida, aeropuertoDeLlegada, dia, mes, ano, hours, minutes, plane, flightCode, cantidadDeSemanas);
             server.getVuelo(flightCode).addTripulacion();
-            server.validarVueloPorCantidadDePersonal(server.getVuelo(flightCode));
         }
         catch (RuntimeException e){
             System.out.println(e.getMessage());
-
             mostrarMenu();
         }
 

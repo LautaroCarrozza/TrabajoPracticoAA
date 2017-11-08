@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ServerInterface {
@@ -31,7 +32,8 @@ public interface ServerInterface {
     void validarVueloPorCantidadDePersonal(Vuelo vuelo);
     List<PersonalAbordo> getPersonalAbordoLista();
 
-    }
+    void validarDisponibilidadTripulacion(LocalDate localDate, int cantidadDePersonal);
+}
 
 
 

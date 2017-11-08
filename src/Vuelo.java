@@ -112,7 +112,7 @@ public class Vuelo implements Saveable{
 
     private void addPiloto(){
         for (PersonalAbordo piloto:server.getPersonalAbordoLista()) {
-            if (piloto.getCargo().equals("Piloto") && piloto.available(this)) {
+            if (piloto.getCargo().equals("Piloto") && piloto.available(fechaSalida)) {
                listaPersonalAbordo.add(piloto);
             }
         }
@@ -127,7 +127,7 @@ public class Vuelo implements Saveable{
     }
     private void addPersonalAbordo() {
         for (PersonalAbordo personal:server.getPersonalAbordoLista()) {
-            if (!personal.getCargo().equals("Piloto") && personal.available(this)){listaPersonalAbordo.add(personal);}
+            if (!personal.getCargo().equals("Piloto") && personal.available(fechaSalida)){listaPersonalAbordo.add(personal);}
         }
         throw new RuntimeException("No existe personal de abordo disponible para el vuelo");
     }

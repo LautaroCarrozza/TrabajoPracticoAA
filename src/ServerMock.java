@@ -326,4 +326,29 @@ public class ServerMock implements ServerInterface{
         }
         throw new RuntimeException("Cantidad de personal abordo es mayor a la capacidad del tipo de avion");
     }
+
+    public void validarDisponibilidadTripulacion(LocalDate fechaDeSalida, int cantidadDePersonal){
+      validarDisponibilidadPiloto(fechaDeSalida);
+        for (int i = 0; i < cantidadDePersonal -1; i++) {
+            validadDisponibilidadPersonalDeAbordo(fechaDeSalida);
+        }
+    }
+
+    private void validadDisponibilidadPersonalDeAbordo(LocalDate fechaDeSalida) {
+        for (PersonalAbordo personal:getPersonalAbordoLista()) {
+            if (!personal.getCargo().equals("Piloto") && personal.available(fechaDeSalida)){return;}
+        }
+        throw new RuntimeException("No existe personal de abordo disponible para el vuelo");
+    }
+
+    private void validarDisponibilidadPiloto(LocalDate fechaDeSalida) {
+        for (PersonalAbordo piloto:getPersonalAbordoLista()) {
+            if (piloto.getCargo().equals("Piloto") && piloto.available(fechaDeSalida)) {
+                return;
+            }
+        }
+        throw new RuntimeException("No hay suficientes tripulantes disponibles");
+    }
+
+
 }
