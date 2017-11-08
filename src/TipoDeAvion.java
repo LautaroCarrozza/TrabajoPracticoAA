@@ -28,7 +28,6 @@ public class TipoDeAvion implements Saveable{
         this.nombre = nombre;
     }
 
-
     public int getCantidadFilasBussiness() {
         return cantidadFilasBussiness;
     }
@@ -44,7 +43,6 @@ public class TipoDeAvion implements Saveable{
     public int getCantidadDeAsientosPorFilaFirst() {
         return cantidadDeAsientosPorFilaFirst;
     }
-
 
     public int getCantidadAsientosPorFilaEconomy() {
         return cantidadAsientosPorFilaEconomy;

@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Avion implements  Saveable{
+public class Avion {
     private String codigo;
     private TipoDeAvion tipoDeAvion;
     private List<Asiento> asientos = new ArrayList<>();
@@ -42,31 +42,8 @@ public class Avion implements  Saveable{
     public List<Asiento> getAsientos() {
         return asientos;
     }
+
     public String getCodigo() {
         return codigo;
-    }
-
-    @Override
-    public String getSavingFormat() {
-        return codigo + "," + tipoDeAvion.getNombre() + ".";
-    }
-
-    public static List<Avion> build(List<String> elementosStr){
-         ServerMock server = new ServerMock();
-
-        List<Avion> elementos = new ArrayList<>();
-        for (String elemento :elementosStr ) {
-            int corte1 = 0;
-
-            for (int i = 0; i < elemento.length(); i++) {
-                if (elemento.charAt(i) == ',') {
-                    corte1 = i;
-                    break;
-                }
-            }
-            Avion avion = new Avion(elemento.substring(0, corte1), server.getTipoDeAvion(elemento.substring(corte1 +1, elemento.length() -1)));
-            elementos.add(avion);
-        }
-        return elementos;
     }
 }
