@@ -250,9 +250,10 @@ public class EmployeeApp {
             int cantidadAsientosPorFilaDeBussiness = Scanner.getInt("Ingrese la cantidad de asientos por fila para la categoria Bussiness: ");
             int cantidadFilasFirst = Scanner.getInt("Ingrese la cantidad de filas para la categoria First: ");
             int cantidadAsientosPorFilaDeFirst = Scanner.getInt("Ingrese la cantidad de asientos por fila para la categoria First: ");
+            int cantidadDePersonalAbordo = Scanner.getInt("Ingrese la cantidad de personal de abordo para el tipo de avion: ");
             String nombre = Scanner.getString("Ingrese el nombre para el tipo de avion ingresado: ");
 
-            server.addTipoDeAvion(cantidadFilasEconomy, cantidadAsientosPorFilaDeEconomy, cantidadFilasBussiness, cantidadAsientosPorFilaDeBussiness, cantidadFilasFirst, cantidadAsientosPorFilaDeFirst,0, nombre);
+            server.addTipoDeAvion(cantidadFilasEconomy, cantidadAsientosPorFilaDeEconomy, cantidadFilasBussiness, cantidadAsientosPorFilaDeBussiness, cantidadFilasFirst, cantidadAsientosPorFilaDeFirst,cantidadDePersonalAbordo, nombre);
         }
         catch (RuntimeException e){
             System.out.println(e.getMessage());
