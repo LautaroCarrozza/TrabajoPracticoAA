@@ -107,6 +107,7 @@ public class ServerMock implements ServerInterface{
             }
         }
         getCliente(codigoCliente).guardarReserva(pasajesReservados, vuelo);
+        System.out.println("La reserva se a guardado correctamente");
     }
 
     public void validarSesionEmpleado(int currentSesion) {
