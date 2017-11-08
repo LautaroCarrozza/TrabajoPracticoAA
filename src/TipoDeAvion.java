@@ -11,17 +11,19 @@ public class TipoDeAvion {
     private int cantidadDeAsientosPorFilaFirst;
     private ArrayList<ArrayList<Asiento>> asientos = new ArrayList<ArrayList<Asiento>>();
     private String nombre;
+    private int cantidadDePersonalAbordo;
 
-
-    public TipoDeAvion(int cantidadFilasEconomy, int cantidadAsientosPorFilaEconomy, int cantidadFilasBussiness, int cantidadAsientosPorFilaBussiness, int cantidadFilasFirst, int cantidadDeAsientosPorFilaFirst, String nombre) {
+    public TipoDeAvion(int cantidadFilasEconomy, int cantidadAsientosPorFilaEconomy, int cantidadFilasBussiness, int cantidadAsientosPorFilaBussiness, int cantidadFilasFirst, int cantidadDeAsientosPorFilaFirst, int cantidadDePersonalAbordo, String nombre) {
         this.cantidadFilasEconomy = cantidadFilasEconomy;
         this.cantidadAsientosPorFilaEconomy = cantidadAsientosPorFilaEconomy;
         this.cantidadFilasBussiness = cantidadFilasBussiness;
         this.cantidadAsientosPorFilaBussiness = cantidadAsientosPorFilaBussiness;
         this.cantidadFilasFirst = cantidadFilasFirst;
         this.cantidadDeAsientosPorFilaFirst = cantidadDeAsientosPorFilaFirst;
+        this.cantidadDePersonalAbordo = cantidadDePersonalAbordo;
         this.nombre = nombre;
     }
+
 
     public int getCantidadFilasBussiness() {
         return cantidadFilasBussiness;

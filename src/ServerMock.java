@@ -26,8 +26,6 @@ public class ServerMock implements ServerInterface{
         Aeropuerto aeropuertoA = new Aeropuerto("aaa", "aaa", "aaa");
         Aeropuerto aeropuertoB = new Aeropuerto("bbb", "bbb", "bbb");
         Aeropuerto aeropuertoC = new Aeropuerto("ccc", "ccc", "ccc");
-        addAeropuerto("aaa", "aaa", "aaa");
-        addAeropuerto("bbb", "bbb", "bbb");
 
         TipoDeAvion tipoDeAvionA = new TipoDeAvion(10, 2, 5, 2, 2, 2, "Australis-Airlines 01");
         TipoDeAvion tipoDeAvionB = new TipoDeAvion(10, 2, 5, 2, 2, 2, "Australis-Airlines 02");
@@ -71,7 +69,7 @@ public class ServerMock implements ServerInterface{
         return posiblesVuelos;
     }
 
-    public void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersnas) {
+    public void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersnas, String categoria) {
         Vuelo vuelo = getVuelo(codigoVuelo);
 
             if (!vuelo.getOcupacion(asiento)){
@@ -98,7 +96,6 @@ public class ServerMock implements ServerInterface{
                 pasajesReservados.add(pasaje);
             }
         }
-        System.out.println("La reserva se realizo correctamente.");
         getCliente(codigoCliente).guardarReserva(pasajesReservados, vuelo);
     }
 
