@@ -175,7 +175,7 @@ public class EmployeeApp {
 
     private static void venderACliente() {
         try{
-            currentClient = Scanner.getInt("Ingresar el numero del cliente");
+            currentClient = Scanner.getInt("Ingresar el numero del cliente: ");
             server.validarCliente(currentClient);
         }
         catch(RuntimeException e){

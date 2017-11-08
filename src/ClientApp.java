@@ -18,7 +18,7 @@ public class ClientApp {
 
     private static void menuDeInicio() {
         System.out.println("1- Iniciar sesion: ");
-        System.out.println("2- Mati es gay? Registrese ya!");
+        System.out.println("2- Registrarse");
 
         int opcion = Scanner.getInt("Seleccione una opcion: ");
         try {
@@ -43,7 +43,7 @@ public class ClientApp {
         System.out.println("1- Ver reservas");
         System.out.println("2- Cerrar sesion");
         System.out.println("3- Buscar Vuelo");
-        System.out.println("- - - - - - - - - - - - - - - - - -");
+        System.out.println("- - - - - - - - - - - - - - - - - - -");
         System.out.println("9- Exit");
         System.out.println();
 
@@ -91,7 +91,12 @@ public class ClientApp {
     }
 
     private static void registroDeCliente(){
-
+        int dni = Scanner.getInt("Ingresar DNI: ");
+        String nombre = Scanner.getString("Ingrese su nombre: ");
+        int codigo = Scanner.getInt("Ingrese su numero de cliente: ");
+        server.addCliente(dni, nombre, codigo);
+        borrarPantalla();
+        menuDeInicio();
     }
 
     public static void iniciarSesion() {
