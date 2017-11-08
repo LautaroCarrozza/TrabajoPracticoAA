@@ -1,4 +1,7 @@
-public class Empleado extends Persona {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Empleado extends Persona implements Saveable {
     private AreaAdministrativa area;
 
     private int codigoEmpleado;
@@ -20,5 +23,46 @@ public class Empleado extends Persona {
 
     public boolean isHabilitadoParaVender() {
         return habilitadoParaVender;
+    }
+
+    @Override
+    public String getSavingFormat() {
+        return dni + "," + nombre + "," + codigoEmpleado + "," + habilitadoParaVender + ".";
+    }
+    public List<Empleado> build(List<String> elementosStr){
+        List<Empleado> elementos = new ArrayList<>();
+        for (String elemento :elementosStr ) {
+            int corte1 = 0;
+            int corte2 = 0;
+            int corte3 = 0;
+
+            for (int i = 0; i < elemento.length(); i++) {
+                if (elemento.charAt(i) == ','){
+                    corte1 = i;
+                    break;
+                }
+            }
+            for (int i = corte1 +1 ; i < elemento.length(); i++) {
+                if (elemento.charAt(i) == ','){
+                    corte2 = i;
+                    break;
+                }
+            }
+            for (int i = corte2 +1 ; i < elemento.length(); i++) {
+                if (elemento.charAt(i) == ','){
+                    corte3 = i;
+                    break;
+                }
+            }
+
+            String field1 = elemento.substring(0, corte1);
+            String field2 = elemento.substring(corte1 + 1 , corte2);
+            String field3 = elemento.substring(corte2+1, corte3);
+            String field4 = elemento.substring(corte3+1, elemento.length()-1);
+
+            Empleado empleado= new Empleado(Integer.parseInt(field1),field2,Integer.parseInt(field3),Boolean.parseBoolean(field4));
+            elementos.add(empleado);
+        }
+        return elementos;
     }
 }
