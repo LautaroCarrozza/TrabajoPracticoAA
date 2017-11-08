@@ -314,7 +314,13 @@ public class ServerMock implements ServerInterface{
         clientes = Cliente.build(clientesSaver.get());
         return getCliente(numeroDeCliente).getReservas();
     }
-    public void validarVueloPorCantidadDePersonas(Vuelo vuelo){
+
+    public List<PersonalAbordo> getPersonalAbordoLista() {
+        personalAbordoLista = PersonalAbordo.build(personalDeAbordoSaver.get());
+        return personalAbordoLista;
+    }
+
+    public void validarVueloPorCantidadDePersonal(Vuelo vuelo){
         if(vuelo.getAvion().getTipoDeAvion().getCantidadDePersonalAbordo() <= vuelo.getListaPersonalAbordo().size()){
             return;
         }

@@ -110,8 +110,24 @@ public class Vuelo implements Saveable{
         return ocupacion.get(asiento);
     }
 
-    public void addPersonalAbordo(PersonalAbordo personalAbordo){
-        listaPersonalAbordo.add(personalAbordo);
+    public void addPersonalAbordo(){
+        for (PersonalAbordo p:server.getPersonalAbordoLista()) {
+            if(p.getCargo().equals("Piloto")) {
+                for (Vuelo v : p.getVuelos()) {
+                        if (!v.getFechaSalida().equals(this.fechaSalida)) {
+                            listaPersonalAbordo.add(p);
+                        }
+                    for (int i = 0; i < this.avion.getTipoDeAvion().getCantidadDePersonalAbordo() - 1; i++) {
+                        if (!v.getFechaSalida().equals(this.fechaSalida)) {
+                            listaPersonalAbordo.add(p);
+                        }
+                        listaPersonalAbordo.remove(p);
+                        throw new RuntimeException("No hay una cantidad de personal disponible para esa fecha");
+                    }
+                }
+            }
+            throw new RuntimeException("No hay pilotos para agregar al vuelo");
+        }
     }
 
     public List<PersonalAbordo> getListaPersonalAbordo() {

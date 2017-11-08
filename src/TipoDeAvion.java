@@ -12,6 +12,7 @@ public class TipoDeAvion implements Saveable{
     private ArrayList<ArrayList<Asiento>> asientos = new ArrayList<ArrayList<Asiento>>();
     private String nombre;
     private int cantidadDePersonalAbordo;
+    ServerInterface server = new ServerMock();
 
     public int getCantidadDePersonalAbordo() {
         return cantidadDePersonalAbordo;

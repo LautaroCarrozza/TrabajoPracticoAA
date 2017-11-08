@@ -28,7 +28,8 @@ public interface ServerInterface {
     void restar();
     Aeropuerto getAeropuerto(String aeropuerto);
     Avion getAvion(String avion);
-    void validarVueloPorCantidadDePersonas(Vuelo vuelo);
+    void validarVueloPorCantidadDePersonal(Vuelo vuelo);
+    List<PersonalAbordo> getPersonalAbordoLista();
 
     }
 

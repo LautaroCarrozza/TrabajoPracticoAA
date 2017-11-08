@@ -196,6 +196,8 @@ public class EmployeeApp {
             int flightCode = Scanner.getInt("Ingrese el codigo del vuelo: ");
             int cantidadDeSemanas = Scanner.getInt("Durante cuantas semanas va a repetirse el vuelo?");
             server.addVuelo(aeropuertoDeSalida, aeropuertoDeLlegada, dia, mes, ano, hours, minutes, plane, flightCode, cantidadDeSemanas);
+            server.validarVueloPorCantidadDePersonal(server.getVuelo(flightCode));
+            server.getVuelo(flightCode).addPersonalAbordo();
         }
         catch (RuntimeException e){
             System.out.println(e.getMessage());
