@@ -38,12 +38,12 @@ public class ServerMock implements ServerInterface{
 
     public void setUp(){
         addCliente(1, "a", 1);
-//        addPersonalAbordo(1, "a", "piloto", 1);
-//        addAeropuerto("aaa", "aaa", "aaa");
-//        addAeropuerto("bbb", "bbb", "bbb");
-//        addTipoDeAvion(2, 2, 2, 2, 2, 2, 1, "a");
-//        addAvion("1", "a");
-//        addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30, "1", 1);
+        addPersonalAbordo(1, "a", "piloto", 1);
+        addAeropuerto("aaa", "aaa", "aaa");
+        addAeropuerto("bbb", "bbb", "bbb");
+        addTipoDeAvion(2, 2, 2, 2, 2, 2, 1, "a");
+        addAvion("1", "a");
+        addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30, "1", 1);
         addEmpleado(1, "a", 1, true);
 
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
