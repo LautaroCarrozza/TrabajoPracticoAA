@@ -27,7 +27,6 @@ public class Saver <T extends Saveable> {
         try {
             fileWriter = new FileWriter(fileName, true);
             bufferedWriter = new BufferedWriter(fileWriter);
-
             bufferedWriter.write(element.getSavingFormat());
             bufferedWriter.newLine();
 
