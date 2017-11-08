@@ -110,25 +110,29 @@ public class Vuelo implements Saveable{
         return ocupacion.get(asiento);
     }
 
-    public void addPersonalAbordo(){
-        for (PersonalAbordo p:server.getPersonalAbordoLista()) {
-            if(p.getCargo().equals("Piloto")) {
-                for (Vuelo v : p.getVuelos()) {
-                        if (!v.getFechaSalida().equals(this.fechaSalida)) {
-                            listaPersonalAbordo.add(p);
-                        }
-                    for (int i = 0; i < this.avion.getTipoDeAvion().getCantidadDePersonalAbordo() - 1; i++) {
-                        if (!v.getFechaSalida().equals(this.fechaSalida)) {
-                            listaPersonalAbordo.add(p);
-                        }
-                        listaPersonalAbordo.remove(p);
-                        throw new RuntimeException("No hay una cantidad de personal disponible para esa fecha");
-                    }
-                }
+    private void addPiloto(){
+        for (PersonalAbordo piloto:server.getPersonalAbordoLista()) {
+            if (piloto.getCargo().equals("Piloto") && piloto.available(this)) {
+               listaPersonalAbordo.add(piloto);
             }
-            throw new RuntimeException("No hay pilotos para agregar al vuelo");
+        }
+        throw new RuntimeException("No existen pilotos disponibles");
+    }
+
+    public void addTripulacion(){
+       addPiloto();
+        for (int i = 0; i < getCantidadPersonal() -1 ; i++) {
+            addPersonalAbordo();
         }
     }
+    private void addPersonalAbordo() {
+        for (PersonalAbordo personal:server.getPersonalAbordoLista()) {
+            if (!personal.getCargo().equals("Piloto") && personal.available(this)){listaPersonalAbordo.add(personal);}
+        }
+        throw new RuntimeException("No existe personal de abordo disponible para el vuelo");
+    }
+
+    public int getCantidadPersonal(){return  avion.getTipoDeAvion().getCantidadDePersonalAbordo();}
 
     public List<PersonalAbordo> getListaPersonalAbordo() {
         return listaPersonalAbordo;

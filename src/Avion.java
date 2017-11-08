@@ -69,4 +69,8 @@ public class Avion implements Saveable{
         }
         return elementos;
     }
+
+    public int getCantidadDePersonal() {
+       return tipoDeAvion.getCantidadDePersonalAbordo();
+    }
 }

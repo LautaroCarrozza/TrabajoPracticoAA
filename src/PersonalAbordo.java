@@ -24,6 +24,13 @@ public class PersonalAbordo extends Persona implements Saveable{
         this.numeroDeEmpleado = numeroDeEmpleado;
     }
 
+    public boolean available(Vuelo newVuelo){
+        for (Vuelo vuelo:vuelos) {
+            if (vuelo.getFechaSalida().equals(newVuelo.getFechaSalida()))return false;
+        }
+        return true;
+    }
+
     @Override
     public String toString() {
         String result = "Nombre: " + getNombre() + "\n" + "Vuelos: ";
