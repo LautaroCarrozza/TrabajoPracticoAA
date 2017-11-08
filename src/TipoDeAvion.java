@@ -62,7 +62,7 @@ public class TipoDeAvion implements Saveable{
     public String getSavingFormat() {
         return cantidadFilasEconomy + "," + cantidadAsientosPorFilaEconomy + "," + cantidadFilasBussiness + "," + cantidadAsientosPorFilaBussiness + "," + cantidadFilasFirst + "," + cantidadDeAsientosPorFilaFirst + "," +cantidadDePersonalAbordo + "," + nombre;
     }
-    public List<TipoDeAvion> build(List<String> elementosStr){
+    public static List<TipoDeAvion> build(List<String> elementosStr){
         List<TipoDeAvion> elementos = new ArrayList<>();
         for (String elemento :elementosStr ) {
             int corte1 = 0;

@@ -12,7 +12,6 @@ public class Saver <T extends Saveable> {
 
     private String fileName;
 
-
     public Saver (String fileName)  {
         this.fileName = fileName;
     }

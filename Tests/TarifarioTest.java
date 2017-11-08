@@ -7,7 +7,7 @@ public class TarifarioTest {
     @Test
     public void test01AgregarTarifaPedirlaBorrarlaYPedirla(){
         ServerInterface server = new ServerMock();
-        server.setUpTest();
+        server.setUp();
         Tarifario tarifario = new Tarifario();
 
        tarifario.addTarifa("Economy", 101, 100);

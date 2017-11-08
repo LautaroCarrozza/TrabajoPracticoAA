@@ -4,7 +4,7 @@ public class PersonalAbordoApp {
 
     public static void main(String[] args) {
         server = new ServerMock();
-        server.setUpTest();
+        server.setUp();
         iniciarSesion();
     }
 

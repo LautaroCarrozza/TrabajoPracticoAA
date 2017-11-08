@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Vuelo implements Saveable{
 
-    private static ServerInterface server = new ServerMock();
+    static ServerMock server = new ServerMock();
     private Aeropuerto aeropuertoSalida;
     private Aeropuerto aeropuertoLlegada;
     private LocalDate fechaSalida;
@@ -13,9 +13,11 @@ public class Vuelo implements Saveable{
     private Map<Asiento, Boolean> ocupacion = new HashMap<>();
     private LocalDateTime horarioSalida;
     private List<PersonalAbordo> listaPersonalAbordo = new ArrayList<>();
+    private int mes;
 
     public Vuelo(Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, int dia, int mes, int ano, int hora, int minutos, Avion avion, int codigoDeVuelo) {
         this.fechaSalida = LocalDate.of(ano,mes,dia);
+        this.mes = mes;
         this.horarioSalida = fechaSalida.atTime(hora, minutos);
         this.aeropuertoSalida = aeropuertoSalida;
         this.aeropuertoLlegada = aeropuertoLlegada;
@@ -106,10 +108,12 @@ public class Vuelo implements Saveable{
     }
 
     @Override
-    public String getSavingFormat() {
-        return aeropuertoSalida.getCodigo() + "," + aeropuertoLlegada.getCodigo() + "," + fechaSalida.getDayOfMonth() + "," + fechaSalida.getMonth() + ","+fechaSalida.getYear() + "," + horarioSalida.getHour() + "," + horarioSalida.getMinute()+ "," + avion.getCodigo() + "," + codigoDeVuelo + ".";
+    public String getSavingFormat(){
+        return aeropuertoSalida.getCodigo() + "," + aeropuertoLlegada.getCodigo() + "," + fechaSalida.getDayOfMonth() + "," + mes + ","+fechaSalida.getYear() + "," + horarioSalida.getHour() + "," + horarioSalida.getMinute()+ "," + avion.getCodigo() + "," + codigoDeVuelo + ".";
     }
-    static List<Vuelo> build(List<String> elementosStr){
+
+     static List<Vuelo> build(List<String> elementosStr){
+
         List<Vuelo> elementos = new ArrayList<>();
         for (String elemento :elementosStr ) {
             int corte1 = 0;
@@ -181,10 +185,12 @@ public class Vuelo implements Saveable{
             String field8 = elemento.substring(corte7+1, corte8);
             String field9 = elemento.substring(corte8+1, elemento.length()-1);
 
+
             Vuelo vuelo = new Vuelo(server.getAeropuerto(field1), server.getAeropuerto(field2), Integer.parseInt(field3), Integer.parseInt(field4), Integer.parseInt(field5), Integer.parseInt(field6), Integer.parseInt(field7), server.getAvion(field8), Integer.parseInt(field9));
             elementos.add(vuelo);
 
         }
+
         return elementos;
 
 
