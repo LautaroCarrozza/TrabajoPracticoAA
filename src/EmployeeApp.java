@@ -91,7 +91,7 @@ public class EmployeeApp {
         }
 
         server.guardarReserva(currentClient, vueloDeseado);
-
+        mostrarMenu();
     }
 
     private static void seleccionarVuelo() {

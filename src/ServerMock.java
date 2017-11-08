@@ -208,7 +208,7 @@ public class ServerMock implements ServerInterface{
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
         for (Aeropuerto a: aeropuertos
              ) {
-            if (lugarDePartida==a.getCodigo()) {
+            if (a.getCodigo().equals(lugarDePartida)) {
                 return;
             }
         }
@@ -220,7 +220,7 @@ public class ServerMock implements ServerInterface{
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
         for (Aeropuerto a: aeropuertos
                 ) {
-            if (lugarDeLlegada==a.getCodigo()){
+            if (a.getCodigo().equals(lugarDeLlegada)){
                 return;
             }
         }

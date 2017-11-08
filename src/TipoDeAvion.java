@@ -13,6 +13,10 @@ public class TipoDeAvion {
     private String nombre;
     private int cantidadDePersonalAbordo;
 
+    public int getCantidadDePersonalAbordo() {
+        return cantidadDePersonalAbordo;
+    }
+
     public TipoDeAvion(int cantidadFilasEconomy, int cantidadAsientosPorFilaEconomy, int cantidadFilasBussiness, int cantidadAsientosPorFilaBussiness, int cantidadFilasFirst, int cantidadDeAsientosPorFilaFirst, int cantidadDePersonalAbordo, String nombre) {
         this.cantidadFilasEconomy = cantidadFilasEconomy;
         this.cantidadAsientosPorFilaEconomy = cantidadAsientosPorFilaEconomy;

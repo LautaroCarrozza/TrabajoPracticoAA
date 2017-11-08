@@ -13,10 +13,6 @@ public class Vuelo {
     private LocalDateTime horarioSalida;
     List<PersonalAbordo> listaPersonalAbordo = new ArrayList<>();
 
-    public List<PersonalAbordo> getListaPersonalAbordo() {
-        return listaPersonalAbordo;
-    }
-
     public Vuelo(Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, int dia, int mes, int ano, int hora, int minutos, Avion avion, int codigoDeVuelo) {
         this.fechaSalida = LocalDate.of(ano,mes,dia);
         this.horarioSalida = fechaSalida.atTime(hora, minutos);
@@ -27,6 +23,7 @@ public class Vuelo {
         for (Asiento a : avion.getAsientos()) {
             ocupacion.put(a, false);
         }
+        //validarVueloPorCantidadDePersonas();
     }
 
     public String getUbicacionSalida() {
@@ -94,5 +91,16 @@ public class Vuelo {
 
     public void addPersonalAbordo(PersonalAbordo personalAbordo){
         listaPersonalAbordo.add(personalAbordo);
+    }
+
+    public List<PersonalAbordo> getListaPersonalAbordo() {
+        return listaPersonalAbordo;
+    }
+
+    public void validarVueloPorCantidadDePersonas(){
+//        if(avion.getTipoDeAvion().getCantidadDePersonalAbordo() <= listaPersonalAbordo.size()){
+//            return;
+//        }
+//        throw new RuntimeException("Cantidad de personal abordo es mayor a la capacidad del tipo de avion");
     }
 }

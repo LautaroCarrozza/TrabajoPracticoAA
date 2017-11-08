@@ -6,6 +6,10 @@ public class Avion {
     private TipoDeAvion tipoDeAvion;
     private List<Asiento> asientos = new ArrayList<>();
 
+    public TipoDeAvion getTipoDeAvion() {
+        return tipoDeAvion;
+    }
+
     public Avion(String codigo, TipoDeAvion tipoDeAvion) {
         this.codigo = codigo;
         this.tipoDeAvion = tipoDeAvion;
