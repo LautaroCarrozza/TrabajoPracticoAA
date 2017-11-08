@@ -89,8 +89,9 @@ public class ClientApp {
         }
         else {
             System.out.println("Aun no tiene ninguna reserva");
-            mostrarMenu();
+
         }
+        mostrarMenu();
     }
 
     private static void registroDeCliente(){
