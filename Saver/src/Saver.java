@@ -14,6 +14,13 @@ public class Saver <T extends Saveable> {
 
     public Saver (String fileName)  {
         this.fileName = fileName;
+        try {
+            fileWriter = new FileWriter(fileName, true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.close();
+        }
+        catch (IOException e){
+        }
     }
 
     public void save(T element)  {
@@ -27,7 +34,6 @@ public class Saver <T extends Saveable> {
             bufferedWriter.close();
         }
         catch (IOException e){
-
         }
     }
 
@@ -45,18 +51,8 @@ public class Saver <T extends Saveable> {
 
         }
         catch (IOException e){
-            System.out.println(e.getMessage());
         }
         return result;
     }
 
-    public void restart() {
-        try {
-            fileWriter = new FileWriter(fileName);
-            bufferedWriter = new BufferedWriter(fileWriter);
-        }
-        catch (IOException e){
-
-        }
-    }
 }

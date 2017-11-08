@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Reserva {
+public class Reserva{
 
     private List<Pasaje> pasajes;
     private List<Asiento> asientos = new ArrayList<>();
@@ -30,4 +30,5 @@ public class Reserva {
 
         return result;
     }
+
 }

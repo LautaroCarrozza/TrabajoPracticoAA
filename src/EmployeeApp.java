@@ -7,7 +7,7 @@ public class EmployeeApp {
     public static void main(String[] args) {
 
        server = new ServerMock();
-        server.setUp();
+       server.setUp();
        iniciarSesion();
     }
     private static ServerInterface server;

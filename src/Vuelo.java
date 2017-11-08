@@ -3,8 +3,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class Vuelo implements Saveable{
-
-    static ServerMock server = new ServerMock();
     private Aeropuerto aeropuertoSalida;
     private Aeropuerto aeropuertoLlegada;
     private LocalDate fechaSalida;
@@ -88,6 +86,12 @@ public class Vuelo implements Saveable{
         throw new RuntimeException("El avion asignado al vuelo no cuenta con ese asiento");
     }
 
+    public Asiento getAsiento(String code){
+        for (Asiento asiento:avion.getAsientos()                ) {
+                if (asiento.getCode().equals(code)){return asiento;}
+        }
+        throw new RuntimeException("No existe el asiento") ;}
+
     public boolean getOcupacion(Asiento asiento) {
         return ocupacion.get(asiento);
     }
@@ -113,7 +117,7 @@ public class Vuelo implements Saveable{
     }
 
      static List<Vuelo> build(List<String> elementosStr){
-
+        ServerInterface server = new ServerMock();
         List<Vuelo> elementos = new ArrayList<>();
         for (String elemento :elementosStr ) {
             int corte1 = 0;

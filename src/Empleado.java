@@ -29,7 +29,7 @@ public class Empleado extends Persona implements Saveable {
     public String getSavingFormat() {
         return dni + "," + nombre + "," + codigoEmpleado + "," + habilitadoParaVender + ".";
     }
-    public List<Empleado> build(List<String> elementosStr){
+    public static List<Empleado> build(List<String> elementosStr){
         List<Empleado> elementos = new ArrayList<>();
         for (String elemento :elementosStr ) {
             int corte1 = 0;

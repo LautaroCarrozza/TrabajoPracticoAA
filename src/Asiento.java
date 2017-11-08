@@ -3,6 +3,7 @@ public class Asiento {
     private String categoria;
     private int fila;
     private char columna;
+    private String code = "" + fila + columna;
 
     public Asiento(String categoria, int fila, int columnaINT) {
         this.categoria = categoria;
@@ -28,5 +29,9 @@ public class Asiento {
 
     public String getCategoria() {
         return categoria;
+    }
+
+    public String getCode() {
+        return code;
     }
 }

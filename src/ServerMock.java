@@ -1,60 +1,88 @@
+import com.sun.org.apache.regexp.internal.RE;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServerMock implements ServerInterface{
 
-     private List<Cliente> clientes = new ArrayList<>();
-     private List<Empleado> empleados = new ArrayList<>();
-     private List<Vuelo> vuelos = new ArrayList<>();
-     private List<Reserva> reservas = new ArrayList<>();
-     private List<Pasaje> pasajes = new ArrayList<>();
-     private List<TipoDeAvion> tiposDeAvion = new ArrayList<>();
-     private List<Avion> aviones = new ArrayList<>();
-     private List<Aeropuerto> aeropuertos= new ArrayList<>();
-     private List<PersonalAbordo> personalAbordoLista = new ArrayList<>();
-     private List<Saver> savers = new ArrayList<>();
+    private List<Cliente> clientes = new ArrayList<>();
+    private List<Empleado> empleados = new ArrayList<>();
+    private List<Vuelo> vuelos = new ArrayList<>();
+    private List<Pasaje> pasajes = new ArrayList<>();
+    private List<TipoDeAvion> tiposDeAvion = new ArrayList<>();
+    private List<Avion> aviones = new ArrayList<>();
+    private List<Aeropuerto> aeropuertos= new ArrayList<>();
+    private List<PersonalAbordo> personalAbordoLista = new ArrayList<>();
+    private List<Saver> savers = new ArrayList<>();
 
     Saver clientesSaver ;
     Saver empleadosSaver ;
     Saver vuelosSaver ;
-    Saver reservasSaver ;
     Saver pasajesSaver ;
     Saver tiposDeAvionSaver;
     Saver avionesSaver ;
     Saver aeropuertosSaver ;
+    Saver personalDeAbordoSaver;
 
     public ServerMock() {
         aeropuertosSaver = new Saver("Aeropuertos");
         clientesSaver = new Saver("Clientes");
         vuelosSaver = new Saver("Vuelos");
         tiposDeAvionSaver = new Saver("TiposDeAvion");
+        avionesSaver = new Saver("Aviones");
+        pasajesSaver = new Saver("Pasajes");
+        empleadosSaver = new Saver("Empleados");
+        personalDeAbordoSaver = new Saver("PersonalDeAbordo");
     }
 
     public void setUp(){
 
-        addCliente(1, "a", 1);
-        addPersonalAbordo(1, "a", "piloto", 1);
-        addAeropuerto("aaa", "aaa", "aaa");
-        addAeropuerto("bbb", "bbb", "bbb");
-        addTipoDeAvion(2, 2, 2, 2, 2, 2, 1, "a");
-        addAvion("1", "a");
-        addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30, "a", 1);
+//        addCliente(1, "a", 1);
+//        addPersonalAbordo(1, "a", "piloto", 1);
+//        addAeropuerto("aaa", "aaa", "aaa");
+//        addAeropuerto("bbb", "bbb", "bbb");
+//        addTipoDeAvion(2, 2, 2, 2, 2, 2, 1, "a");
+//        addAvion("1", "a");
+//        addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30, "1", 1);
         addEmpleado(1, "a", 1, true);
 
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
         savers.add(aeropuertosSaver);
 
-
         clientes = Cliente.build(clientesSaver.get());
         savers.add(clientesSaver);
-
 
         vuelos = Vuelo.build(vuelosSaver.get());
         savers.add(vuelosSaver);
 
+        tiposDeAvion = TipoDeAvion.build(tiposDeAvionSaver.get());
+        savers.add(vuelosSaver);
+
+        aviones = Avion.build(avionesSaver.get());
+        savers.add(avionesSaver);
+
+        pasajes = Pasaje.build(pasajesSaver.get());
+        savers.add(pasajesSaver);
+        asignarReseras();
+
+        empleados = Empleado.build(empleadosSaver.get());
+        savers.add(empleadosSaver);
 
 
+    }
+
+    private void asignarReseras() {
+        for (Pasaje pasaje:pasajes) {
+            List<Pasaje> pasajes = new ArrayList<>();
+            pasajes.add(pasaje);
+            for (Pasaje pasaje2:pasajes                 ) {
+                if (pasaje2.getCliente().equals(pasaje.getCliente()) && pasaje2.getVuelo().equals(pasaje.getVuelo())){
+                    pasajes.add(pasaje2);
+                }
+            }
+            pasaje.getCliente().guardarReserva(pasajes, pasaje.getVuelo());
+        }
     }
 
     public void validarSesionCliente(int numero) {
@@ -71,6 +99,7 @@ public class ServerMock implements ServerInterface{
     public void addEmpleado(int dni, String nombre, int codigoEmpleado, boolean habilitadoParaVender){
         Empleado empleado = new Empleado(dni, nombre, codigoEmpleado,habilitadoParaVender);
         empleados.add(empleado);
+        empleadosSaver.save(empleado);
     }
 
     public void addCliente(int dni, String nombre, int numeroDeCliente) {
@@ -80,7 +109,7 @@ public class ServerMock implements ServerInterface{
     }
 
     public List<Vuelo> buscarVuelos(int dia, int mes, int ano, String lugarSalida, String lugarLlegada, int cantidadPersonas){
-
+        vuelos = Vuelo.build(vuelosSaver.get());
         List<Vuelo> posiblesVuelos = new ArrayList<>();
 
         for (Vuelo vuelo: vuelos) {
@@ -94,17 +123,24 @@ public class ServerMock implements ServerInterface{
     }
 
     public void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersnas) {
+        vuelos = Vuelo.build(vuelosSaver.get());
         Vuelo vuelo = getVuelo(codigoVuelo);
-
             if (!vuelo.getOcupacion(asiento)){
                 vuelo.ocupar(asiento);
                 Pasaje pasaje = new Pasaje(vuelo, asiento, getCliente(codigoCliente));
                 pasajes.add(pasaje);
+                pasajesSaver.save(pasaje);
             }
             else{throw new RuntimeException("El asiento esta ocupado");}
     }
 
+    public void comprarAsiento(int codigoVuelo, int codigoCliente, int fila, char columna, int cantidadDePersnas) {
+        Asiento asiento = getVuelo(codigoVuelo).getAsiento(fila, columna);
+        comprarAsiento(codigoVuelo, codigoCliente, asiento, cantidadDePersnas);
+    }
+
     public Vuelo getVuelo(int codigoDeVuelo) {
+        vuelos = Vuelo.build(vuelosSaver.get());
         for (Vuelo v:vuelos) {
             if (v.getCodigoDeVuelo()== (codigoDeVuelo)){
                 return v;
@@ -114,6 +150,7 @@ public class ServerMock implements ServerInterface{
     }
 
     public void guardarReserva(int codigoCliente, Vuelo vuelo) {
+        pasajes = Pasaje.build(pasajesSaver.get());
         List<Pasaje> pasajesReservados = new ArrayList<>();
         for (Pasaje pasaje:pasajes) {
             if (pasaje.getCliente().getNumeroDeCliente() == codigoCliente && pasaje.getVuelo().equals(vuelo)){
@@ -125,6 +162,7 @@ public class ServerMock implements ServerInterface{
     }
 
     public void validarSesionEmpleado(int currentSesion) {
+        empleados = Empleado.build(empleadosSaver.get());
         for (Empleado empleado: empleados ) {
             if (empleado.getCodigoEmpleado() == currentSesion)return;
         }
@@ -142,9 +180,11 @@ public class ServerMock implements ServerInterface{
     }
 
     public void addAvion(String codigo, String tipoDeAvionStr) {
+        tiposDeAvion = TipoDeAvion.build(tiposDeAvionSaver.get());
         TipoDeAvion tipoDeAvion = getTipoDeAvion(tipoDeAvionStr);
         Avion avion = new Avion(codigo, tipoDeAvion);
         aviones.add(avion);
+        avionesSaver.save(avion);
     }
 
     public void addTipoDeAvion(int cantidadFilasEconomy, int cantidadAsientosPorFilaDeEconomy, int cantidadFilasBussiness, int cantidadAsientosPorFilaDeBussiness, int cantidadFilasFirst, int cantidadAsientosPorFilaDeFirst, int cantidadPersonalAbordo, String nombre) {
@@ -160,6 +200,8 @@ public class ServerMock implements ServerInterface{
     }
 
     public void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes, String plane, int flightCode) {
+        aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
+        aviones = Avion.build(avionesSaver.get());
         Vuelo vuelo = new Vuelo(getAeropuerto(aeropuertoDeSalida), getAeropuerto(aeropuertoDeLlegada), dia, mes, ano, hours, minutes, getAvion(plane), flightCode);
         vuelosSaver.save(vuelo);
         vuelos.add(vuelo);
@@ -167,6 +209,7 @@ public class ServerMock implements ServerInterface{
 
     @Override
     public Empleado getEmployee(int currentSesion) {
+        empleados = Empleado.build(empleadosSaver.get());
         for (Empleado e :
                 empleados) {
             if(e.getCodigoEmpleado() == currentSesion){return e;}
@@ -184,7 +227,7 @@ public class ServerMock implements ServerInterface{
     }
 
     public Avion getAvion(String plane) {
-
+        aviones = Avion.build(avionesSaver.get());
         for (Avion a:aviones) {
             if (plane.equals(a.getCodigo())){
                 return a;
@@ -239,6 +282,7 @@ public class ServerMock implements ServerInterface{
     }
 
     public void validarSesionEmpleadoAbordo(int currentSesion) {
+        personalAbordoLista = PersonalAbordo.build(personalDeAbordoSaver.get());
         for (PersonalAbordo personalAbordo:personalAbordoLista) {
             if(personalAbordo.getNumeroDeEmpleado() == currentSesion){
                 return;
@@ -249,12 +293,17 @@ public class ServerMock implements ServerInterface{
 
     @Override
     public PersonalAbordo getPersonalAbordo(int numeroDeEmpleado) {
-        return null;
+        personalAbordoLista = PersonalAbordo.build(personalDeAbordoSaver.get());
+        for (PersonalAbordo personalDeAbordo:personalAbordoLista) {
+            if (personalDeAbordo.getNumeroDeEmpleado() == numeroDeEmpleado)return personalDeAbordo;
+        }
+        throw new RuntimeException("No existe el personal de abordo");
     }
 
     public void addPersonalAbordo(int dni, String nombre, String cargo, int numeroDeEmpleado) {
         PersonalAbordo personalAbordo = new PersonalAbordo(dni,nombre,cargo,numeroDeEmpleado);
         personalAbordoLista.add(personalAbordo);
+        personalDeAbordoSaver.save(personalAbordo);
     }
 
     @Override
@@ -263,6 +312,7 @@ public class ServerMock implements ServerInterface{
     }
 
     public List<Reserva> getReservas(int numeroDeCliente) {
+        clientes = Cliente.build(clientesSaver.get());
         return getCliente(numeroDeCliente).getReservas();
     }
 }

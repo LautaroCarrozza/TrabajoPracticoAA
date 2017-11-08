@@ -60,7 +60,7 @@ public class TipoDeAvion implements Saveable{
 
     @Override
     public String getSavingFormat() {
-        return cantidadFilasEconomy + "," + cantidadAsientosPorFilaEconomy + "," + cantidadFilasBussiness + "," + cantidadAsientosPorFilaBussiness + "," + cantidadFilasFirst + "," + cantidadDeAsientosPorFilaFirst + "," +cantidadDePersonalAbordo + "," + nombre;
+        return cantidadFilasEconomy + "," + cantidadAsientosPorFilaEconomy + "," + cantidadFilasBussiness + "," + cantidadAsientosPorFilaBussiness + "," + cantidadFilasFirst + "," + cantidadDeAsientosPorFilaFirst + "," +cantidadDePersonalAbordo + "," + nombre + ".";
     }
     public static List<TipoDeAvion> build(List<String> elementosStr){
         List<TipoDeAvion> elementos = new ArrayList<>();
