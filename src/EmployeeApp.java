@@ -102,7 +102,7 @@ public class EmployeeApp {
             System.out.println(opcion +" "+ v);
             opcion++;
         }
-        int intVueloDeseado = Scanner.getInt("¿Que vuelo desea comprar? : ") -1 ;/// -1 por que los vuelos empiezan con 0 y se los imprime con un +1
+        int intVueloDeseado = Scanner.getInt("Ingrese vuelo deseado: ") -1 ;/// -1 por que los vuelos empiezan con 0 y se los imprime con un +1
         vueloDeseado = vuelosDisponibles.get(intVueloDeseado);
     }
 
