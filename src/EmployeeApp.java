@@ -185,23 +185,24 @@ public class EmployeeApp {
     private static void ingresarVuelo() {
 
         try {
-            String aeropuertoDeSalida = Scanner.getString("Ingrese el codigo del aeropuerto de salida: ");
-            String aeropuertoDeLlegada = Scanner.getString("Ingrese el codigo del aeropuerto de llegada: ");
+            Aeropuerto aeropuertoDeSalida = server.getAeropuerto(Scanner.getString("Ingrese el codigo del aeropuerto de salida: "));
+            Aeropuerto aeropuertoDeLlegada = server.getAeropuerto(Scanner.getString("Ingrese el codigo del aeropuerto de llegada: "));
             int dia = Scanner.getInt("Ingrese el dia de salida del vuelo: ");
             int mes = Scanner.getInt("Ingese el mes de salida del vuelo: ");
             int ano = Scanner.getInt("Ingrese el año de salida del vuelo: ");
             int hours = Scanner.getInt("Ingrese la hora de salida del vuelo: ");
             int minutes = Scanner.getInt("ingrese los minutos de la hora de salida del vuelo: ");
-            String plane = Scanner.getString("Ingrese el codigo del avion a utilizar: ");
+            Avion plane = server.getAvion(Scanner.getString("Ingrese el codigo del avion a utilizar: "));
             int flightCode = Scanner.getInt("Ingrese el codigo del vuelo: ");
-            server.addVuelo(aeropuertoDeSalida, aeropuertoDeLlegada, dia, mes, ano, hours, minutes, plane, flightCode);
+            int cantidadDeSemanas = Scanner.getInt("Durante cuantas semanas va a repetirse el vuelo?");
+            Vuelo vuelos = new Vuelo(aeropuertoDeSalida, aeropuertoDeLlegada, dia, mes, ano, hours, minutes, plane, flightCode, cantidadDeSemanas);
         }
         catch (RuntimeException e){
             System.out.println(e.getMessage());
             mostrarMenu();
         }
 
-        System.out.println("Vuelo cargado");
+        System.out.println("Vuelos cargado");
         mostrarMenu();
     }
 
