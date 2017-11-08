@@ -7,7 +7,7 @@ public interface ServerInterface {
     List<Reserva> getReservas(int numeroDeCliente);
     void addCliente(int dni, String nombre, int numeroDeCliente);
     List<Vuelo> buscarVuelos(int dia, int mes, int ano, String lugarSalida, String lugarLlegada, int cantidadPersonas);
-    void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersonas, String categoria);
+    void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersonas);
     Vuelo getVuelo(int codigoDeVuelo);
     void addEmpleado(int dni, String nombre, int codigoEmpleado, boolean habilitadoParaVender);
     void guardarReserva(int codigoCliente, Vuelo vuelo);

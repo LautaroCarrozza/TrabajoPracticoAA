@@ -30,10 +30,6 @@ public class ServerMock implements ServerInterface{
         aeropuertosSaver = new Saver("Aeropuertos");
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
 
-
-
-
-
     }
 
     public void setUpTest(){
@@ -50,6 +46,7 @@ public class ServerMock implements ServerInterface{
     }
 
     public void validarSesionCliente(int numero) {
+
         for (Cliente c : clientes) {
             if(c.getNumeroDeCliente() == numero){
                 return;
@@ -82,7 +79,7 @@ public class ServerMock implements ServerInterface{
         return posiblesVuelos;
     }
 
-    public void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersnas, String categoria) {
+    public void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersnas) {
         Vuelo vuelo = getVuelo(codigoVuelo);
 
             if (!vuelo.getOcupacion(asiento)){
@@ -159,6 +156,7 @@ public class ServerMock implements ServerInterface{
     }
 
     private Aeropuerto getAeropuerto(String aeropuerto) {
+        aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
         for (Aeropuerto a:aeropuertos
              ) {
            if (a.getCodigo().equals(aeropuerto)){return a;}
@@ -196,6 +194,7 @@ public class ServerMock implements ServerInterface{
 
     @Override
     public void validarLugarDePartida(String lugarDePartida) {
+        aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
         for (Aeropuerto a: aeropuertos
              ) {
             if (lugarDePartida==a.getCodigo());{return;}
@@ -205,6 +204,7 @@ public class ServerMock implements ServerInterface{
 
     @Override
     public void validarLugarDeLlegada(String lugarDeLlegada) {
+        aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
         for (Aeropuerto a: aeropuertos
                 ) {
             if (lugarDeLlegada==a.getCodigo());{return;}

@@ -18,10 +18,6 @@ public class Cliente extends Persona implements Saveable{
         return numeroDeCliente;
     }
 
-    public void addReserva(Reserva reserva){
-        reservas.add(reserva);
-    }
-
     public void guardarReserva(List<Pasaje> pasajes, Vuelo vuelo) {
         Reserva reserva = new Reserva(pasajes, vuelo);
         reservas.add(reserva);
@@ -53,8 +49,9 @@ public class Cliente extends Persona implements Saveable{
                     break;
                 }
             }
-           /// Cliente cliente = new Cliente(elemento.substring(0, corte1),elemento.substring(corte1 + 1, corte2), elemento.substring(corte2+1, corte3), elemento.substring(corte3+1, elemento.length()-1));
-          ///  elementos.add(cliente);
+
+           /// Cliente cliente = new Cliente(elemento.substring(0, corte1),   elemento.substring(corte1 + 1, corte2),   elemento.substring(corte2+1, corte3), elemento.substring(corte3+1, elemento.length()-1));
+           /// elementos.add(cliente);
 
         }
         return elementos;
@@ -64,4 +61,5 @@ public class Cliente extends Persona implements Saveable{
     public String getSavingFormat() {
         return super.dni + "," + super.nombre + "," + numeroDeCliente + ",";
     }
+
 }
