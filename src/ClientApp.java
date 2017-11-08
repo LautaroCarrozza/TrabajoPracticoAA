@@ -61,9 +61,9 @@ public class ClientApp {
 
         List<Reserva> reservas = server.getReservas(currentCliente);
 
-                for (Reserva r :reservas) {
-                    System.out.println(r);
-                }
+        for (Reserva r :reservas) {
+            System.out.println(r);
+        }
 
         mostrarMenu();
     }
@@ -125,8 +125,7 @@ public class ClientApp {
             int fila = Scanner.getInt("Ingresar flia deseada: ");
             char columna = Scanner.getChar("Ingresar columna deseada: ");
             if( !vueloDeseado.getOcupacion(vueloDeseado.getAsiento(fila, columna))){
-               server.comprarAsiento(vueloDeseado.getCodigoDeVuelo(), currentCliente,vueloDeseado.getAsiento(fila, columna), cantidadDePersonas );
-                // Agregar asiento a reserva?
+                server.comprarAsiento(vueloDeseado.getCodigoDeVuelo(), currentCliente,vueloDeseado.getAsiento(fila, columna), cantidadDePersonas );
                 return;
             }
 

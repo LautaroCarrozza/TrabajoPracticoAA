@@ -1,44 +1,52 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServerMock implements ServerInterface{
 
-    private List<Cliente> clientes = new ArrayList<>();
-    private List<Empleado> empleados = new ArrayList<>();
-    private List<Vuelo> vuelos = new ArrayList<>();
-    private List<Reserva> reservas = new ArrayList<>();
-    private List<Pasaje> pasajes = new ArrayList<>();
-    private List<TipoDeAvion> tiposDeAvion = new ArrayList<>();
-    private List<Avion> aviones = new ArrayList<>();
-    private List<Aeropuerto> aeropuertos= new ArrayList<>();
+     List<Cliente> clientes = new ArrayList<>();
+     List<Empleado> empleados = new ArrayList<>();
+     List<Vuelo> vuelos = new ArrayList<>();
+     List<Reserva> reservas = new ArrayList<>();
+     List<Pasaje> pasajes = new ArrayList<>();
+     List<TipoDeAvion> tiposDeAvion = new ArrayList<>();
+     List<Avion> aviones = new ArrayList<>();
+     List<Aeropuerto> aeropuertos= new ArrayList<>();
+     List<PersonalAbordo> personalAbordoLista = new ArrayList<>();
+     Object[] lists = {clientes,empleados, vuelos, reservas, pasajes, tiposDeAvion, aviones, aeropuertos, personalAbordoLista};
+
+    Saver clientesSaver ;
+    Saver empleadosSaver ;
+    Saver vuelosSaver ;
+    Saver reservasSaver ;
+    Saver pasajesSaver ;
+    Saver tiposDeAvionSaver;
+    Saver avionesSaver ;
+    Saver aeropuertosSaver ;
+
+
+    public ServerMock() {
+
+        aeropuertosSaver = new Saver("Aeropuertos");
+        aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
+
+    }
 
     public void setUpTest(){
 
-        Cliente clienteA = new Cliente(1, "a", 1);
-        Cliente clienteB = new Cliente(2, "b", 2);
-
-        addCliente(clienteA);
-        addCliente(clienteB);
-
-        Empleado empleado1 = new Empleado(2020130044, "Fernando Miodosky", 1, true);
-        addEmpleado(empleado1);
-
-        Aeropuerto aeropuertoA = new Aeropuerto("aaa", "aaa", "aaa");
-        Aeropuerto aeropuertoB = new Aeropuerto("bbb", "bbb", "bbb");
-        Aeropuerto aeropuertoC = new Aeropuerto("ccc", "ccc", "ccc");
-
-        TipoDeAvion tipoDeAvionA = new TipoDeAvion(10, 2, 5, 2, 2, 2, "Australis-Airlines 01");
-        TipoDeAvion tipoDeAvionB = new TipoDeAvion(10, 2, 5, 2, 2, 2, "Australis-Airlines 02");
-
-        Avion avionA = new Avion("1", tipoDeAvionA);
-        Avion avionB = new Avion("2", tipoDeAvionB);
-
-        Vuelo vuelo = new Vuelo(aeropuertoA, aeropuertoB, 1, 1, 2018, 20, 15, avionA, 1);
-        vuelos.add(vuelo);
+       addCliente(1, "a", 1);
+       addPersonalAbordo(1, "a", "piloto", 1);
+       addAeropuerto("aaa", "aaa", "aaa");
+       addAeropuerto("bbb", "bbb", "bbb");
+       addTipoDeAvion(2, 2, 2, 2, 2, 2, 1, "a");
+       addAvion("1", "a");
+       addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30, "1", 1);
+       addEmpleado(1, "a", 1, true);
 
     }
 
     public void validarSesionCliente(int numero) {
+
         for (Cliente c : clientes) {
             if(c.getNumeroDeCliente() == numero){
                 return;
@@ -47,11 +55,13 @@ public class ServerMock implements ServerInterface{
         throw new RuntimeException("Numero de cliente invalido");
     }
 
-    public void addEmpleado(Empleado empleado){
+    public void addEmpleado(int dni, String nombre, int codigoEmpleado, boolean habilitadoParaVender){
+        Empleado empleado = new Empleado(dni, nombre, codigoEmpleado,habilitadoParaVender);
         empleados.add(empleado);
     }
 
-    public void addCliente(Cliente cliente) {
+    public void addCliente(int dni, String nombre, int numeroDeCliente) {
+        Cliente cliente = new Cliente(dni, nombre, numeroDeCliente);
         clientes.add(cliente);
     }
 
@@ -69,7 +79,7 @@ public class ServerMock implements ServerInterface{
         return posiblesVuelos;
     }
 
-    public void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersnas, String categoria) {
+    public void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersnas) {
         Vuelo vuelo = getVuelo(codigoVuelo);
 
             if (!vuelo.getOcupacion(asiento)){
@@ -120,18 +130,20 @@ public class ServerMock implements ServerInterface{
         aviones.add(avion);
     }
 
-    public void addTipoDeAvion(int cantidadFilasEconomy, int cantidadAsientosPorFilaDeEconomy, int cantidadFilasBussiness, int cantidadAsientosPorFilaDeBussiness, int cantidadFilasFirst, int cantidadAsientosPorFilaDeFirst, String nombre) {
-        TipoDeAvion tipoDeAvion = new TipoDeAvion(cantidadFilasEconomy, cantidadAsientosPorFilaDeEconomy, cantidadFilasBussiness, cantidadAsientosPorFilaDeBussiness, cantidadFilasFirst, cantidadAsientosPorFilaDeFirst, nombre);
+    public void addTipoDeAvion(int cantidadFilasEconomy, int cantidadAsientosPorFilaDeEconomy, int cantidadFilasBussiness, int cantidadAsientosPorFilaDeBussiness, int cantidadFilasFirst, int cantidadAsientosPorFilaDeFirst, int cantidadPersonalAbordo, String nombre) {
+        TipoDeAvion tipoDeAvion = new TipoDeAvion(cantidadFilasEconomy, cantidadAsientosPorFilaDeEconomy, cantidadFilasBussiness, cantidadAsientosPorFilaDeBussiness, cantidadFilasFirst, cantidadAsientosPorFilaDeFirst, cantidadPersonalAbordo,nombre);
         tiposDeAvion.add(tipoDeAvion);
     }
 
     public void addAeropuerto(String codigoDeAeropuerto, String ubicacion, String nombre) {
         Aeropuerto aeropuerto = new Aeropuerto(codigoDeAeropuerto, ubicacion, nombre);
+        aeropuertosSaver.save(aeropuerto);
         aeropuertos.add(aeropuerto);
     }
 
     public void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes, String plane, int flightCode) {
         Vuelo vuelo = new Vuelo(getAeropuerto(aeropuertoDeSalida), getAeropuerto(aeropuertoDeLlegada), dia, mes, ano, hours, minutes, getAvion(plane), flightCode);
+        vuelos.add(vuelo);
     }
 
     @Override
@@ -144,6 +156,7 @@ public class ServerMock implements ServerInterface{
     }
 
     private Aeropuerto getAeropuerto(String aeropuerto) {
+        aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
         for (Aeropuerto a:aeropuertos
              ) {
            if (a.getCodigo().equals(aeropuerto)){return a;}
@@ -181,6 +194,7 @@ public class ServerMock implements ServerInterface{
 
     @Override
     public void validarLugarDePartida(String lugarDePartida) {
+        aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
         for (Aeropuerto a: aeropuertos
              ) {
             if (lugarDePartida==a.getCodigo());{return;}
@@ -190,11 +204,31 @@ public class ServerMock implements ServerInterface{
 
     @Override
     public void validarLugarDeLlegada(String lugarDeLlegada) {
+        aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
         for (Aeropuerto a: aeropuertos
                 ) {
             if (lugarDeLlegada==a.getCodigo());{return;}
         }
         throw new RuntimeException("No existe ese aeropuerto");
+    }
+
+    public void validarSesionEmpleadoAbordo(int currentSesion) {
+        for (PersonalAbordo personalAbordo:personalAbordoLista) {
+            if(personalAbordo.getNumeroDeEmpleado() == currentSesion){
+                return;
+            }
+        }
+        throw new RuntimeException("No existe ese numero para personal de abordo");
+    }
+
+    @Override
+    public PersonalAbordo getPersonalAbordo(int numeroDeEmpleado) {
+        return null;
+    }
+
+    public void addPersonalAbordo(int dni, String nombre, String cargo, int numeroDeEmpleado) {
+        PersonalAbordo personalAbordo = new PersonalAbordo(dni,nombre,cargo,numeroDeEmpleado);
+        personalAbordoLista.add(personalAbordo);
     }
 
     public List<Reserva> getReservas(int numeroDeCliente) {
