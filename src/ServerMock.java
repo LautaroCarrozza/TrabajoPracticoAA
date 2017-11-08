@@ -37,8 +37,7 @@ public class ServerMock implements ServerInterface{
     }
 
     public void setUp(){
-
-//        addCliente(1, "a", 1);
+        addCliente(1, "a", 1);
 //        addPersonalAbordo(1, "a", "piloto", 1);
 //        addAeropuerto("aaa", "aaa", "aaa");
 //        addAeropuerto("bbb", "bbb", "bbb");
@@ -132,11 +131,6 @@ public class ServerMock implements ServerInterface{
                 pasajesSaver.save(pasaje);
             }
             else{throw new RuntimeException("El asiento esta ocupado");}
-    }
-
-    public void comprarAsiento(int codigoVuelo, int codigoCliente, int fila, char columna, int cantidadDePersnas) {
-        Asiento asiento = getVuelo(codigoVuelo).getAsiento(fila, columna);
-        comprarAsiento(codigoVuelo, codigoCliente, asiento, cantidadDePersnas);
     }
 
     public Vuelo getVuelo(int codigoDeVuelo) {
@@ -272,13 +266,7 @@ public class ServerMock implements ServerInterface{
     @Override
     public void validarLugarDeLlegada(String lugarDeLlegada) {
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
-        for (Aeropuerto a: aeropuertos
-                ) {
-            if (a.getCodigo().equals(lugarDeLlegada)){
-                return;
-            }
-        }
-        throw new RuntimeException("No existe ese aeropuerto");
+        validarLugarDePartida(lugarDeLlegada);
     }
 
     public void validarSesionEmpleadoAbordo(int currentSesion) {
