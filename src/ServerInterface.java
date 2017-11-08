@@ -2,7 +2,7 @@ import java.util.List;
 
 public interface ServerInterface {
 
-    void setUpTest();
+    void setUp();
     void validarSesionCliente(int numero);
     List<Reserva> getReservas(int numeroDeCliente);
     void addCliente(int dni, String nombre, int numeroDeCliente);
@@ -28,7 +28,7 @@ public interface ServerInterface {
     void restar();
     Aeropuerto getAeropuerto(String aeropuerto);
 
-    Avion getAvion(String field8);
+    Avion getAvion(String avion);
 }
 
 

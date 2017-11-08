@@ -42,7 +42,6 @@ public class Avion {
     public List<Asiento> getAsientos() {
         return asientos;
     }
-
     public String getCodigo() {
         return codigo;
     }

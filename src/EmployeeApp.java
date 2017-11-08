@@ -1,5 +1,3 @@
-import com.sun.xml.internal.bind.v2.TODO;
-
 import java.util.List;
 
 public class EmployeeApp {
@@ -9,7 +7,7 @@ public class EmployeeApp {
     public static void main(String[] args) {
 
        server = new ServerMock();
-        server.setUpTest();
+        server.setUp();
        iniciarSesion();
     }
     private static ServerInterface server;

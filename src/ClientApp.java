@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClientApp {
@@ -12,7 +11,7 @@ public class ClientApp {
 
     public static void main(String[] args) {
         server = new ServerMock();
-        server.setUpTest();
+        server.setUp();
         menuDeInicio();
     }
 
