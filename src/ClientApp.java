@@ -6,15 +6,37 @@ public class ClientApp {
     private static int currentCliente, intVueloDeseado, cantidadDePersonas, diaSalida, mesSalida, anoSalida;
     private static ServerInterface server;
     private static List<Vuelo> posiblesVuelos;
-    private static String category = "";
+    private static List<Vuelo> vuelosDisponibles;
     private static Vuelo vueloDeseado;
-    private static List<Asiento> asientosSeleccionados = new ArrayList<Asiento>();
     private static String currentDesde, currentHasta;
 
     public static void main(String[] args) {
         server = new ServerMock();
         server.setUpTest();
-        iniciarSesion();
+        menuDeInicio();
+    }
+
+    private static void menuDeInicio() {
+        System.out.println("1- Iniciar sesion: ");
+        System.out.println("2- Mati es gay? Registrese ya!");
+
+        int opcion = Scanner.getInt("Seleccione una opcion: ");
+        try {
+        switch (opcion) {
+            case 1:
+                iniciarSesion();
+                break;
+            case 2:
+                registroDeCliente();
+                break;
+            default:
+                throw new RuntimeException("Opcion invalida");
+        }
+
+        }catch(RuntimeException e) {
+            System.out.println(e.getMessage());
+            menuDeInicio();
+        }
     }
 
     private static void mostrarMenu() {
@@ -68,19 +90,23 @@ public class ClientApp {
         mostrarMenu();
     }
 
+    private static void registroDeCliente(){
+
+    }
+
     public static void iniciarSesion() {
-        System.out.println("Bienvenido a AustralisAirlines: ingrese su numero de Cliente ");
+        System.out.println("Bienvenido a AustralisAirlines: \n Ingrese su numero de Cliente: ");
         System.out.println();
+
         try {
             currentCliente = Scanner.getInt("Numero de cliente: ");
             server.validarSesionCliente(currentCliente);
         } catch (RuntimeException e) {
             borrarPantalla();
             System.out.println(e.getMessage());
-            iniciarSesion();
+            menuDeInicio();
         }
         borrarPantalla();
-
         mostrarMenu();
     }
 
@@ -99,7 +125,8 @@ public class ClientApp {
         comprarHasta();
         comprarCuando();
         validarVuelo();
-        seleccionarVuelo();
+        mostrarVuelos();
+        menuDeVuelo();
 
         for (int i = 0; i < cantidadDePersonas; i++) {
             comprarAsiento();
@@ -115,7 +142,7 @@ public class ClientApp {
     private static void comprarAsiento() {
         List<Asiento> asientosDisponibles = vueloDeseado.asientosDisponibles();
 
-        System.out.println("Asien/*/tos disponibles: ");
+        System.out.println("Asientos disponibles: ");
         System.out.println();
 
         for (Asiento asiento : asientosDisponibles) {
@@ -139,16 +166,44 @@ public class ClientApp {
         }
     }
 
-    private static void seleccionarVuelo() {
+    private static void menuDeVuelo (){
+        System.out.println();
+        System.out.println("1 - Comprar vuelo");
+        System.out.println("2 - Volver al menu");
+        int opcion = Scanner.getInt("Seleccione una opcion: ");
+        try {
+            switch (opcion){
+                case 1: seleccionarVuelo();
+                break;
+                case 2: mostrarMenu();
+                break;
+                default: throw new RuntimeException("Opcion invalida");
+                }
+            }
+            catch (RuntimeException e){
+                System.out.println(e.getMessage());
+                menuDeVuelo();
+        }
 
-        List<Vuelo> vuelosDisponibles = server.buscarVuelos(diaSalida, mesSalida, anoSalida,currentDesde,currentHasta, cantidadDePersonas);
+    }
+
+    private static void mostrarVuelos(){
+        vuelosDisponibles = server.buscarVuelos(diaSalida, mesSalida, anoSalida,currentDesde,currentHasta, cantidadDePersonas);
         int opcion = 1;
         for (Vuelo v: vuelosDisponibles) {
             System.out.println(opcion +" "+ v);
             opcion++;
         }
-        int intVueloDeseado = Scanner.getInt("¿Que vuelo desea comprar? : ") -1 ;/// -1 por que los vuelos empiezan con 0 y se los imprime con un +1
-        vueloDeseado = vuelosDisponibles.get(intVueloDeseado); // Selecciona el vuelo elegido dentro de la lista de posibles vuelos segun los criterios de busqueda
+    }
+
+    private static void seleccionarVuelo() {
+        try {
+            int intVueloDeseado = Scanner.getInt("¿Que vuelo desea comprar? : ") - 1;/// -1 por que los vuelos empiezan con 0 y se los imprime con un +1
+            vueloDeseado = vuelosDisponibles.get(intVueloDeseado); // Selecciona el vuelo elegido dentro de la lista de posibles vuelos segun los criterios de busqueda
+        } catch (Exception e) {
+            System.out.println("Opcion invalida");
+            menuDeVuelo();
+        }
     }
 
     private static void validarVuelo() {
