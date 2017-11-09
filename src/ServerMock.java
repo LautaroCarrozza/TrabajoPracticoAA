@@ -75,16 +75,7 @@ public class ServerMock implements ServerInterface{
     }
 
     private void asignarReseras() {
-//        for (Pasaje pasaje:pasajes) {
-//            List<Pasaje> pasajes = new ArrayList<>();
-//            pasajes.add(pasaje);
-//            for (Pasaje pasaje2:pasajes                 ) {
-//                if (pasaje2.getCliente().equals(pasaje.getCliente()) && pasaje2.getVuelo().equals(pasaje.getVuelo())){
-//                    pasajes.add(pasaje2);
-//                }
-//            }
-//            pasaje.getCliente().guardarReserva(pasajes, pasaje.getVuelo());
-//        }
+
     }
 
     public void validarSesionCliente(int numero) {
@@ -313,6 +304,7 @@ public class ServerMock implements ServerInterface{
 
         clientes = Cliente.build(clientesSaver.get());
         pasajes = Pasaje.build(pasajesSaver.get());
+
         for (Pasaje pasaje : pasajes){
             if (pasaje.getCliente().getNumeroDeCliente() == numeroDeCliente){
                 guardarReserva(numeroDeCliente, pasaje.getVuelo());
