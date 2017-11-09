@@ -124,7 +124,7 @@ public class ServerMock implements ServerInterface{
         return posiblesVuelos;
     }
 
-    public void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersnas) {
+    public void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersonas) {
         vuelos = Vuelo.build(vuelosSaver.get());
         Vuelo vuelo = getVuelo(codigoVuelo);
             if (!vuelo.getOcupacion(asiento)){
@@ -155,7 +155,6 @@ public class ServerMock implements ServerInterface{
             }
         }
         getCliente(codigoCliente).guardarReserva(pasajesReservados, vuelo);
-        System.out.println("La reserva se a guardado correctamente");
     }
 
     public void validarSesionEmpleado(int currentSesion) {

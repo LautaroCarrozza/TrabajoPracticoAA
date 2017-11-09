@@ -12,9 +12,9 @@ public class EmployeeApp {
        iniciarSesion();
     }
     private static ServerInterface server;
-    private static int currentSesion, currentClient, diaSalida, mesSalida, anoSalida, cantidadDePasajeros;
+    private static int currentSesion, currentClient, diaSalida, mesSalida, anoSalida, cantidadDePasajeros, diaSalidaIda, diaSalidaVuelta, mesSalidaIda, mesSalidaVuelta, anoSalidaIda, anoSalidaVuelta;
     public static String currentDesde, currentHasta;
-    public static Vuelo vueloDeseado;
+    public static Vuelo vueloDeseado, vueloDeseadoIda, vueloDeseadoVuelta;
 
     private static void iniciarSesion(){
 
@@ -58,7 +58,7 @@ public class EmployeeApp {
                     ingresarVuelo();
                     break;
                 case 5:
-                    venderPasaje();
+                    menuDeVenta();
                     break;
                 case 6:
                     iniciarSesion();
@@ -76,7 +76,7 @@ public class EmployeeApp {
         }
     }
 
-    private static void venderPasaje() {
+    private static void venderPasajeIda() {
 
         venderACliente();
         venderACuantosPasajeros();
@@ -93,6 +93,56 @@ public class EmployeeApp {
         mostrarMenu();
     }
 
+    private static void menuDeVenta() {
+        try {
+            System.out.println("1- Vender pasaje de ida solamente");
+            System.out.println("2- Vender pasaje de ida y vuela");
+            int opcion = Scanner.getInt("Seleccione la opcion deseada: ");
+            switch (opcion) {
+                case 1:
+                    venderPasajeIda();
+                    break;
+                case 2:
+                    venderPasajeIdaYVuelta();
+                    break;
+                default:
+                    throw new RuntimeException("Opcion no disponible");
+            }
+        }
+        catch(RuntimeException e){
+            System.out.println(e.getMessage());
+            menuDeVenta();
+        }
+    }
+
+    private static void venderPasajeIdaYVuelta() {
+
+        venderACliente();
+        venderACuantosPasajeros();
+        venderDesde();
+        venderHasta();
+        venderCuandoIda();
+        validarVueloIda();
+        seleccionarVueloIda();
+        venderCuandoVuelta();
+        validarVueloVuelta();
+
+        for (int i = 0; i < cantidadDePasajeros; i++) {
+            venderAsientoIda();
+        }
+
+        seleccionarVueloVuelta();
+        for (int i = 0; i < cantidadDePasajeros; i++) {
+            venderAsientoVuelta();
+        }
+        server.guardarReserva(currentClient, vueloDeseadoIda);
+        server.guardarReserva(currentClient, vueloDeseadoVuelta);
+        System.out.println("Las reservas se a guardadon correctamente");
+
+        mostrarMenu();
+
+    }
+
     private static void seleccionarVuelo() {
         List<Vuelo> vuelosDisponibles = server.buscarVuelos(diaSalida, mesSalida, anoSalida,currentDesde,currentHasta, cantidadDePasajeros);
         int opcion = 1;
@@ -103,6 +153,30 @@ public class EmployeeApp {
         }
         int intVueloDeseado = Scanner.getInt("Ingrese vuelo deseado: ") -1 ;/// -1 por que los vuelos empiezan con 0 y se los imprime con un +1
         vueloDeseado = vuelosDisponibles.get(intVueloDeseado);
+    }
+
+    private static void seleccionarVueloIda() {
+        List<Vuelo> vuelosDisponibles = server.buscarVuelos(diaSalidaIda, mesSalidaIda, anoSalidaIda,currentDesde,currentHasta, cantidadDePasajeros);
+        int opcion = 1;
+        for (Vuelo v: vuelosDisponibles
+                ) {
+            System.out.println(opcion +" "+ v);
+            opcion++;
+        }
+        int intVueloDeseado = Scanner.getInt("Ingrese vuelo deseado para la ida: ") -1 ;/// -1 por que los vuelos empiezan con 0 y se los imprime con un +1
+        vueloDeseadoIda = vuelosDisponibles.get(intVueloDeseado);
+    }
+
+    private static void seleccionarVueloVuelta() {
+        List<Vuelo> vuelosDisponibles = server.buscarVuelos(diaSalidaVuelta, mesSalidaVuelta, anoSalidaVuelta,currentHasta,currentDesde, cantidadDePasajeros);
+        int opcion = 1;
+        for (Vuelo v: vuelosDisponibles
+                ) {
+            System.out.println(opcion +" "+ v);
+            opcion++;
+        }
+        int intVueloDeseado = Scanner.getInt("Ingrese vuelo deseado para la vuelta: ") -1 ;/// -1 por que los vuelos empiezan con 0 y se los imprime con un +1
+        vueloDeseadoVuelta = vuelosDisponibles.get(intVueloDeseado);
     }
 
     private static void venderAsiento(){
@@ -131,9 +205,81 @@ public class EmployeeApp {
 
     }
 
+    private static void venderAsientoIda(){
+        List<Asiento> asientosDisponibles = vueloDeseadoIda.asientosDisponibles();
+
+        System.out.println("Asientos disponibles para la ida: ");
+        System.out.println();
+        for (Asiento asiento : asientosDisponibles) {
+            System.out.println(asiento);
+        }
+        try {
+            int fila = Scanner.getInt("Ingresar flia deseada: ");
+            char columna = Scanner.getChar("Ingresar columna deseada: ");
+            if( !vueloDeseadoIda.getOcupacion(vueloDeseadoIda.getAsiento(fila, columna))){
+                vueloDeseadoIda.ocupar(vueloDeseadoIda.getAsiento(fila, columna));
+                return;
+            }
+            else {
+                throw new RuntimeException("Seleccion de asiento no disponible");
+            }
+        }
+        catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            venderAsientoIda();
+        }
+
+    }
+
+    private static void venderAsientoVuelta(){
+        List<Asiento> asientosDisponibles = vueloDeseadoVuelta.asientosDisponibles();
+
+        System.out.println("Asientos disponibles para la vuelta: ");
+        System.out.println();
+        for (Asiento asiento : asientosDisponibles) {
+            System.out.println(asiento);
+        }
+        try {
+            int fila = Scanner.getInt("Ingresar flia deseada: ");
+            char columna = Scanner.getChar("Ingresar columna deseada: ");
+            if( !vueloDeseadoVuelta.getOcupacion(vueloDeseadoVuelta.getAsiento(fila, columna))){
+                vueloDeseadoVuelta.ocupar(vueloDeseadoVuelta.getAsiento(fila, columna));
+                return;
+            }
+            else {
+                throw new RuntimeException("Seleccion de asiento no disponible");
+            }
+        }
+        catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            venderAsientoVuelta();
+        }
+
+    }
+
     private static void validarVuelo(){
         try{
             server.buscarVuelos(diaSalida, mesSalida, anoSalida,currentDesde,currentHasta, cantidadDePasajeros);
+        }
+        catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            mostrarMenu();
+        }
+    }
+
+    private static void validarVueloIda(){
+        try{
+            server.buscarVuelos(diaSalidaIda, mesSalidaIda, anoSalidaIda,currentDesde,currentHasta, cantidadDePasajeros);
+        }
+        catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            mostrarMenu();
+        }
+    }
+
+    private static void validarVueloVuelta(){
+        try{
+            server.buscarVuelos(diaSalidaVuelta, mesSalidaVuelta, anoSalidaVuelta,currentHasta,currentDesde, cantidadDePasajeros);
         }
         catch (RuntimeException e){
             System.out.println(e.getMessage());
@@ -149,6 +295,18 @@ public class EmployeeApp {
         diaSalida = Scanner.getInt("Ingrese dia de salida: ");
         mesSalida = Scanner.getInt("Ingrese mes de salida: ");
         anoSalida = Scanner.getInt("Ingrese año de salida: ");
+    }
+
+    private static void venderCuandoIda(){
+        diaSalidaIda = Scanner.getInt("Ingrese dia de salida de la ida: ");
+        mesSalidaIda = Scanner.getInt("Ingrese mes de salida de la ida: ");
+        anoSalidaIda = Scanner.getInt("Ingrese año de salida de la ida: ");
+    }
+
+    private static void venderCuandoVuelta(){
+        diaSalidaVuelta = Scanner.getInt("Ingrese dia de salida de la vuelta: ");
+        mesSalidaVuelta = Scanner.getInt("Ingrese mes de salida de la vuelta: ");
+        anoSalidaVuelta = Scanner.getInt("Ingrese año de salida de la vuelta: ");
     }
 
     private static void venderHasta() {
