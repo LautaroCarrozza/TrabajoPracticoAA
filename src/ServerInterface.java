@@ -26,7 +26,7 @@ public interface ServerInterface {
     void validarSesionEmpleadoAbordo(int currentSesion);
     PersonalAbordo getPersonalAbordo(int numeroDeEmpleado);
     void addPersonalAbordo(int dni, String nombre, String cargo, int numeroDeEmpleado);
-    void restar();
+    void restart();
     Aeropuerto getAeropuerto(String aeropuerto);
     Avion getAvion(String avion);
     void validarVueloPorCantidadDePersonal(Vuelo vuelo);

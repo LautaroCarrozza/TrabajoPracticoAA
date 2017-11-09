@@ -10,6 +10,8 @@ public class Avion implements Saveable{
     private List<Asiento> asientos = new ArrayList<>();
     private Map <LocalDate, Boolean> disponibilidad = new HashMap<>();
     private List<Vuelo> vuelos = new ArrayList<>();
+    static  ServerMock server = new ServerMock();
+
 
     public void confirmarDisponibilidad(LocalDate dia) {
         if(disponibilidad.get(dia)){
@@ -70,8 +72,7 @@ public class Avion implements Saveable{
     }
 
     public static List<Avion> build(List<String> elementosStr){
-         ServerMock server = new ServerMock();
-
+        server.setUp();
         List<Avion> elementos = new ArrayList<>();
         for (String elemento :elementosStr ) {
             int corte1 = 0;
@@ -82,7 +83,10 @@ public class Avion implements Saveable{
                     break;
                 }
             }
-            Avion avion = new Avion(elemento.substring(0, corte1), server.getTipoDeAvion(elemento.substring(corte1 +1, elemento.length() -1)));
+            String codigo = elemento.substring(0, corte1);
+            TipoDeAvion tipoDeAvion =  server.getTipoDeAvion(elemento.substring(corte1 +1, elemento.length() -1));
+            Avion avion = new Avion(codigo, tipoDeAvion);
+
             elementos.add(avion);
         }
         return elementos;
