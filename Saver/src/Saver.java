@@ -11,6 +11,8 @@ public class Saver <T extends Saveable> {
     private String fileName;
 
     public Saver (String fileName)  {
+
+
         this.fileName = fileName;
         try {
             fileWriter = new FileWriter(fileName, true);
@@ -25,10 +27,12 @@ public class Saver <T extends Saveable> {
         try {
             fileWriter = new FileWriter(fileName, true);
             bufferedWriter = new BufferedWriter(fileWriter);
-           if (!get().contains(element)) {
+
+
+
                bufferedWriter.write(element.getSavingFormat());
                bufferedWriter.newLine();
-           }
+
             bufferedWriter.close();
         }
         catch (IOException e){
@@ -53,23 +57,13 @@ public class Saver <T extends Saveable> {
         return result;
     }
 
-    public void remove(T element){
-        if (get().contains(element)) {
-            List<String> previous = get();
-            previous.remove(element);
-
-            for (String line : previous) {
-                try {
-                    fileWriter = new FileWriter(fileName, true);
-                    bufferedWriter = new BufferedWriter(fileWriter);
-                    bufferedWriter.write(element.getSavingFormat());
-                    bufferedWriter.newLine();
-
-                    bufferedWriter.close();
-                } catch (IOException e) {
-                }
-            }
+    public void restart(){
+        try {
+            fileWriter = new FileWriter(fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        }
+        bufferedWriter = new BufferedWriter(fileWriter);
+    }
 
 }

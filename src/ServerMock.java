@@ -75,16 +75,16 @@ public class ServerMock implements ServerInterface{
     }
 
     private void asignarReseras() {
-        for (Pasaje pasaje:pasajes) {
-            List<Pasaje> pasajes = new ArrayList<>();
-            pasajes.add(pasaje);
-            for (Pasaje pasaje2:pasajes                 ) {
-                if (pasaje2.getCliente().equals(pasaje.getCliente()) && pasaje2.getVuelo().equals(pasaje.getVuelo())){
-                    pasajes.add(pasaje2);
-                }
-            }
-            pasaje.getCliente().guardarReserva(pasajes, pasaje.getVuelo());
-        }
+//        for (Pasaje pasaje:pasajes) {
+//            List<Pasaje> pasajes = new ArrayList<>();
+//            pasajes.add(pasaje);
+//            for (Pasaje pasaje2:pasajes                 ) {
+//                if (pasaje2.getCliente().equals(pasaje.getCliente()) && pasaje2.getVuelo().equals(pasaje.getVuelo())){
+//                    pasajes.add(pasaje2);
+//                }
+//            }
+//            pasaje.getCliente().guardarReserva(pasajes, pasaje.getVuelo());
+//        }
     }
 
     public void validarSesionCliente(int numero) {
@@ -127,7 +127,7 @@ public class ServerMock implements ServerInterface{
     public void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersonas) {
         vuelos = Vuelo.build(vuelosSaver.get());
         Vuelo vuelo = getVuelo(codigoVuelo);
-            if (!vuelo.getOcupacion(asiento)){
+            if (!vuelo.ocupacion.get(asiento)){
                 vuelo.ocupar(asiento);
                 Pasaje pasaje = new Pasaje(vuelo, asiento, getCliente(codigoCliente));
                 pasajes.add(pasaje);

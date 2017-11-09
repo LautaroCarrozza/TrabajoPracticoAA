@@ -8,9 +8,8 @@ public class Vuelo implements Saveable{
     private LocalDate fechaSalida;
     private Avion avion;
     private int codigoDeVuelo;
-    private Map<Asiento, Boolean> ocupacion = new HashMap<>();
+    public Map<Asiento, Boolean> ocupacion = new HashMap<>();
     private LocalDateTime horarioSalida;
-    private LocalDateTime horarioLlegada;
     private List<PersonalAbordo> listaPersonalAbordo = new ArrayList<>();
     private int mes;
     private int minutosDuracion;
@@ -25,7 +24,6 @@ public class Vuelo implements Saveable{
         this.avion = avion;
         this.codigoDeVuelo = codigoDeVuelo;
         this.minutosDuracion = minutosDuracion;
-        horarioLlegada.plusMinutes(minutosDuracion);
         for (Asiento a : avion.getAsientos()) {
             ocupacion.put(a, false);
         }
@@ -222,7 +220,7 @@ public class Vuelo implements Saveable{
             }
 
             String field1 = elemento.substring(0, corte1);
-            String field2 = elemento.substring(corte1 + 1 , corte2);
+            String field2 = elemento.substring(corte1+1 , corte2);
             String field3 = elemento.substring(corte2+1, corte3);
             String field4 = elemento.substring(corte3+1, corte4);
             String field5 = elemento.substring(corte4+1, corte5);
@@ -231,6 +229,7 @@ public class Vuelo implements Saveable{
             String field8 = elemento.substring(corte7+1, corte8);
             String field9 = elemento.substring(corte8+1, corte9);
             String field10 = elemento.substring(corte9+1, elemento.length()-1);
+
 
 
 
