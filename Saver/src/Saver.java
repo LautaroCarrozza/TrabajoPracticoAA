@@ -25,13 +25,22 @@ public class Saver <T extends Saveable> {
 
     public void save(T element)  {
         try {
-            fileWriter = new FileWriter(fileName, true);
+
+            List<String> previousList = new ArrayList<>();
+            previousList.addAll(get());
+
+            fileWriter = new FileWriter(fileName);
             bufferedWriter = new BufferedWriter(fileWriter);
 
+            if (previousList.contains(element.getSavingFormat())){}
+            else {
+                previousList.add(element.getSavingFormat());
+            }
 
-
-               bufferedWriter.write(element.getSavingFormat());
-               bufferedWriter.newLine();
+            for (String line:previousList                 ) {
+                bufferedWriter.write(line);
+                bufferedWriter.newLine();
+            }
 
             bufferedWriter.close();
         }

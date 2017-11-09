@@ -124,12 +124,12 @@ public class ServerMock implements ServerInterface{
         return posiblesVuelos;
     }
 
-    public void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersonas) {
+    public void comprarAsiento(int codigoVuelo, int codigoCliente, int fila, String columna, int cantidadDePersonas) {
         vuelos = Vuelo.build(vuelosSaver.get());
         Vuelo vuelo = getVuelo(codigoVuelo);
-            if (!vuelo.ocupacion.get(asiento)){
-                vuelo.ocupar(asiento);
-                Pasaje pasaje = new Pasaje(vuelo, asiento, getCliente(codigoCliente));
+            if (!vuelo.getOcupacion(fila, columna)){
+                vuelo.ocupar(fila, columna);
+                Pasaje pasaje = new Pasaje(vuelo, fila, columna, getCliente(codigoCliente));
                 pasajes.add(pasaje);
                 pasajesSaver.save(pasaje);
             }
@@ -150,7 +150,7 @@ public class ServerMock implements ServerInterface{
         pasajes = Pasaje.build(pasajesSaver.get());
         List<Pasaje> pasajesReservados = new ArrayList<>();
         for (Pasaje pasaje:pasajes) {
-            if (pasaje.getCliente().getNumeroDeCliente() == codigoCliente && pasaje.getVuelo().equals(vuelo)){
+            if (pasaje.getCliente().getNumeroDeCliente() == codigoCliente && pasaje.getVuelo().getCodigoDeVuelo() == vuelo.getCodigoDeVuelo()){
                 pasajesReservados.add(pasaje);
             }
         }
@@ -310,7 +310,14 @@ public class ServerMock implements ServerInterface{
     }
 
     public List<Reserva> getReservas(int numeroDeCliente) {
+
         clientes = Cliente.build(clientesSaver.get());
+        pasajes = Pasaje.build(pasajesSaver.get());
+        for (Pasaje pasaje : pasajes){
+            if (pasaje.getCliente().getNumeroDeCliente() == numeroDeCliente){
+                guardarReserva(numeroDeCliente, pasaje.getVuelo());
+            }
+        }
         return getCliente(numeroDeCliente).getReservas();
     }
 

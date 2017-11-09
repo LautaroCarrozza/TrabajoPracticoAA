@@ -141,6 +141,7 @@ public class ClientApp {
             comprarAsiento();
         }
         server.guardarReserva(currentCliente, vueloDeseado);
+        System.out.println("Operacion realizada satisfactoriamente");
         mostrarMenu();
     }
 
@@ -164,9 +165,9 @@ public class ClientApp {
         }
         try {
             int fila = Scanner.getInt("Ingresar fila deseada: ");
-            char columna = Scanner.getChar("Ingresar columna deseada: ");
-            if( !(vueloDeseado.getOcupacion(vueloDeseado.getAsiento(fila, columna)))){
-                server.comprarAsiento(vueloDeseado.getCodigoDeVuelo(), currentCliente,vueloDeseado.getAsiento(fila, columna), cantidadDePersonas );
+            String columna = Scanner.getString("Ingresar columna deseada: ");
+            if( !(vueloDeseado.getOcupacion(fila, columna))){
+                server.comprarAsiento(vueloDeseado.getCodigoDeVuelo(), currentCliente,fila, columna, cantidadDePersonas);
                 return;
             }
 

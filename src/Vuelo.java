@@ -14,6 +14,7 @@ public class Vuelo implements Saveable{
     private int mes;
     private int minutosDuracion;
     ServerInterface server = new ServerMock();
+    private List<Asiento> asientos = new ArrayList<>();
 
     public Vuelo(Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, int dia, int mes, int ano, int hora, int minutos,int minutosDuracion, Avion avion, int codigoDeVuelo) {
         this.fechaSalida = LocalDate.of(ano,mes,dia);
@@ -27,11 +28,8 @@ public class Vuelo implements Saveable{
         for (Asiento a : avion.getAsientos()) {
             ocupacion.put(a, false);
         }
+        asientos.addAll(avion.getAsientos());
     }
-
-
-
-
 
     public Avion getAvion() {
         return avion;
@@ -73,8 +71,11 @@ public class Vuelo implements Saveable{
         return result;
     }
 
-    public void ocupar(Asiento asiento) {
-        ocupacion.put(asiento, true);
+    public void ocupar(int fila, String columna) {
+        for (Asiento asiento:asientos
+             ) {
+        if (asiento.getFila() == fila && asiento.getColumna() == columna.charAt(0));
+        }
     }
 
     public List<Asiento> asientosDisponibles() {
@@ -106,14 +107,14 @@ public class Vuelo implements Saveable{
         throw new RuntimeException("El avion asignado al vuelo no cuenta con ese asiento");
     }
 
-    public Asiento getAsiento(String code){
-        for (Asiento asiento:avion.getAsientos()                ) {
-                if (asiento.getCode().equals(code)){return asiento;}
+    public boolean getOcupacion(int fila, String columna) {
+        for (Asiento asiento:asientos
+             ) {
+            if (asiento.getColumna() ==  columna.charAt(0) && asiento.getFila() == fila){
+                return ocupacion.get(asiento);
+            }
         }
-        throw new RuntimeException("No existe el asiento") ;}
-
-    public boolean getOcupacion(Asiento asiento) {
-        return ocupacion.get(asiento);
+        throw new RuntimeException("No existe el asiento");
     }
 
     private void addPiloto(){
@@ -132,6 +133,7 @@ public class Vuelo implements Saveable{
             addPersonalAbordo();
         }
     }
+
     private void addPersonalAbordo() {
         for (PersonalAbordo personal:server.getPersonalAbordoLista()) {
             if (!personal.getCargo().equals("Piloto") && personal.available(fechaSalida)){listaPersonalAbordo.add(personal);personal.addVuelo(this);}

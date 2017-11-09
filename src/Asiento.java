@@ -3,7 +3,7 @@ public class Asiento {
     private String categoria;
     private int fila;
     private char columna;
-    private String code = "" + fila + columna;
+    private String code = "" + fila + (int)columna;
 
     public Asiento(String categoria, int fila, int columnaINT) {
         this.categoria = categoria;

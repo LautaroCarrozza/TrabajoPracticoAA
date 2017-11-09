@@ -189,9 +189,9 @@ public class EmployeeApp {
         }
         try {
             int fila = Scanner.getInt("Ingresar flia deseada: ");
-            char columna = Scanner.getChar("Ingresar columna deseada: ");
-            if( !vueloDeseado.getOcupacion(vueloDeseado.getAsiento(fila, columna))){
-                vueloDeseado.ocupar(vueloDeseado.getAsiento(fila, columna));
+            String columna = Scanner.getString("Ingresar columna deseada: ");
+            if( !vueloDeseado.getOcupacion(fila, columna)){
+                vueloDeseado.ocupar(fila, columna);
                 return;
             }
             else {
@@ -215,9 +215,9 @@ public class EmployeeApp {
         }
         try {
             int fila = Scanner.getInt("Ingresar flia deseada: ");
-            char columna = Scanner.getChar("Ingresar columna deseada: ");
-            if( !vueloDeseadoIda.getOcupacion(vueloDeseadoIda.getAsiento(fila, columna))){
-                vueloDeseadoIda.ocupar(vueloDeseadoIda.getAsiento(fila, columna));
+            String columna = Scanner.getString("Ingresar columna deseada: ");
+            if( !vueloDeseadoIda.getOcupacion(fila, columna)){
+                vueloDeseadoIda.ocupar(fila, columna);
                 return;
             }
             else {
@@ -241,9 +241,9 @@ public class EmployeeApp {
         }
         try {
             int fila = Scanner.getInt("Ingresar flia deseada: ");
-            char columna = Scanner.getChar("Ingresar columna deseada: ");
-            if( !vueloDeseadoVuelta.getOcupacion(vueloDeseadoVuelta.getAsiento(fila, columna))){
-                vueloDeseadoVuelta.ocupar(vueloDeseadoVuelta.getAsiento(fila, columna));
+            String columna = Scanner.getString("Ingresar columna deseada: ");
+            if( !vueloDeseadoVuelta.getOcupacion(fila, columna)){
+                vueloDeseadoVuelta.ocupar(fila, columna);
                 return;
             }
             else {
