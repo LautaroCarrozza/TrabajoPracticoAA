@@ -33,6 +33,7 @@ public class Vuelo implements Saveable{
             localDate = localDate.plusWeeks(i);
             server.addVuelo(aeropuertoSalida.getCodigo(), aeropuertoLlegada.getCodigo(), localDate.getDayOfMonth(), localDate.getMonthValue(), localDate.getYear(), hora, minutos, avion.getCodigo(), codigoDeVuelo);
         }
+
     }
 
 
