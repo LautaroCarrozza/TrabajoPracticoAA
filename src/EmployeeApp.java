@@ -193,12 +193,13 @@ public class EmployeeApp {
             int ano = Scanner.getInt("Ingrese el año de salida del vuelo: ");
             int hours = Scanner.getInt("Ingrese la hora de salida del vuelo: ");
             int minutes = Scanner.getInt("ingrese los minutos de la hora de salida del vuelo: ");
+            int minutesDuration = Scanner.getInt("Ingrese los minutos de la duracion del viaje: ");
             String plane = Scanner.getString("Ingrese el codigo del avion a utilizar: ");
             int flightCode = Scanner.getInt("Ingrese el codigo del vuelo: ");
             int cantidadDeSemanas = Scanner.getInt("Durante cuantas semanas va a repetirse el vuelo?");
             LocalDate localDate = LocalDate.of(ano, mes, dia);
             server.validarDisponibilidadTripulacion(localDate, server.getAvion(plane).getCantidadDePersonal());
-            server.addVuelo(aeropuertoDeSalida, aeropuertoDeLlegada, dia, mes, ano, hours, minutes, plane, flightCode, cantidadDeSemanas);
+            server.addVuelo(aeropuertoDeSalida, aeropuertoDeLlegada, dia, mes, ano, hours, minutes,minutesDuration, plane, flightCode, cantidadDeSemanas);
             server.getVuelo(flightCode).addTripulacion();
         }
         catch (RuntimeException e){

@@ -10,11 +10,13 @@ public class Vuelo implements Saveable{
     private int codigoDeVuelo;
     private Map<Asiento, Boolean> ocupacion = new HashMap<>();
     private LocalDateTime horarioSalida;
+    private LocalDateTime horarioLlegada;
     private List<PersonalAbordo> listaPersonalAbordo = new ArrayList<>();
     private int mes;
+    private int minutosDuracion;
     ServerInterface server = new ServerMock();
 
-    public Vuelo(Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, int dia, int mes, int ano, int hora, int minutos, Avion avion, int codigoDeVuelo) {
+    public Vuelo(Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, int dia, int mes, int ano, int hora, int minutos,int minutosDuracion, Avion avion, int codigoDeVuelo) {
         this.fechaSalida = LocalDate.of(ano,mes,dia);
         this.mes = mes;
         this.horarioSalida = fechaSalida.atTime(hora, minutos);
@@ -22,6 +24,8 @@ public class Vuelo implements Saveable{
         this.aeropuertoLlegada = aeropuertoLlegada;
         this.avion = avion;
         this.codigoDeVuelo = codigoDeVuelo;
+        this.minutosDuracion = minutosDuracion;
+        horarioLlegada.plusMinutes(minutosDuracion);
         for (Asiento a : avion.getAsientos()) {
             ocupacion.put(a, false);
         }
@@ -114,6 +118,7 @@ public class Vuelo implements Saveable{
         for (PersonalAbordo piloto:server.getPersonalAbordoLista()) {
             if (piloto.getCargo().equals("Piloto") && piloto.available(fechaSalida)) {
                listaPersonalAbordo.add(piloto);
+               piloto.addVuelo(this);
             }
         }
         throw new RuntimeException("No existen pilotos disponibles");
@@ -127,7 +132,7 @@ public class Vuelo implements Saveable{
     }
     private void addPersonalAbordo() {
         for (PersonalAbordo personal:server.getPersonalAbordoLista()) {
-            if (!personal.getCargo().equals("Piloto") && personal.available(fechaSalida)){listaPersonalAbordo.add(personal);}
+            if (!personal.getCargo().equals("Piloto") && personal.available(fechaSalida)){listaPersonalAbordo.add(personal);personal.addVuelo(this);}
         }
         throw new RuntimeException("No existe personal de abordo disponible para el vuelo");
     }
@@ -140,7 +145,7 @@ public class Vuelo implements Saveable{
 
     @Override
     public String getSavingFormat(){
-        return aeropuertoSalida.getCodigo() + "," + aeropuertoLlegada.getCodigo() + "," + fechaSalida.getDayOfMonth() + "," + mes + ","+fechaSalida.getYear() + "," + horarioSalida.getHour() + "," + horarioSalida.getMinute()+ "," + avion.getCodigo() + "," + codigoDeVuelo + ".";
+        return aeropuertoSalida.getCodigo() + "," + aeropuertoLlegada.getCodigo() + "," + fechaSalida.getDayOfMonth() + "," + mes + ","+fechaSalida.getYear() + "," + horarioSalida.getHour() + "," + horarioSalida.getMinute()+ "," + minutosDuracion + "," + avion.getCodigo() + "," + codigoDeVuelo + ".";
     }
 
      static List<Vuelo> build(List<String> elementosStr){
@@ -155,7 +160,7 @@ public class Vuelo implements Saveable{
             int corte6 = 0;
             int corte7 = 0;
             int corte8 = 0;
-
+            int corte9 = 0;
 
             for (int i = 0; i < elemento.length(); i++) {
                 if (elemento.charAt(i) == ','){
@@ -205,6 +210,12 @@ public class Vuelo implements Saveable{
                     break;
                 }
             }
+            for (int i = corte8 +1 ; i < elemento.length(); i++) {
+                if (elemento.charAt(i) == ','){
+                    corte9 = i;
+                    break;
+                }
+            }
 
             String field1 = elemento.substring(0, corte1);
             String field2 = elemento.substring(corte1 + 1 , corte2);
@@ -214,10 +225,12 @@ public class Vuelo implements Saveable{
             String field6 = elemento.substring(corte5+1, corte6);
             String field7 = elemento.substring(corte6+1, corte7);
             String field8 = elemento.substring(corte7+1, corte8);
-            String field9 = elemento.substring(corte8+1, elemento.length()-1);
+            String field9 = elemento.substring(corte8+1, corte9);
+            String field10 = elemento.substring(corte9+1, elemento.length()-1);
 
 
-            Vuelo vuelo = new Vuelo(server.getAeropuerto(field1), server.getAeropuerto(field2), Integer.parseInt(field3), Integer.parseInt(field4), Integer.parseInt(field5), Integer.parseInt(field6), Integer.parseInt(field7), server.getAvion(field8), Integer.parseInt(field9));
+
+            Vuelo vuelo = new Vuelo(server.getAeropuerto(field1), server.getAeropuerto(field2), Integer.parseInt(field3), Integer.parseInt(field4), Integer.parseInt(field5), Integer.parseInt(field6), Integer.parseInt(field7),Integer.parseInt(field8), server.getAvion(field9), Integer.parseInt(field10));
             elementos.add(vuelo);
 
         }

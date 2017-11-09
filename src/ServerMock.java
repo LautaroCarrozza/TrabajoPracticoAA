@@ -46,7 +46,7 @@ public class ServerMock implements ServerInterface{
         addAeropuerto("bbb", "bbb", "bbb");
         addTipoDeAvion(2, 2, 2, 2, 2, 2, 1, "a");
         addAvion("1", "a");
-        addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30, "1", 1, 3);
+        addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30,60, "1", 1, 3);
         addEmpleado(1, "a", 1, true);
 
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
@@ -196,7 +196,7 @@ public class ServerMock implements ServerInterface{
         aeropuertos.add(aeropuerto);
     }
 
-    public void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes, String plane, int flightCode, int repeticiones) {
+    public void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes,int minutesDuration, String plane, int flightCode, int repeticiones) {
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
         aviones = Avion.build(avionesSaver.get());
         LocalDate localDate = LocalDate.of(ano, mes, dia);
@@ -206,7 +206,7 @@ public class ServerMock implements ServerInterface{
             int newDia = localDate.getDayOfMonth();
             int newMonth = localDate.getMonthValue();
             int newYear = localDate.getYear();
-            Vuelo vuelo = new Vuelo(getAeropuerto(aeropuertoDeSalida), getAeropuerto(aeropuertoDeLlegada), newDia, newMonth, newYear, hours, minutes, getAvion(plane), flightCode);
+            Vuelo vuelo = new Vuelo(getAeropuerto(aeropuertoDeSalida), getAeropuerto(aeropuertoDeLlegada), newDia, newMonth, newYear, hours, minutes,minutesDuration, getAvion(plane), flightCode);
             vuelos.add(vuelo);
             vuelosSaver.save(vuelo);
         }

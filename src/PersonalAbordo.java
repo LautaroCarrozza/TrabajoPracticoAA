@@ -36,7 +36,7 @@ public class PersonalAbordo extends Persona implements Saveable{
     public String toString() {
         String result = "Nombre: " + getNombre() + "\n" + "Vuelos: ";
         for (Vuelo v:vuelos) {
-            result = result + "\t" + v.getCodigoDeVuelo();
+            result = result + v.getCodigoDeVuelo();
         }
         return result;
     }
@@ -82,5 +82,9 @@ public class PersonalAbordo extends Persona implements Saveable{
         }
         return elementos;
 
+    }
+
+    public void addVuelo(Vuelo vuelo){
+        vuelos.add(vuelo);
     }
 }
