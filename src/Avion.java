@@ -18,9 +18,9 @@ public class Avion implements Saveable{
         throw new RuntimeException("El avion no esta disponible ese dia");
     }
 
-    public void agregarVuelo(LocalDate date, Vuelo vuelo){
+    public void agregarVuelo(Vuelo vuelo){
         vuelos.add(vuelo);
-        disponibilidad.put(date, true);
+        disponibilidad.put(vuelo.getFechaSalida(), true);
     }
 
 

@@ -358,7 +358,7 @@ public class EmployeeApp {
             server.validarDisponibilidadTripulacion(localDate, server.getAvion(plane).getCantidadDePersonal());
             server.addVuelo(aeropuertoDeSalida, aeropuertoDeLlegada, dia, mes, ano, hours, minutes,minutesDuration, plane, flightCode, cantidadDeSemanas);
             server.getVuelo(flightCode).addTripulacion();
-            server.getAvion(plane).agregarVuelo(localDate, server.getVuelo(flightCode));
+            server.getAvion(plane).agregarVuelo(server.getVuelo(flightCode));
         }
         catch (RuntimeException e){
             System.out.println(e.getMessage());
