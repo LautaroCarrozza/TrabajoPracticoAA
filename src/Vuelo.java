@@ -121,9 +121,29 @@ public class Vuelo implements Saveable{
         return ocupacion.get(asiento);
     }
 
-    public void addPersonalAbordo(PersonalAbordo personalAbordo){
-        listaPersonalAbordo.add(personalAbordo);
+    private void addPiloto(){
+        for (PersonalAbordo piloto:server.getPersonalAbordoLista()) {
+            if (piloto.getCargo().equals("Piloto") && piloto.available(fechaSalida)) {
+               listaPersonalAbordo.add(piloto);
+            }
+        }
+        throw new RuntimeException("No existen pilotos disponibles");
     }
+
+    public void addTripulacion(){
+       addPiloto();
+        for (int i = 0; i < getCantidadPersonal() -1 ; i++) {
+            addPersonalAbordo();
+        }
+    }
+    private void addPersonalAbordo() {
+        for (PersonalAbordo personal:server.getPersonalAbordoLista()) {
+            if (!personal.getCargo().equals("Piloto") && personal.available(fechaSalida)){listaPersonalAbordo.add(personal);}
+        }
+        throw new RuntimeException("No existe personal de abordo disponible para el vuelo");
+    }
+
+    public int getCantidadPersonal(){return  avion.getTipoDeAvion().getCantidadDePersonalAbordo();}
 
     public List<PersonalAbordo> getListaPersonalAbordo() {
         return listaPersonalAbordo;

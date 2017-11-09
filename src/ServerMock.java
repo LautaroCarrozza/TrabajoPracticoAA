@@ -1,7 +1,10 @@
 import com.sun.org.apache.regexp.internal.RE;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class ServerMock implements ServerInterface{
@@ -43,7 +46,7 @@ public class ServerMock implements ServerInterface{
         addAeropuerto("bbb", "bbb", "bbb");
         addTipoDeAvion(2, 2, 2, 2, 2, 2, 1, "a");
         addAvion("1", "a");
-        addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30, "1", 1);
+        addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30, "1", 1, 3);
         addEmpleado(1, "a", 1, true);
 
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
@@ -192,12 +195,20 @@ public class ServerMock implements ServerInterface{
         aeropuertos.add(aeropuerto);
     }
 
-    public void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes, String plane, int flightCode) {
+    public void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes, String plane, int flightCode, int repeticiones) {
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
         aviones = Avion.build(avionesSaver.get());
-        Vuelo vuelo = new Vuelo(getAeropuerto(aeropuertoDeSalida), getAeropuerto(aeropuertoDeLlegada), dia, mes, ano, hours, minutes, getAvion(plane), flightCode);
-        vuelosSaver.save(vuelo);
-        vuelos.add(vuelo);
+        LocalDate localDate = LocalDate.of(ano, mes, dia);
+
+        for (int i = 0; i <= repeticiones; i++) {
+           localDate = localDate.plusDays(i * 7);///multiplico por i para no sumar en el primero
+            int newDia = localDate.getDayOfMonth();
+            int newMonth = localDate.getMonthValue();
+            int newYear = localDate.getYear();
+            Vuelo vuelo = new Vuelo(getAeropuerto(aeropuertoDeSalida), getAeropuerto(aeropuertoDeLlegada), newDia, newMonth, newYear, hours, minutes, getAvion(plane), flightCode);
+            vuelos.add(vuelo);
+            vuelosSaver.save(vuelo);
+        }
     }
 
     @Override
@@ -302,10 +313,41 @@ public class ServerMock implements ServerInterface{
         clientes = Cliente.build(clientesSaver.get());
         return getCliente(numeroDeCliente).getReservas();
     }
-    public void validarVueloPorCantidadDePersonas(Vuelo vuelo){
+
+    public List<PersonalAbordo> getPersonalAbordoLista() {
+        personalAbordoLista = PersonalAbordo.build(personalDeAbordoSaver.get());
+        return personalAbordoLista;
+    }
+
+    public void validarVueloPorCantidadDePersonal(Vuelo vuelo){
         if(vuelo.getAvion().getTipoDeAvion().getCantidadDePersonalAbordo() <= vuelo.getListaPersonalAbordo().size()){
             return;
         }
         throw new RuntimeException("Cantidad de personal abordo es mayor a la capacidad del tipo de avion");
     }
+
+    public void validarDisponibilidadTripulacion(LocalDate fechaDeSalida, int cantidadDePersonal){
+      validarDisponibilidadPiloto(fechaDeSalida);
+        for (int i = 0; i < cantidadDePersonal -1; i++) {
+            validadDisponibilidadPersonalDeAbordo(fechaDeSalida);
+        }
+    }
+
+    private void validadDisponibilidadPersonalDeAbordo(LocalDate fechaDeSalida) {
+        for (PersonalAbordo personal:getPersonalAbordoLista()) {
+            if (!personal.getCargo().equals("Piloto") && personal.available(fechaDeSalida)){return;}
+        }
+        throw new RuntimeException("No existe personal de abordo disponible para el vuelo");
+    }
+
+    private void validarDisponibilidadPiloto(LocalDate fechaDeSalida) {
+        for (PersonalAbordo piloto:getPersonalAbordoLista()) {
+            if (piloto.getCargo().equals("Piloto") && piloto.available(fechaDeSalida)) {
+                return;
+            }
+        }
+        throw new RuntimeException("No hay suficientes tripulantes disponibles");
+    }
+
+
 }

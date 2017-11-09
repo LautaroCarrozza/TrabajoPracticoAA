@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,13 @@ public class PersonalAbordo extends Persona implements Saveable{
         super(dni, nombre);
         this.cargo = cargo;
         this.numeroDeEmpleado = numeroDeEmpleado;
+    }
+
+    public boolean available(LocalDate fechaDeSalida){
+        for (Vuelo vuelo:vuelos) {
+            if (vuelo.getFechaSalida().equals(fechaDeSalida))return false;
+        }
+        return true;
     }
 
     @Override
