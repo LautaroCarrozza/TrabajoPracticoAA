@@ -27,14 +27,7 @@ public class Vuelo implements Saveable{
         }
     }
 
-    public Vuelo(Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, int dia, int mes, int ano, int hora, int minutos, Avion avion, int codigoDeVuelo, int cantidadSemanasARepetir) {
-        for (int i = 0; i <= cantidadSemanasARepetir; i++) {
-            LocalDate localDate =  LocalDate.of(dia, mes, ano);
-            localDate = localDate.plusWeeks(i);
-            server.addVuelo(aeropuertoSalida.getCodigo(), aeropuertoLlegada.getCodigo(), localDate.getDayOfMonth(), localDate.getMonthValue(), localDate.getYear(), hora, minutos, avion.getCodigo(), codigoDeVuelo);
-        }
 
-    }
 
 
 

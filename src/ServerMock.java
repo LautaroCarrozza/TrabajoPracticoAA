@@ -124,7 +124,7 @@ public class ServerMock implements ServerInterface{
         return posiblesVuelos;
     }
 
-    public void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersnas) {
+    public void comprarAsiento(int codigoVuelo, int codigoCliente, Asiento asiento, int cantidadDePersonas) {
         vuelos = Vuelo.build(vuelosSaver.get());
         Vuelo vuelo = getVuelo(codigoVuelo);
             if (!vuelo.getOcupacion(asiento)){
