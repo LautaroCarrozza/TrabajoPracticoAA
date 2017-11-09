@@ -422,10 +422,8 @@ public class EmployeeApp {
             System.out.println(e.getMessage());
             mostrarMenu();
         }
-            System.out.println("Tipo de avion cargado");
-            mostrarMenu();
-
-
+        System.out.println("Tipo de avion cargado");
+        mostrarMenu();
     }
 
     private static void borrarPantalla() {

@@ -47,6 +47,8 @@ public class ServerMock implements ServerInterface{
         addTipoDeAvion(2, 2, 2, 2, 2, 2, 1, "a");
         addAvion("1", "a");
         addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30,60, "1", 1, 3);
+        addVuelo("bbb","aaa",2,2,2018, 22, 30, 60, "1", 2, 3);
+        addVuelo("bbb", "aaa", 2, 2, 2018, 22, 30, 60, "1", 2, 3);
         addEmpleado(1, "a", 1, true);
 
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
@@ -197,11 +199,7 @@ public class ServerMock implements ServerInterface{
         LocalDate localDate = LocalDate.of(ano, mes, dia);
 
         for (int i = 0; i <= repeticiones; i++) {
-           localDate = localDate.plusDays(i * 7);///multiplico por i para no sumar en el primero
-            int newDia = localDate.getDayOfMonth();
-            int newMonth = localDate.getMonthValue();
-            int newYear = localDate.getYear();
-            Vuelo vuelo = new Vuelo(getAeropuerto(aeropuertoDeSalida), getAeropuerto(aeropuertoDeLlegada), newDia, newMonth, newYear, hours, minutes,minutesDuration, getAvion(plane), flightCode);
+            Vuelo vuelo = new Vuelo(getAeropuerto(aeropuertoDeSalida), getAeropuerto(aeropuertoDeLlegada), localDate.plusDays(i*7).getDayOfMonth(), localDate.plusDays(i*7).getMonthValue(), localDate.plusDays(i*7).getYear(), hours, minutes,minutesDuration, getAvion(plane), flightCode);
             vuelos.add(vuelo);
             vuelosSaver.save(vuelo);
         }
