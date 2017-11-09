@@ -186,6 +186,11 @@ public class ServerMock implements ServerInterface{
         aeropuertos.add(aeropuerto);
     }
 
+    @Override
+    public void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes, int minutesDuration, String plane, int flightCode, int repeticiones, int precioEconomy, int precioBussiness, int precioFirst) {
+
+    }
+
     public void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes,int minutesDuration, String plane, int flightCode, int repeticiones) {
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
         aviones = Avion.build(avionesSaver.get());
@@ -330,6 +335,16 @@ public class ServerMock implements ServerInterface{
         for (int i = 0; i < cantidadDePersonal -1; i++) {
             validadDisponibilidadPersonalDeAbordo(fechaDeSalida);
         }
+    }
+
+    @Override
+    public void addTarifa(String first, int codigoDeVuelo, int precioFirst) {
+
+    }
+
+    @Override
+    public int getPreciodeTarifa(String codigo, String first) {
+        return 0;
     }
 
     private void validadDisponibilidadPersonalDeAbordo(LocalDate fechaDeSalida) {

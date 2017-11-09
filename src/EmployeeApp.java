@@ -356,7 +356,7 @@ public class EmployeeApp {
             LocalDate localDate = LocalDate.of(ano, mes, dia);
             server.getAvion(plane).confirmarDisponibilidad(localDate);
             server.validarDisponibilidadTripulacion(localDate, server.getAvion(plane).getCantidadDePersonal());
-            server.addVuelo(aeropuertoDeSalida, aeropuertoDeLlegada, dia, mes, ano, hours, minutes,minutesDuration, plane, flightCode, cantidadDeSemanas);
+            server.addVuelo(aeropuertoDeSalida, aeropuertoDeLlegada, dia, mes, ano, hours, minutes,minutesDuration, plane, flightCode, cantidadDeSemanas, 100, 200, 300);
             server.getVuelo(flightCode).addTripulacion();
             server.getAvion(plane).agregarVuelo(server.getVuelo(flightCode));
         }

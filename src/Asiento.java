@@ -4,7 +4,7 @@ public class Asiento {
     private int fila;
     private char columna;
     private String code = "" + fila + (int)columna;
-
+    private ServerInterface server = new ServerMock();
     public Asiento(String categoria, int fila, int columnaINT) {
         this.categoria = categoria;
         this.fila = fila;
