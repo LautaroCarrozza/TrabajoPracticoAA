@@ -1,10 +1,28 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Avion implements Saveable{
     private String codigo;
     private TipoDeAvion tipoDeAvion;
     private List<Asiento> asientos = new ArrayList<>();
+    private Map <LocalDate, Boolean> disponibilidad = new HashMap<>();
+    private List<Vuelo> vuelos = new ArrayList<>();
+
+    public void confirmarDisponibilidad(LocalDate dia) {
+        if(disponibilidad.get(dia)){
+            return;
+        }
+        throw new RuntimeException("El avion no esta disponible ese dia");
+    }
+
+    public void agregarVuelo(LocalDate date, Vuelo vuelo){
+        vuelos.add(vuelo);
+        disponibilidad.put(date, true);
+    }
+
 
     public TipoDeAvion getTipoDeAvion() {
         return tipoDeAvion;

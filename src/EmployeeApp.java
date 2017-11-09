@@ -3,8 +3,6 @@ import java.util.List;
 
 public class EmployeeApp {
 
-
-
     public static void main(String[] args) {
 
        server = new ServerMock();
@@ -95,8 +93,8 @@ public class EmployeeApp {
 
     private static void menuDeVenta() {
         try {
-            System.out.println("1- Vender pasaje de ida solamente");
-            System.out.println("2- Vender pasaje de ida y vuela");
+            System.out.println("1- Vender pasaje solo ida");
+            System.out.println("2- Vender pasaje ida y vuela");
             int opcion = Scanner.getInt("Seleccione la opcion deseada: ");
             switch (opcion) {
                 case 1:
@@ -356,15 +354,16 @@ public class EmployeeApp {
             int flightCode = Scanner.getInt("Ingrese el codigo del vuelo: ");
             int cantidadDeSemanas = Scanner.getInt("Durante cuantas semanas va a repetirse el vuelo?");
             LocalDate localDate = LocalDate.of(ano, mes, dia);
+            server.getAvion(plane).confirmarDisponibilidad(localDate);
             server.validarDisponibilidadTripulacion(localDate, server.getAvion(plane).getCantidadDePersonal());
             server.addVuelo(aeropuertoDeSalida, aeropuertoDeLlegada, dia, mes, ano, hours, minutes,minutesDuration, plane, flightCode, cantidadDeSemanas);
             server.getVuelo(flightCode).addTripulacion();
+            server.getAvion(plane).agregarVuelo(localDate, server.getVuelo(flightCode));
         }
         catch (RuntimeException e){
             System.out.println(e.getMessage());
             mostrarMenu();
         }
-
         System.out.println("Vuelos cargado");
         mostrarMenu();
     }
