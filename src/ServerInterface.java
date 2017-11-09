@@ -10,7 +10,7 @@ public interface ServerInterface {
     List<Vuelo> buscarVuelos(int dia, int mes, int ano, String lugarSalida, String lugarLlegada, int cantidadPersonas);
     void comprarAsiento(int codigoVuelo, int codigoCliente, int fila, String columna, int cantidadDePersonas);
     Vuelo getVuelo(int codigoDeVuelo);
-    void addEmpleado(int dni, String nombre, int codigoEmpleado, boolean habilitadoParaVender);
+    void addEmpleado(int dni, String nombre, int codigoEmpleado, String nombreArea);
     void guardarReserva(int codigoCliente, Vuelo vuelo);
     void validarSesionEmpleado(int currentSesion);
     TipoDeAvion getTipoDeAvion(String tipoDeAvion);
@@ -31,13 +31,14 @@ public interface ServerInterface {
     Avion getAvion(String avion);
     void validarVueloPorCantidadDePersonal(Vuelo vuelo);
     List<PersonalAbordo> getPersonalAbordoLista();
-
     void validarDisponibilidadTripulacion(LocalDate localDate, int cantidadDePersonal);
-
     void addTarifa(String first, int codigoDeVuelo, int precioFirst);
-
     int getPreciodeTarifa(String codigo, String first);
-}
+    AreaAdministrativa getAreaAdministrativa(String nombreArea);
+    void addAreaAdministrativa(String nombre, boolean habilitacionVenta);
+    List<AreaAdministrativa> getAreasAdministrativas();
+
+    }
 
 
 

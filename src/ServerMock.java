@@ -17,6 +17,7 @@ public class ServerMock implements ServerInterface{
     private List<Avion> aviones = new ArrayList<>();
     private List<Aeropuerto> aeropuertos= new ArrayList<>();
     private List<PersonalAbordo> personalAbordoLista = new ArrayList<>();
+    private List<AreaAdministrativa> areasAdministrativas = new ArrayList<>();
     private List<Saver> savers = new ArrayList<>();
 
     Saver clientesSaver ;
@@ -27,6 +28,7 @@ public class ServerMock implements ServerInterface{
     Saver avionesSaver ;
     Saver aeropuertosSaver ;
     Saver personalDeAbordoSaver;
+    Saver areasAdministrativasSaver;
 
     public ServerMock() {
         aeropuertosSaver = new Saver("Aeropuertos");
@@ -37,6 +39,7 @@ public class ServerMock implements ServerInterface{
         pasajesSaver = new Saver("Pasajes");
         empleadosSaver = new Saver("Empleados");
         personalDeAbordoSaver = new Saver("PersonalDeAbordo");
+        areasAdministrativasSaver = new Saver("AreasAdministrativas");
     }
 
     public void setUp(){
@@ -49,7 +52,9 @@ public class ServerMock implements ServerInterface{
         addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30,60, "1", 1, 3);
         addVuelo("bbb","aaa",2,2,2018, 22, 30, 60, "1", 2, 3);
         addVuelo("bbb", "aaa", 2, 2, 2018, 22, 30, 60, "1", 2, 3);
-        addEmpleado(1, "a", 1, true);
+        addAreaAdministrativa("area1", true);
+        addEmpleado(1, "Gerente", 1, "Gerencia");
+        addEmpleado(2,"b",2,"area2");
 
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
         savers.add(aeropuertosSaver);
@@ -91,10 +96,16 @@ public class ServerMock implements ServerInterface{
         throw new RuntimeException("Numero de cliente invalido");
     }
 
-    public void addEmpleado(int dni, String nombre, int codigoEmpleado, boolean habilitadoParaVender){
-        Empleado empleado = new Empleado(dni, nombre, codigoEmpleado,habilitadoParaVender);
-        empleados.add(empleado);
-        empleadosSaver.save(empleado);
+    public void addEmpleado(int dni, String nombre, int codigoEmpleado, String nombreArea){
+        areasAdministrativas = AreaAdministrativa.build(areasAdministrativasSaver.get());
+        for (AreaAdministrativa area:areasAdministrativas) {
+          if(area.getNombre().equals(nombreArea)){
+              Empleado empleado = new Empleado(dni, nombre, codigoEmpleado,area);
+              empleados.add(empleado);
+              empleadosSaver.save(empleado);
+              break;
+          }
+        }
     }
 
     public void addCliente(int dni, String nombre, int numeroDeCliente) {
@@ -153,7 +164,7 @@ public class ServerMock implements ServerInterface{
     public void validarSesionEmpleado(int currentSesion) {
         empleados = Empleado.build(empleadosSaver.get());
         for (Empleado empleado: empleados ) {
-            if (empleado.getCodigoEmpleado() == currentSesion)return;
+            if (empleado.getCodigoEmpleado() == currentSesion && empleado.getArea().isHabilitacionVenta())return;
         }
         throw new RuntimeException("Codigo de empleado invalido");
     }
@@ -345,6 +356,17 @@ public class ServerMock implements ServerInterface{
         return 0;
     }
 
+    @Override
+    public AreaAdministrativa getAreaAdministrativa(String nombreArea) {
+        areasAdministrativas = AreaAdministrativa.build(areasAdministrativasSaver.get());
+        for (AreaAdministrativa area:areasAdministrativas) {
+            if(area.getNombre().equals(nombreArea)){
+                return area;
+            }
+        }
+        throw new RuntimeException("No existe area con ese nombre");
+    }
+
     private void validadDisponibilidadPersonalDeAbordo(LocalDate fechaDeSalida) {
         for (PersonalAbordo personal:getPersonalAbordoLista()) {
             if (!personal.getCargo().equals("Piloto") && personal.available(fechaDeSalida)){return;}
@@ -361,5 +383,13 @@ public class ServerMock implements ServerInterface{
         throw new RuntimeException("No hay suficientes tripulantes disponibles");
     }
 
-
+    public void addAreaAdministrativa(String nombre, boolean habilitadoVenta){
+        areasAdministrativas = AreaAdministrativa.build(areasAdministrativasSaver.get());
+        AreaAdministrativa areaAdministrativa = new AreaAdministrativa(nombre,habilitadoVenta);
+        areasAdministrativas.add(areaAdministrativa);
+        areasAdministrativasSaver.save(areaAdministrativa);
+    }
+    public List<AreaAdministrativa> getAreasAdministrativas() {
+        return areasAdministrativas;
+    }
 }

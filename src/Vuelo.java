@@ -13,7 +13,7 @@ public class Vuelo implements Saveable{
     private List<PersonalAbordo> listaPersonalAbordo = new ArrayList<>();
     private int mes;
     private int minutosDuracion;
-    ServerInterface server = new ServerMock();
+    static ServerInterface server = new ServerMock();
     private List<Asiento> asientos = new ArrayList<>();
 
     public Vuelo(Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, int dia, int mes, int ano, int hora, int minutos,int minutosDuracion, Avion avion, int codigoDeVuelo) {
@@ -154,8 +154,7 @@ public class Vuelo implements Saveable{
         return aeropuertoSalida.getCodigo() + "," + aeropuertoLlegada.getCodigo() + "," + fechaSalida.getDayOfMonth() + "," + mes + ","+fechaSalida.getYear() + "," + horarioSalida.getHour() + "," + horarioSalida.getMinute()+ "," + minutosDuracion + "," + avion.getCodigo() + "," + codigoDeVuelo + ".";
     }
 
-     static List<Vuelo> build(List<String> elementosStr){
-        ServerInterface server = new ServerMock();
+    public static List<Vuelo> build(List<String> elementosStr){
         List<Vuelo> elementos = new ArrayList<>();
         for (String elemento :elementosStr ) {
             int corte1 = 0;

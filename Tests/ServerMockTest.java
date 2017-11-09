@@ -8,7 +8,7 @@ public class ServerMockTest {
         ServerMock server = new ServerMock();
         server.setUp();
         server.addCliente(123, "lauti", 3);
-        server.addEmpleado(123, "marian", 1, true);
+        server.addEmpleado(123, "marian", 1, "area1");
         server.addPersonalAbordo(123, "juani", "piloto", 1);
         server.addAeropuerto("aaa", "aaa", "aaa");
         server.addTipoDeAvion(1, 1, 1, 1, 1, 1, 1, "a");
@@ -21,7 +21,7 @@ public class ServerMockTest {
         ServerMock server = new ServerMock();
         server.setUp();
         server.addCliente(123, "lauti", 3);
-        server.addEmpleado(123, "marian", 1, true);
+        server.addEmpleado(123, "marian", 1, "area1");
         server.addPersonalAbordo(123, "juani", "piloto", 1);
         server.addAeropuerto("aaa", "aaa", "aaa");
         server.addTipoDeAvion(1, 1, 1, 1, 1, 1, 1, "a");

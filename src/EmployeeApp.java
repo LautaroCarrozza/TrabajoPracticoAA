@@ -26,16 +26,23 @@ public class EmployeeApp {
           iniciarSesion();
       }
     }
-
+    private static void cerrarSesion() {
+        borrarPantalla();
+        System.out.println("Sesion cerrada");
+        iniciarSesion();
+    }
     private static void mostrarMenu() {
         System.out.println("1- Ingresar tipo de avion");
         System.out.println("2- Ingresar avion");
         System.out.println("3- Ingresar Aeropuerto");
         System.out.println("4- Ingresar vuelo");
         System.out.println("- - - - - - - - - - - - - - - - - -");
-        System.out.println("5- VenderPasaje");
+        System.out.println("5- Ingresar area administrativa");
+        System.out.println("6- Ingresar empleado");
         System.out.println("- - - - - - - - - - - - - - - - - -");
-        System.out.println("6- Cerrar Sesion");
+        System.out.println("7- VenderPasaje");
+        System.out.println("- - - - - - - - - - - - - - - - - -");
+        System.out.println("8- Cerrar Sesion");
         System.out.println("9- Exit");
         System.out.println();
 
@@ -43,6 +50,7 @@ public class EmployeeApp {
             int opcion = Scanner.getInt("Seleccione una opcion: ");
 
             switch (opcion) {
+
                 case 1:
                     ingresarTipoDeAvion();
                     break;
@@ -56,10 +64,15 @@ public class EmployeeApp {
                     ingresarVuelo();
                     break;
                 case 5:
-                    menuDeVenta();
+                    ingresarAreaAdministrativa();
                     break;
                 case 6:
-                    iniciarSesion();
+                    ingresarEmpleado();
+                case 7:
+                    menuDeVenta();
+                    break;
+                case 8:
+                    cerrarSesion();
                     break;
                 case 9:
                     System.exit(0);
@@ -72,6 +85,54 @@ public class EmployeeApp {
             System.out.println(e.getMessage());
             mostrarMenu();
         }
+    }
+
+    private static void ingresarEmpleado() {
+        try{
+            if(server.getEmployee(currentSesion).getArea().equals("Gerencia")){
+                int dniEmpleado = Scanner.getInt("Ingrese el dni del empleado: ");
+                String nombreEmpleado = Scanner.getString("Ingrese el nombre del empleado: ");
+                int codigoEmpleado = Scanner.getInt("Ingrese el codigo del empleado: ");
+                String nombreArea = Scanner.getString("Ingrese el nombre del area del empleado:");
+                for (AreaAdministrativa area:server.getAreasAdministrativas()) {
+                    if(server.getAreaAdministrativa(nombreArea).equals(area.getNombre())){
+                        server.addEmpleado(dniEmpleado,nombreEmpleado,codigoEmpleado,nombreArea);
+                    }
+                }
+            }
+            throw new RuntimeException("Area de empleado invalida");
+        }catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            mostrarMenu();
+        }
+        System.out.println("Empleado cargado");
+        mostrarMenu();
+    }
+
+    private static void ingresarAreaAdministrativa() {
+        try{
+            if(server.getEmployee(currentSesion).getArea().equals("Gerencia")) {
+                String nombre = Scanner.getString("Ingrese un nombre para el area: ");
+                System.out.println("¿Esta habilitado para vender?");
+                System.out.println();
+                System.out.println("Si");
+                System.out.println("No");
+                String opcion = Scanner.getString("Elija una opcion: ");
+                System.out.println();
+                if (opcion.equals("Si")) {
+                    server.addAreaAdministrativa(nombre, true);
+                }
+                if (opcion.equals("No")) {
+                    server.addAreaAdministrativa(nombre, false);
+                }
+            }
+            throw new RuntimeException("Area de empleado invalida");
+        }catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            mostrarMenu();
+        }
+        System.out.println("Area Administrativa cargada");
+        mostrarMenu();
     }
 
     private static void venderPasajeIda() {

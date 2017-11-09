@@ -3,14 +3,14 @@ import java.util.List;
 
 public class Empleado extends Persona implements Saveable {
     private AreaAdministrativa area;
-
     private int codigoEmpleado;
-    private boolean habilitadoParaVender;
+    static ServerInterface server = new ServerMock();
 
-    public Empleado(int dni, String nombre, int codigoEmpleado, boolean habilitadoParaVender) {
+
+    public Empleado(int dni, String nombre, int codigoEmpleado, AreaAdministrativa area) {
         super(dni, nombre);
         this.codigoEmpleado = codigoEmpleado;
-        this.habilitadoParaVender = habilitadoParaVender;
+        this.area = area;
     }
 
     public AreaAdministrativa getArea() {
@@ -21,13 +21,9 @@ public class Empleado extends Persona implements Saveable {
         return codigoEmpleado;
     }
 
-    public boolean isHabilitadoParaVender() {
-        return habilitadoParaVender;
-    }
-
     @Override
     public String getSavingFormat() {
-        return dni + "," + nombre + "," + codigoEmpleado + "," + habilitadoParaVender + ".";
+        return dni + "," + nombre + "," + codigoEmpleado + "," + area.getNombre() + ".";
     }
     public static List<Empleado> build(List<String> elementosStr){
         List<Empleado> elementos = new ArrayList<>();
@@ -60,7 +56,7 @@ public class Empleado extends Persona implements Saveable {
             String field3 = elemento.substring(corte2+1, corte3);
             String field4 = elemento.substring(corte3+1, elemento.length()-1);
 
-            Empleado empleado= new Empleado(Integer.parseInt(field1),field2,Integer.parseInt(field3),Boolean.parseBoolean(field4));
+            Empleado empleado= new Empleado(Integer.parseInt(field1),field2,Integer.parseInt(field3),server.getAreaAdministrativa(field4));
             elementos.add(empleado);
         }
         return elementos;
@@ -74,7 +70,7 @@ public class Empleado extends Persona implements Saveable {
         Empleado empleado = (Empleado) o;
 
         if (codigoEmpleado != empleado.codigoEmpleado) return false;
-        if (habilitadoParaVender != empleado.habilitadoParaVender) return false;
+        if (area != empleado.getArea()) return false;
         return area != null ? area.equals(empleado.area) : empleado.area == null;
     }
 
@@ -82,7 +78,6 @@ public class Empleado extends Persona implements Saveable {
     public int hashCode() {
         int result = area != null ? area.hashCode() : 0;
         result = 31 * result + codigoEmpleado;
-        result = 31 * result + (habilitadoParaVender ? 1 : 0);
         return result;
     }
 }
