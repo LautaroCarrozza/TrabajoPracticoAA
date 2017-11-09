@@ -78,4 +78,26 @@ public class Pasaje implements Saveable {
         }
         return elementos;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Pasaje pasaje = (Pasaje) o;
+
+        if (codigo != pasaje.codigo) return false;
+        if (!vuelo.equals(pasaje.vuelo)) return false;
+        if (!asiento.equals(pasaje.asiento)) return false;
+        return cliente.equals(pasaje.cliente);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = codigo;
+        result = 31 * result + vuelo.hashCode();
+        result = 31 * result + asiento.hashCode();
+        result = 31 * result + cliente.hashCode();
+        return result;
+    }
 }

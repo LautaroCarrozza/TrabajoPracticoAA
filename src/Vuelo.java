@@ -74,7 +74,9 @@ public class Vuelo implements Saveable{
     public void ocupar(int fila, String columna) {
         for (Asiento asiento:asientos
              ) {
-        if (asiento.getFila() == fila && asiento.getColumna() == columna.charAt(0));
+        if (asiento.getFila() == fila && asiento.getColumna() == columna.charAt(0));{
+            ocupacion.put(asiento, true);
+            }
         }
     }
 
@@ -242,4 +244,44 @@ public class Vuelo implements Saveable{
 
         return elementos;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Vuelo vuelo = (Vuelo) o;
+
+        if (codigoDeVuelo != vuelo.codigoDeVuelo) return false;
+        if (mes != vuelo.mes) return false;
+        if (minutosDuracion != vuelo.minutosDuracion) return false;
+        if (!aeropuertoSalida.equals(vuelo.aeropuertoSalida)) return false;
+        if (!aeropuertoLlegada.equals(vuelo.aeropuertoLlegada)) return false;
+        if (!fechaSalida.equals(vuelo.fechaSalida)) return false;
+        if (!avion.equals(vuelo.avion)) return false;
+        if (!ocupacion.equals(vuelo.ocupacion)) return false;
+        if (!horarioSalida.equals(vuelo.horarioSalida)) return false;
+        if (!listaPersonalAbordo.equals(vuelo.listaPersonalAbordo)) return false;
+        if (!server.equals(vuelo.server)) return false;
+        return asientos.equals(vuelo.asientos);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = aeropuertoSalida.hashCode();
+        result = 31 * result + aeropuertoLlegada.hashCode();
+        result = 31 * result + fechaSalida.hashCode();
+        result = 31 * result + avion.hashCode();
+        result = 31 * result + codigoDeVuelo;
+        result = 31 * result + ocupacion.hashCode();
+        result = 31 * result + horarioSalida.hashCode();
+        result = 31 * result + listaPersonalAbordo.hashCode();
+        result = 31 * result + mes;
+        result = 31 * result + minutosDuracion;
+        result = 31 * result + server.hashCode();
+        result = 31 * result + asientos.hashCode();
+        return result;
+    }
 }
+
+

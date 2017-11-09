@@ -62,6 +62,7 @@ public class Saver <T extends Saveable> {
 
         }
         catch (IOException e){
+
         }
         return result;
     }

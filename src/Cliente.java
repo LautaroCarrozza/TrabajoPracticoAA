@@ -55,4 +55,18 @@ public class Cliente extends Persona implements Saveable{
         return super.dni + "," + super.nombre + "," + numeroDeCliente + ".";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Cliente cliente = (Cliente) o;
+
+        return numeroDeCliente == cliente.numeroDeCliente;
+    }
+
+    @Override
+    public int hashCode() {
+        return numeroDeCliente;
+    }
 }

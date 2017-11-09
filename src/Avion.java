@@ -73,4 +73,25 @@ public class Avion implements Saveable{
     public int getCantidadDePersonal() {
        return tipoDeAvion.getCantidadDePersonalAbordo();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Avion avion = (Avion) o;
+
+        if (!codigo.equals(avion.codigo)) return false;
+        if (!tipoDeAvion.equals(avion.tipoDeAvion)) return false;
+        return asientos != null ? asientos.equals(avion.asientos) : avion.asientos == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = codigo.hashCode();
+        result = 31 * result + tipoDeAvion.hashCode();
+        result = 31 * result + (asientos != null ? asientos.hashCode() : 0);
+        return result;
+    }
 }
+

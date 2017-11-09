@@ -65,4 +65,24 @@ public class Empleado extends Persona implements Saveable {
         }
         return elementos;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Empleado empleado = (Empleado) o;
+
+        if (codigoEmpleado != empleado.codigoEmpleado) return false;
+        if (habilitadoParaVender != empleado.habilitadoParaVender) return false;
+        return area != null ? area.equals(empleado.area) : empleado.area == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = area != null ? area.hashCode() : 0;
+        result = 31 * result + codigoEmpleado;
+        result = 31 * result + (habilitadoParaVender ? 1 : 0);
+        return result;
+    }
 }
