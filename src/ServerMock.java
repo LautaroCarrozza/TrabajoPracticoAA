@@ -40,63 +40,6 @@ public class ServerMock implements ServerInterface{
     }
 
     public void setUp(){
-        addCliente(1, "a", 1);
-        addPersonalAbordo(1, "arturo", "piloto", 1);
-        addPersonalAbordo(2, "benjamin", "piloto", 2);
-        addPersonalAbordo(3, "carlos", "piloto", 3);
-        addPersonalAbordo(4, "damian", "piloto", 4);
-        addPersonalAbordo(5, "esteban", "piloto", 5);
-        addPersonalAbordo(6, "franco", "piloto", 6);
-        addPersonalAbordo(7, "gustavo", "piloto", 7);
-        addPersonalAbordo(8, "horacio", "piloto", 8);
-        addPersonalAbordo(9, "ignacio", "piloto", 9);
-        addPersonalAbordo(10, "juana", "piloto", 10);
-        addPersonalAbordo(11, "kevin", "personal", 11);
-        addPersonalAbordo(12, "lino", "personal", 12);
-        addPersonalAbordo(13, "mariana", "personal", 13);
-        addPersonalAbordo(14, "nicolas", "personal", 14);
-        addPersonalAbordo(15, "osvaldo", "personal", 15);
-        addPersonalAbordo(16, "pablo", "personal", 16);
-        addPersonalAbordo(17, "quimey", "personal", 17);
-        addPersonalAbordo(18, "ramiro", "personal", 18);
-        addPersonalAbordo(19, "sebastian", "personal", 19);
-        addPersonalAbordo(20, "tomas", "personal", 20);
-
-        addAeropuerto("aaa", "aaa", "aaa");
-        addAeropuerto("bbb", "bbb", "bbb");
-        addAeropuerto("ccc","ccc", "ccc");
-        addTipoDeAvion(5, 3, 3, 3, 2, 2, 4, "boeing-747");
-        addTipoDeAvion(3, 3, 2, 3, 2, 2, 3, "airbus-737");
-
-        addAvion("1", "airbus-747");
-        addAvion("2", "airbus-747");
-        addAvion("3", "airbus-747");
-        addAvion("4", "airbus-747");
-        addAvion("5", "airbus-747");
-        addAvion("6", "boeing-747");
-        addAvion("7", "boeing-747");
-        addAvion("8", "boeing-747");
-        addAvion("9", "boeing-747");
-        addAvion("10", "boeing-747");
-
-        addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30,60, "1", 1, 3, 100, 200, 300);
-        addVuelo("bbb","aaa",2,2,2018, 22, 30, 60, "1", 2, 3, 100, 200, 300);
-        addVuelo("bbb", "ccc", 1, 1, 2018, 23,00,60,"1", 3,2,100,200,300);
-        addVuelo("aaa", "ccc", 1, 1, 2018, 23,00,60,"1", 4,2,100,200,300);
-        addAreaAdministrativa("gerencia", true);
-        addAreaAdministrativa("areainhabilitada",false);
-        addAreaAdministrativa("areahabilitada",true);
-        addEmpleado(21, "gerente", 1, "gerencia");
-        addEmpleado(22,"empleadoinhabilitado",2,"areainhabilitada");
-        addEmpleado(23,"monica",3,"areahabilitada");
-        addEmpleado(24,"viviana",4,"areahabilitada");
-        addEmpleado(25,"alejandra",5,"areahabilitada");
-        addEmpleado(26,"fabricio",6,"areahabilitada");
-        addEmpleado(27,"elias",7,"areahabilitada");
-        addEmpleado(28,"jose",8,"areahabilitada");
-        addEmpleado(29,"rodrigo",9,"areahabilitada");
-        addEmpleado(30,"vivian",10,"areahabilitada");
-
 
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get(), this);
         clientes = Cliente.build(clientesSaver.get(), this);
