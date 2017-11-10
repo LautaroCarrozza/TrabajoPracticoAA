@@ -105,12 +105,24 @@ public class ClientApp {
     }
 
     private  void registroDeCliente() {
-        int dni = Scanner.getInt("Ingresar DNI: ");
-        String nombre = Scanner.getString("Ingrese su nombre: ");
-        int codigo = Scanner.getInt("Ingrese su numero de cliente: ");
-        server.addCliente(dni, nombre, codigo);
-        borrarPantalla();
-        menuDeInicio();
+        try{
+            int dni = Scanner.getInt("Ingresar DNI: ");
+            String nombre = Scanner.getString("Ingrese su nombre: ");
+            int codigo = Scanner.getInt("Ingrese su numero de cliente: ");
+            for (Cliente cliente:server.getClientes()) {
+                if(cliente.getNumeroDeCliente() == codigo){
+                    throw new RuntimeException("Ya existe un cliente con ese codigo");
+                }
+            }
+            server.addCliente(dni, nombre, codigo);
+            borrarPantalla();
+            menuDeInicio();
+        }catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            borrarPantalla();
+            menuDeInicio();
+        }
+
     }
 
     private  void iniciarSesion() {

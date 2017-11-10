@@ -40,7 +40,9 @@ public interface ServerInterface {
     void addTripulacion(Vuelo vuelo);
     void addPersonalAbordoenVuelo(Vuelo vuelo);
     void addPiloto(Vuelo vuelo);
-}
-
-
-
+    List<Empleado> getEmpleados();
+    List<Cliente> getClientes();
+    List<Avion> getAviones();
+    List<Aeropuerto> getAeropuertos();
+    List<Vuelo> getVuelos();
+    }

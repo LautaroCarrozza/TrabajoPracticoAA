@@ -49,7 +49,7 @@ public class ServerMock implements ServerInterface{
         addVuelo("bbb", "aaa", 2, 2, 2018, 22, 30, 60, "1", 2, 3);
         addAreaAdministrativa("gerencia", true);
         addEmpleado(1, "gerente", 1, "gerencia");
-        addEmpleado(2,"b",2,"area2");
+        addEmpleado(2,"b",2,"area1");
 
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get(), this);
         clientes = Cliente.build(clientesSaver.get(), this);
@@ -390,5 +390,25 @@ public class ServerMock implements ServerInterface{
         }
         throw new RuntimeException("No existen pilotos disponibles");
 
+    }
+
+    public List<Empleado> getEmpleados() {
+        return empleados;
+    }
+
+    public List<Cliente> getClientes() {
+        return clientes;
+    }
+
+    public List<Avion> getAviones() {
+        return aviones;
+    }
+
+    public List<Aeropuerto> getAeropuertos() {
+        return aeropuertos;
+    }
+
+    public List<Vuelo> getVuelos() {
+        return vuelos;
     }
 }
