@@ -104,7 +104,7 @@ public class EmployeeApp {
 
     private  void ingresarEmpleado() {
         try{
-            if(server.getEmployee(currentSesion).getArea().equals("Gerencia")){
+            if(server.getEmployee(currentSesion).getArea().getNombre().equals("gerencia")){
                 int dniEmpleado = Scanner.getInt("Ingrese el dni del empleado: ");
                 String nombreEmpleado = Scanner.getString("Ingrese el nombre del empleado: ");
                 int codigoEmpleado = Scanner.getInt("Ingrese el codigo del empleado: ");
@@ -112,6 +112,7 @@ public class EmployeeApp {
                 for (AreaAdministrativa area:server.getAreasAdministrativas()) {
                     if(server.getAreaAdministrativa(nombreArea).equals(area.getNombre())){
                         server.addEmpleado(dniEmpleado,nombreEmpleado,codigoEmpleado,nombreArea);
+                        mostrarMenuAcciones();
                     }
                 }
             }
@@ -126,7 +127,7 @@ public class EmployeeApp {
 
     private  void ingresarAreaAdministrativa() {
         try{
-            if(server.getEmployee(currentSesion).getArea().equals("Gerencia")) {
+            if(server.getEmployee(currentSesion).getArea().getNombre().equals("gerencia")) {
                 String nombre = Scanner.getString("Ingrese un nombre para el area: ");
                 System.out.println("¿Esta habilitado para vender?");
                 System.out.println();
@@ -136,9 +137,11 @@ public class EmployeeApp {
                 System.out.println();
                 if (opcion.equals("Si")) {
                     server.addAreaAdministrativa(nombre, true);
+                    mostrarMenuAcciones();
                 }
                 if (opcion.equals("No")) {
                     server.addAreaAdministrativa(nombre, false);
+                    mostrarMenuAcciones();
                 }
             }
             throw new RuntimeException("Area de empleado invalida");
@@ -266,7 +269,7 @@ public class EmployeeApp {
             String columna = Scanner.getString("Ingresar columna deseada: ");
             if( !vueloDeseado.getOcupacion(fila, columna)){
                 vueloDeseado.ocupar(fila, columna);
-                return;
+                mostrarMenuAcciones();
             }
             else {
                 throw new RuntimeException("Seleccion de asiento no disponible");
@@ -292,7 +295,7 @@ public class EmployeeApp {
             String columna = Scanner.getString("Ingresar columna deseada: ");
             if( !vueloDeseadoIda.getOcupacion(fila, columna)){
                 vueloDeseadoIda.ocupar(fila, columna);
-                return;
+                mostrarMenuAcciones();
             }
             else {
                 throw new RuntimeException("Seleccion de asiento no disponible");
@@ -318,7 +321,7 @@ public class EmployeeApp {
             String columna = Scanner.getString("Ingresar columna deseada: ");
             if( !vueloDeseadoVuelta.getOcupacion(fila, columna)){
                 vueloDeseadoVuelta.ocupar(fila, columna);
-                return;
+                mostrarMenuAcciones();
             }
             else {
                 throw new RuntimeException("Seleccion de asiento no disponible");

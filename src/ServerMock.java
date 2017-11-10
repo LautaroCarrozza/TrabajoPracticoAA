@@ -47,8 +47,8 @@ public class ServerMock implements ServerInterface{
         addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30,60, "1", 1, 3);
         addVuelo("bbb","aaa",2,2,2018, 22, 30, 60, "1", 2, 3);
         addVuelo("bbb", "aaa", 2, 2, 2018, 22, 30, 60, "1", 2, 3);
-        addAreaAdministrativa("area1", true);
-        addEmpleado(1, "Gerente", 1, "Gerencia");
+        addAreaAdministrativa("gerencia", true);
+        addEmpleado(1, "gerente", 1, "gerencia");
         addEmpleado(2,"b",2,"area2");
 
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get(), this);
