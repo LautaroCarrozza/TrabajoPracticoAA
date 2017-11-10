@@ -42,7 +42,7 @@ public class Pasaje implements Saveable {
 
     @Override
     public String toString() {
-        return "Asiento: " + asiento.toString() + " " + nombre + " DNI: " + dni + "\nCodigo de ticket: " + codigo;
+        return "Asiento: " + asiento.toString() + "\n" + "Nombre de pasajero: " + nombre + "\n" + "DNI: " + dni + "\nCodigo de ticket: " + codigo;
     }
 
     public static List<Pasaje> build(List<String> elementosStr, ServerInterface server) {
@@ -88,9 +88,9 @@ public class Pasaje implements Saveable {
             Vuelo vuelo = server.getVuelo(Integer.parseInt(elemento.substring(0, corte1))) ;
             int fila = Integer.parseInt(elemento.substring(corte1+1, corte2));
             String columna = elemento.substring(corte2+1, corte3);
-            Cliente cliente = server.getCliente(Integer.parseInt(elemento.substring(corte3+1, elemento.length() -1 )));
+            Cliente cliente = server.getCliente(Integer.parseInt(elemento.substring(corte3+1, corte4 )));
             String nombre = elemento.substring(corte4+1, corte5);
-            int dni = Integer.parseInt(elemento.substring(corte5, elemento.length()-1));
+            int dni = Integer.parseInt(elemento.substring(corte5+1, elemento.length()-1));
 
             Pasaje pasaje = new Pasaje(vuelo, fila, columna, cliente, nombre, dni);
             elementos.add(pasaje);

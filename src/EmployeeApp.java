@@ -320,7 +320,6 @@ public class EmployeeApp {
                 String nombre = Scanner.getString("Ingrese el nombre del pasajero: ");
                 int dni = Scanner.getInt("Ingrese el DNI del pasajero: ");
                 server.comprarAsiento(vueloDeseadoIda.getCodigoDeVuelo(), currentClient, fila, columna, cantidadDePasajeros, nombre, dni);
-                mostrarMenuAcciones();
             }
             else {
                 throw new RuntimeException("Seleccion de asiento no disponible");
@@ -348,7 +347,6 @@ public class EmployeeApp {
                 String nombre = Scanner.getString("Ingrese el nombre del pasajero: ");
                 int dni = Scanner.getInt("Ingrese el DNI del pasajero: ");
                 server.comprarAsiento(vueloDeseadoVuelta.getCodigoDeVuelo(), currentClient, fila, columna, cantidadDePasajeros, nombre, dni);
-                mostrarMenuAcciones();
             }
             else {
                 throw new RuntimeException("Seleccion de asiento no disponible");
