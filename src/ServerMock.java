@@ -69,8 +69,14 @@ public class ServerMock implements ServerInterface{
         areasAdministrativas = AreaAdministrativa.build(areasAdministrativasSaver.get(), this);
 
         ocuparAsientos();
-
         addPasajes();
+        reasingarTripulaciones();
+    }
+
+    private void reasingarTripulaciones() {
+        for (Vuelo vuelo: vuelos) {
+            addTripulacion(vuelo);
+        }
     }
 
     private void addPasajes() {
@@ -126,13 +132,14 @@ public class ServerMock implements ServerInterface{
         return posiblesVuelos;
     }
 
-    public void comprarAsiento(int codigoVuelo, int codigoCliente, int fila, String columna, int cantidadDePersonas) {
+    public void comprarAsiento(int codigoVuelo, int codigoCliente, int fila, String columna, int cantidadDePersonas, String nombre, int dni) {
+
 
         Vuelo vuelo = getVuelo(codigoVuelo);
 
         if (!vuelo.getOcupacion(fila, columna)){
             vuelo.ocupar(fila, columna);
-            Pasaje pasaje = new Pasaje(vuelo, fila, columna, getCliente(codigoCliente));
+            Pasaje pasaje = new Pasaje(vuelo, fila, columna, getCliente(codigoCliente), nombre, dni);
             pasajes.add(pasaje);
             getCliente(codigoCliente).addPasaje(pasaje);
             pasajesSaver.save(pasaje);

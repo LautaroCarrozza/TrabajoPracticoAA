@@ -123,7 +123,6 @@ public class ClientApp {
                 }
             }
             server.addCliente(dni, nombre, codigo);
-
             menuDeInicio();
         }catch (RuntimeException e){
             System.out.println(e.getMessage());
@@ -356,7 +355,9 @@ public class ClientApp {
             int fila = Scanner.getInt("Ingresar fila deseada: ");
             String columna = Scanner.getString("Ingresar columna deseada: ");
             if (!(vuelo.getOcupacion(fila, columna))) {
-                server.comprarAsiento(vuelo.getCodigoDeVuelo(), currentCliente, fila, columna, cantidadDePersonas);
+                String nombre = Scanner.getString("Ingrese el nombre del pasajero: ");
+                int dni = Scanner.getInt("Ingrese el DNI del pasajero: ");
+                server.comprarAsiento(vuelo.getCodigoDeVuelo(), currentCliente, fila, columna, cantidadDePersonas, nombre, dni);
             } else {
                 throw new RuntimeException("Seleccion de asiento no disponible");
             }

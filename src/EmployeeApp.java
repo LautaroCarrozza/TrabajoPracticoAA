@@ -290,7 +290,9 @@ public class EmployeeApp {
             int fila = Scanner.getInt("Ingresar flia deseada: ");
             String columna = Scanner.getString("Ingresar columna deseada: ");
             if( !vueloDeseado.getOcupacion(fila, columna)){
-                server.comprarAsiento(vueloDeseado.getCodigoDeVuelo(), currentClient, fila, columna, cantidadDePasajeros);
+                String nombre = Scanner.getString("Ingrese el nombre del pasajero: ");
+                int dni = Scanner.getInt("Ingrese el DNI del pasajero: ");
+                server.comprarAsiento(vueloDeseado.getCodigoDeVuelo(), currentClient, fila, columna, cantidadDePasajeros, nombre, dni);
             }
             else {
                 throw new RuntimeException("Seleccion de asiento no disponible");
@@ -315,9 +317,10 @@ public class EmployeeApp {
             int fila = Scanner.getInt("Ingresar flia deseada: ");
             String columna = Scanner.getString("Ingresar columna deseada: ");
             if( !vueloDeseadoIda.getOcupacion(fila, columna)){
-                server.comprarAsiento(vueloDeseadoIda.getCodigoDeVuelo(), currentClient, fila, columna, cantidadDePasajeros);
+                String nombre = Scanner.getString("Ingrese el nombre del pasajero: ");
+                int dni = Scanner.getInt("Ingrese el DNI del pasajero: ");
+                server.comprarAsiento(vueloDeseadoIda.getCodigoDeVuelo(), currentClient, fila, columna, cantidadDePasajeros, nombre, dni);
                 mostrarMenuAcciones();
-                server.comprarAsiento(vueloDeseadoIda.getCodigoDeVuelo(), currentClient, fila, columna, cantidadDePasajeros);
             }
             else {
                 throw new RuntimeException("Seleccion de asiento no disponible");
@@ -342,7 +345,9 @@ public class EmployeeApp {
             int fila = Scanner.getInt("Ingresar flia deseada: ");
             String columna = Scanner.getString("Ingresar columna deseada: ");
             if( !vueloDeseadoVuelta.getOcupacion(fila, columna)){
-                server.comprarAsiento(vueloDeseadoVuelta.getCodigoDeVuelo(), currentClient, fila, columna, cantidadDePasajeros);
+                String nombre = Scanner.getString("Ingrese el nombre del pasajero: ");
+                int dni = Scanner.getInt("Ingrese el DNI del pasajero: ");
+                server.comprarAsiento(vueloDeseadoVuelta.getCodigoDeVuelo(), currentClient, fila, columna, cantidadDePasajeros, nombre, dni);
                 mostrarMenuAcciones();
             }
             else {
