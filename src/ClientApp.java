@@ -115,11 +115,10 @@ public class ClientApp {
                 }
             }
             server.addCliente(dni, nombre, codigo);
-            borrarPantalla();
+
             menuDeInicio();
         }catch (RuntimeException e){
             System.out.println(e.getMessage());
-            borrarPantalla();
             menuDeInicio();
         }
 
