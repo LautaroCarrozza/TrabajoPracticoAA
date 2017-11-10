@@ -206,7 +206,7 @@ public class ClientApp {
         for (int i = 0; i < cantidadDePersonas; i++) {
             asientosDisponiblesIdayVuelta();
         }
-
+        System.out.println("La compra se realizo exitosamente");
         mostrarMenu();
     }
 
