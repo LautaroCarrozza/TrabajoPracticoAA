@@ -1,17 +1,17 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Reserva{
 
     private List<Pasaje> pasajes;
     private List<Asiento> asientos = new ArrayList<>();
     private int cantidadDePersonas;
-    private Vuelo vuelo;
 
 
-    public Reserva(List<Pasaje> pasajesReservados, Vuelo vuelo) {
+    public Reserva(List<Pasaje> pasajesReservados) {
         pasajes = pasajesReservados;
-        this.vuelo = vuelo;
         cantidadDePersonas = pasajes.size();
         for (Pasaje pasaje:pasajes) {
             asientos.add(pasaje.getAsiento());
@@ -20,10 +20,16 @@ public class Reserva{
 
     @Override
     public String toString() {
-        String result = "Reserva para " + pasajes.get(0).getCliente().getNombre() +
-                "\nDesde: " + pasajes.get(0).getVuelo().getUbicacionSalida()
-                + " Hasta: " + pasajes.get(0).getVuelo().getUbicacionLlegada() + "\n";
-        for (Pasaje pasaje: pasajes) {
+        Set<Pasaje> pasajes = new HashSet<>();
+        pasajes.addAll(this.pasajes);
+        List<Pasaje> uniques= new ArrayList<>();
+        uniques.addAll(pasajes);
+
+
+        String result = "Reserva para " + uniques.get(0).getCliente().getNombre() +
+                "\nDesde: " + uniques.get(0).getVuelo().getUbicacionSalida()
+                + " Hasta: " + uniques.get(0).getVuelo().getUbicacionLlegada() + "\n";
+        for (Pasaje pasaje: uniques) {
             result += pasaje.toString();
         }
         return result;

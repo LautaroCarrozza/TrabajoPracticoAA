@@ -61,16 +61,24 @@ public class ServerMock implements ServerInterface{
         personalAbordoLista = PersonalAbordo.build(personalDeAbordoSaver.get(), this);
         areasAdministrativas = AreaAdministrativa.build(areasAdministrativasSaver.get(), this);
 
+        ocuparAsientos();
 
-
-        asignarReseras();
+        addPasajes();
     }
 
-    /// tiene que buscar en todos los pasajes y crear las reservas que sean del mismo cliente y del mismo vuelo con cliente.GuardarReserva();
-    // el guardarReserva no toma dos repetidas (podes agregar todas y A LA VERGA)
-    private void asignarReseras() {
-
+    private void addPasajes() {
+        for (Pasaje pasaje:pasajes) {
+            pasaje.getCliente().addPasaje(pasaje);
+        }
     }
+
+    private void ocuparAsientos() {
+        for (Pasaje pasaje: pasajes) {
+            pasaje.getVuelo().ocupar(pasaje.getAsiento());
+        }
+    }
+
+
 
     public void validarSesionCliente(int numero) {
 
@@ -115,12 +123,13 @@ public class ServerMock implements ServerInterface{
 
     public void comprarAsiento(int codigoVuelo, int codigoCliente, int fila, String columna, int cantidadDePersonas) {
 
-      Vuelo vuelo =  getVuelo(codigoVuelo);
+        Vuelo vuelo = getVuelo(codigoVuelo);
 
         if (!vuelo.getOcupacion(fila, columna)){
             vuelo.ocupar(fila, columna);
             Pasaje pasaje = new Pasaje(vuelo, fila, columna, getCliente(codigoCliente));
             pasajes.add(pasaje);
+            getCliente(codigoCliente).addPasaje(pasaje);
             pasajesSaver.save(pasaje);
         }
         else{throw new RuntimeException("El asiento esta ocupado");}
@@ -136,16 +145,6 @@ public class ServerMock implements ServerInterface{
         throw new RuntimeException("No existen vuelos con ese codigo");
     }
 
-    public void guardarReserva(int codigoCliente, Vuelo vuelo) {
-
-        List<Pasaje> pasajesReservados = new ArrayList<>();
-        for (Pasaje pasaje:pasajes) {
-            if (pasaje.getCliente().getNumeroDeCliente() == codigoCliente && pasaje.getVuelo().getCodigoDeVuelo() == vuelo.getCodigoDeVuelo()){
-                pasajesReservados.add(pasaje);
-            }
-        }
-        getCliente(codigoCliente).guardarReserva(pasajesReservados, vuelo);
-    }
 
     public void validarSesionEmpleado(int currentSesion) {
 
@@ -290,12 +289,7 @@ public class ServerMock implements ServerInterface{
     }
 
     public List<Reserva> getReservas(int numeroDeCliente) {
-        for (Pasaje pasaje : pasajes){
-            if (pasaje.getCliente().getNumeroDeCliente() == numeroDeCliente){
-                guardarReserva(numeroDeCliente, pasaje.getVuelo());
-            }
-        }
-        return getCliente(numeroDeCliente).getReservas();
+       return getCliente(numeroDeCliente).getReservas();
     }
 
     public List<PersonalAbordo> getPersonalAbordoLista() {

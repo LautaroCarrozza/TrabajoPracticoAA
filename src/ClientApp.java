@@ -190,7 +190,6 @@ public class ClientApp {
             asientosDisponiblesIda();
         }
         //falta guardar reserva
-        server.guardarReserva(currentCliente, vueloDeseado);
         System.out.println("Operacion realizada satisfactoriamente");
         mostrarMenu();
     }
@@ -208,8 +207,7 @@ public class ClientApp {
         for (int i = 0; i < cantidadDePersonas; i++) {
             asientosDisponiblesIdayVuelta();
         }
-        server.guardarReserva(currentCliente, vueloDeseado);
-        server.guardarReserva(currentCliente, vueloDeseadoVuelta);
+
         mostrarMenu();
     }
 

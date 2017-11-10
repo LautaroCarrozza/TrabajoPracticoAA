@@ -175,8 +175,6 @@ public class EmployeeApp {
         for (int i = 0; i < cantidadDePasajeros; i++) {
             venderAsiento();
         }
-
-        server.guardarReserva(currentClient, vueloDeseado);
         mostrarMenu();
     }
 
@@ -222,8 +220,7 @@ public class EmployeeApp {
         for (int i = 0; i < cantidadDePasajeros; i++) {
             venderAsientoVuelta();
         }
-        server.guardarReserva(currentClient, vueloDeseadoIda);
-        server.guardarReserva(currentClient, vueloDeseadoVuelta);
+
         System.out.println("Las reservas se a guardadon correctamente");
 
         mostrarMenu();
