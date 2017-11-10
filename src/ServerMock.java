@@ -231,13 +231,12 @@ public class ServerMock implements ServerInterface{
 
     public void validarCliente(int numeroCliente){
 
-        for (Cliente c: clientes
-             ) {
+        for (Cliente c: clientes) {
             if (c.getNumeroDeCliente() == numeroCliente) {
                 return;
             }
-            throw new RuntimeException("El cliente no existe");
         }
+        throw new RuntimeException("El cliente no existe");
     }
 
     @Override
