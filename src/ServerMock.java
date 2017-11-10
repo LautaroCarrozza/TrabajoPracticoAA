@@ -78,8 +78,6 @@ public class ServerMock implements ServerInterface{
         }
     }
 
-
-
     public void validarSesionCliente(int numero) {
 
         for (Cliente c : clientes) {

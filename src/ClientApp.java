@@ -305,7 +305,6 @@ public class ClientApp {
             String columna = Scanner.getString("Ingresar columna deseada: ");
             if (!(vuelo.getOcupacion(fila, columna))) {
                 server.comprarAsiento(vuelo.getCodigoDeVuelo(), currentCliente, fila, columna, cantidadDePersonas);
-                mostrarMenu();
             } else {
                 throw new RuntimeException("Seleccion de asiento no disponible");
             }
