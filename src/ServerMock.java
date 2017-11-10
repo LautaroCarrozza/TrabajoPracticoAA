@@ -60,13 +60,14 @@ public class ServerMock implements ServerInterface{
 
         aeropuertos = Aeropuerto.build(aeropuertosSaver.get(), this);
         clientes = Cliente.build(clientesSaver.get(), this);
+        areasAdministrativas = AreaAdministrativa.build(areasAdministrativasSaver.get(), this);
         empleados = Empleado.build(empleadosSaver.get(), this);
         tiposDeAvion = TipoDeAvion.build(tiposDeAvionSaver.get(), this);
         aviones = Avion.build(avionesSaver.get(), this);
+        personalAbordoLista = PersonalAbordo.build(personalDeAbordoSaver.get(), this);
         vuelos = Vuelo.build(vuelosSaver.get(), this);
         pasajes = Pasaje.build(pasajesSaver.get(), this);
-        personalAbordoLista = PersonalAbordo.build(personalDeAbordoSaver.get(), this);
-        areasAdministrativas = AreaAdministrativa.build(areasAdministrativasSaver.get(), this);
+
 
         ocuparAsientos();
         addPasajes();
@@ -107,7 +108,7 @@ public class ServerMock implements ServerInterface{
               Empleado empleado = new Empleado(dni, nombre, codigoEmpleado,area);
               empleados.add(empleado);
               empleadosSaver.save(empleado);
-              break;
+              return;
           }
         }
     }

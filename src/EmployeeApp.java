@@ -147,6 +147,7 @@ public class EmployeeApp {
                 System.out.println();
                 if (opcion.equals("Si")) {
                     server.addAreaAdministrativa(nombre, true);
+
                     mostrarMenuAcciones();
                 }
                 if (opcion.equals("No")) {
