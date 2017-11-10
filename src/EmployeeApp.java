@@ -110,10 +110,11 @@ public class EmployeeApp {
                         throw new RuntimeException("Ya existe un empleado con ese codigo");
                     }
                 }
-                String nombreArea = Scanner.getString("Ingrese el nombre del area del empleado:");
+                String nombreArea = Scanner.getString("Ingrese el nombre del area del empleado: ");
                 for (AreaAdministrativa area:server.getAreasAdministrativas()) {
                     if(server.getAreaAdministrativa(nombreArea).getNombre().equals(area.getNombre())){
                         server.addEmpleado(dniEmpleado,nombreEmpleado,codigoEmpleado,nombreArea);
+                        System.out.println("Empleado cargado");
                         mostrarMenuAcciones();
                     }
                 }
@@ -126,7 +127,6 @@ public class EmployeeApp {
             System.out.println(e.getMessage());
             mostrarMenuAcciones();
         }
-        System.out.println("Empleado cargado");
         mostrarMenuAcciones();
     }
 
@@ -147,11 +147,12 @@ public class EmployeeApp {
                 System.out.println();
                 if (opcion.equals("Si")) {
                     server.addAreaAdministrativa(nombre, true);
-
+                    System.out.println("Area Administrativa cargada");
                     mostrarMenuAcciones();
                 }
                 if (opcion.equals("No")) {
                     server.addAreaAdministrativa(nombre, false);
+                    System.out.println("Area Administrativa cargada");
                     mostrarMenuAcciones();
                 }
             }
@@ -160,7 +161,6 @@ public class EmployeeApp {
             System.out.println(e.getMessage());
             mostrarMenuAcciones();
         }
-        System.out.println("Area Administrativa cargada");
         mostrarMenuAcciones();
     }
 
@@ -487,16 +487,16 @@ public class EmployeeApp {
             int precioFirst = 0;
 
             if (server.getAvion(plane).tieneEconomy()) {
-                 precioEconomy = Scanner.getInt("Ingrese el precio para Economy");
+                 precioEconomy = Scanner.getInt("Ingrese el precio para Economy: ");
             }
             if (server.getAvion(plane).tieneBussiness()) {
-                 precioBussiness = Scanner.getInt("Ingrese el precio para Bussiness");
+                 precioBussiness = Scanner.getInt("Ingrese el precio para Bussiness: ");
             }
             if (server.getAvion(plane).tieneFirst()) {
-                 precioFirst = Scanner.getInt("Ingrese el precio para First");
+                 precioFirst = Scanner.getInt("Ingrese el precio para First: ");
             }
 
-            int cantidadDeSemanas = Scanner.getInt("Durante cuantas semanas va a repetirse el vuelo?");
+            int cantidadDeSemanas = Scanner.getInt("¿Durante cuantas semanas va a repetirse el vuelo?");
             LocalDate localDate = LocalDate.of(ano, mes, dia);
             server.addVuelo(aeropuertoDeSalida, aeropuertoDeLlegada, dia, mes, ano, hours, minutes,minutesDuration, plane, flightCode, cantidadDeSemanas, precioEconomy, precioBussiness, precioFirst);
             server.getAvion(plane).agregarVuelo(server.getVuelo(flightCode));

@@ -401,7 +401,6 @@ public class ServerMock implements ServerInterface{
             if (piloto.getCargo().equals("piloto") && piloto.available(vuelo.getFechaSalida())) {
                 vuelo.addTripulacion(piloto);
                 piloto.addVuelo(vuelo);
-
                 return;
             }
         }
