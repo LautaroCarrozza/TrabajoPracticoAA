@@ -43,16 +43,20 @@ public class ServerMock implements ServerInterface{
         addCliente(1, "a", 1);
         addPersonalAbordo(1, "a", "piloto", 1);
         addPersonalAbordo(2, "b", "piloto", 2);
+        addPersonalAbordo(9, "g", "piloto", 2);
         addPersonalAbordo(3, "c", "personal", 3);
         addPersonalAbordo(4, "d", "personal", 4);
         addPersonalAbordo(5, "e", "personal", 5);
         addPersonalAbordo(6, "f", "personal", 6);
         addAeropuerto("aaa", "aaa", "aaa");
         addAeropuerto("bbb", "bbb", "bbb");
+        addAeropuerto("ccc","ccc", "ccc");
         addTipoDeAvion(2, 2, 2, 2, 2, 2, 3, "a");
         addAvion("1", "a");
         addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30,60, "1", 1, 3, 100, 200, 300);
         addVuelo("bbb","aaa",2,2,2018, 22, 30, 60, "1", 2, 3, 100, 200, 300);
+        addVuelo("bbb", "ccc", 1, 1, 2018, 23,00,60,"1", 3,2,100,200,300);
+        addVuelo("aaa", "ccc", 1, 1, 2018, 23,00,60,"1", 4,2,100,200,300);
         addAreaAdministrativa("gerencia", true);
         addAreaAdministrativa("areaInhabilitada",false);
         addEmpleado(1, "gerente", 1, "gerencia");
@@ -442,5 +446,56 @@ public class ServerMock implements ServerInterface{
 
         }
 
+    }
+
+    @Override
+    public ArrayList<ArrayList<Vuelo>> buscarVuelosconEscala(int dia, int mes, int ano, String lugarSalida, String lugarLlegada, int cantidadPersonas) {
+        ArrayList<ArrayList<Vuelo>> posiblesCombinaciones = new ArrayList<>();
+
+        ArrayList<Vuelo> vueloshasta1 = vuelosHasta(lugarLlegada, dia, mes, ano);
+        ArrayList<Vuelo> vuelosDesde = vuelosDesde(lugarSalida, dia, mes, ano);
+
+        for (Vuelo vuelodesde : vuelosDesde) {
+            for (Vuelo vueloHasta : vueloshasta1) {
+                if (vuelodesde.getUbicacionLlegada().equals(vueloHasta.getUbicacionSalida())) {
+                    ArrayList<Vuelo> posibleCombinacion = new ArrayList<>();
+                    posibleCombinacion.add(vuelodesde);
+                    posibleCombinacion.add(vueloHasta);
+                    posiblesCombinaciones.add(posibleCombinacion);
+
+                }
+            }
+        }
+        if (posiblesCombinaciones.isEmpty())throw new RuntimeException("No existen combinaciones");
+        return posiblesCombinaciones;
+    }
+
+    private ArrayList<Vuelo> vuelosDesde(String lugarSalida, int dia, int mes, int ano) {
+        ArrayList<Vuelo> result = new ArrayList<>();
+        LocalDate localDate = LocalDate.of(ano, mes,dia);
+        for (Vuelo vuelo:vuelos) {
+            if (vuelo.getUbicacionSalida().equals(lugarSalida) && vuelo.getFechaSalida().equals(localDate)){
+                result.add(vuelo);
+            }
+        }
+        if (!result.isEmpty()){
+            return result;
+        }
+        throw new RuntimeException("No existen vuelos");
+    }
+
+
+    private ArrayList<Vuelo> vuelosHasta(String lugarLlegada, int dia, int mes, int ano) {
+        ArrayList<Vuelo> result = new ArrayList<>();
+        LocalDate localDate = LocalDate.of(ano, mes,dia);
+        for (Vuelo vuelo:vuelos) {
+            if (vuelo.getUbicacionLlegada().equals(lugarLlegada) && vuelo.getFechaSalida().equals(localDate)){
+                result.add(vuelo);
+            }
+        }
+        if (!result.isEmpty()){
+            return result;
+        }
+        throw new RuntimeException("No existen vuelos");
     }
 }

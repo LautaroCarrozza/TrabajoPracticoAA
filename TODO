@@ -1,2 +1,93 @@
 TODO
 Contamplar busqueda de vuelos con escalas
+
+public ArrayList<ArrayList<Vuelo>> buscarVuelosconEscala(int dia, int mes, int ano, String lugarSalida, String lugarLlegada, int cantidadPersonas, int escalasMaximas) {
+        if (escalasMaximas == 1) {
+            ArrayList<ArrayList<Vuelo>> posiblesCombinaciones = new ArrayList<ArrayList<Vuelo>>();
+
+            ArrayList<Vuelo> vueloshasta1 = vuelosHasta(lugarLlegada, dia, mes, ano);
+            ArrayList<Vuelo> vuelosDesde = vuelosDesde(lugarSalida, dia, mes, ano);
+
+            for (Vuelo vuelodesde : vuelosDesde) {
+                for (Vuelo vueloHasta : vueloshasta1) {
+                    if (vuelodesde.getUbicacionLlegada().equals(vueloHasta.getUbicacionSalida())) {
+                        ArrayList<Vuelo> posibleCombinacion = new ArrayList<>();
+                        posibleCombinacion.add(vuelodesde);
+                        posibleCombinacion.add(vueloHasta);
+                        posiblesCombinaciones.add(posibleCombinacion);
+                        return posiblesCombinaciones;
+                    }
+                }
+            }
+            throw new RuntimeException("No existen vuelos");
+        }
+        throw new RuntimeException("Escalas maximas no perimitidas");
+    }
+
+    private ArrayList<Vuelo> vuelosDesde(String lugarSalida, int dia, int mes, int ano) {
+        ArrayList<Vuelo> result = new ArrayList<>();
+        LocalDate localDate = LocalDate.of(ano, mes,dia);
+        for (Vuelo vuelo:vuelos) {
+            if (vuelo.getUbicacionSalida().equals(lugarSalida) && vuelo.getFechaSalida().equals(localDate)){
+                result.add(vuelo);
+            }
+        }
+        if (!result.isEmpty()){
+            return result;
+        }
+        throw new RuntimeException("No existen vuelos");
+    }
+
+
+    private ArrayList<Vuelo> vuelosHasta(String lugarLlegada, int dia, int mes, int ano) {
+        ArrayList<Vuelo> result = new ArrayList<>();
+            LocalDate localDate = LocalDate.of(ano, mes,dia);
+            for (Vuelo vuelo:vuelos) {
+                if (vuelo.getUbicacionLlegada().equals(lugarLlegada) && vuelo.getFechaSalida().equals(localDate)){
+                    result.add(vuelo);
+                }
+            }
+            if (!result.isEmpty()){
+            return result;
+        }
+        throw new RuntimeException("No existen vuelos");
+    }
+
+
+
+
+
+    private  void validarVueloIdayVuelta() {
+            try {
+
+                menuEscalas();
+
+                combinacionesVuelosDisponiblesIda = server.buscarVuelosconEscala(diaSalida, mesSalida, anoSalida, currentHasta, currentDesde, cantidadDePersonas, currentMaxEscalas);
+                //El lugar de salida y llegada intercambiado para la vuelta
+                for (int i = 0; i < combinacionesVuelosDisponiblesIda.size(); i++) {
+                    System.out.println("Combinacion: " + i);
+                    menuSort(combinacionesVuelosDisponiblesIda.get(i));
+                    for (int j = 0; j < combinacionesVuelosDisponiblesIda.get(i).size(); j++) {
+                        System.out.println(j + "- " + combinacionesVuelosDisponiblesIda.get(i).get(j).toString());
+                    }
+                }
+
+
+                combinacionesVuelosDisponiblesVuelta = server.buscarVuelosconEscala(diaSalida, mesSalida, anoSalida, currentDesde, currentHasta, cantidadDePersonas, currentMaxEscalas);
+                //El lugar de salida y llegada intercambiado para la vuelta
+                for (int i = 0; i < combinacionesVuelosDisponiblesIda.size(); i++) {
+                    System.out.println("Combinacion: " + i);
+                    for (int j = 0; j < combinacionesVuelosDisponiblesVuelta.get(i).size(); j++) {
+                        System.out.println(j + "- " + combinacionesVuelosDisponiblesVuelta.get(i).get(j).toString());
+                    }
+                }
+
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
+                mostrarMenu();
+            }
+        }
+
+        private void menuEscalas() {
+            currentMaxEscalas = Scanner.getInt("Ingrese la cantidad maxima de escalas");
+        }

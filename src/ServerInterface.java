@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ServerInterface {
@@ -45,4 +46,6 @@ public interface ServerInterface {
     List<Aeropuerto> getAeropuertos();
     List<Vuelo> getVuelos();
     void sort(List<Vuelo> asientosDisponibles, String criteri);
+
+    ArrayList<ArrayList<Vuelo>> buscarVuelosconEscala(int dia, int mes, int ano, String lugarSalida, String lugarLlegada, int cantidadPersonas);
 }

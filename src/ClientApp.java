@@ -1,5 +1,6 @@
 import sun.applet.Main;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -14,10 +15,13 @@ public class ClientApp {
     private static int diaVuelta;
     private static int mesVuelta;
     private static int anoVuelta;
+    private static int currentMaxEscalas;
     private static ServerInterface server;
     private static List<Vuelo> vuelosDisponibles, vuelosDisponiblesVuelta;
+    private static ArrayList<ArrayList<Vuelo>> vuelosCombinados;
     private static Vuelo vueloDeseado, vueloDeseadoVuelta;
     private static String currentDesde, currentHasta, currentCategoria;
+    public static ArrayList<Vuelo> combinacionDeVuelos;
 
     public ClientApp(ServerInterface server) {
         this.server = server;
@@ -117,12 +121,9 @@ public class ClientApp {
         try{
             int dni = Scanner.getInt("Ingresar DNI: ");
             String nombre = Scanner.getString("Ingrese su nombre: ");
-            int codigo = Scanner.getInt("Ingrese su numero de cliente: ");
-            for (Cliente cliente:server.getClientes()) {
-                if(cliente.getNumeroDeCliente() == codigo){
-                    throw new RuntimeException("Ya existe un cliente con ese codigo");
-                }
-            }
+            String codigoString = "" + dni;
+            int codigo = Integer.parseInt(codigoString.substring(codigoString.length()-3));
+            System.out.println("Su codigo de cliente es:" + codigo);
             server.addCliente(dni, nombre, codigo);
             menuDeInicio();
         }catch (RuntimeException e){
@@ -191,15 +192,34 @@ public class ClientApp {
         comprarDesde();
         comprarHasta();
         comprarCuando();
+        menudeEscalas();
         validarVuelo();
         menuDeVueloIda();
 
-        for (int i = 0; i < cantidadDePersonas; i++) {
-            asientosDisponiblesIda();
-        }
+        if (currentMaxEscalas == 0) {
+            for (int i = 0; i < cantidadDePersonas; i++) {
+                asientosDisponiblesIda();
+            }
 
+        }
+        else {
+            for (int i = 0; i < cantidadDePersonas; i++) {
+                int counter = 1;
+                for (Vuelo vuelo:combinacionDeVuelos) {
+                    System.out.println("\nPasajero " + (i + 1));
+                    System.out.println("Vuelo " + counter +"\n");
+                    vueloDeseado = vuelo;
+                    asientosDisponiblesIda();
+                    counter ++;
+                }
+            }
+        }
         System.out.println("Operacion realizada satisfactoriamente");
         mostrarMenu();
+    }
+
+    private void menudeEscalas() {
+        currentMaxEscalas = Scanner.getInt("Ingrese la cantidad maxima de escalas: ");
     }
 
     private void comprarCategoria() {
@@ -207,7 +227,7 @@ public class ClientApp {
         System.out.println("2- Bussiness");
         System.out.println("3- First");
         try {
-            int option = Scanner.getInt("Igrese la categoria para su(s) pasajes");
+            int option = Scanner.getInt("Igrese la categoria para su(s) pasajes: ");
             switch (option) {
                 case 1:
                     currentCategoria = "Economy";break;
@@ -409,8 +429,14 @@ public class ClientApp {
 
         try {
             intVueloDeseado = Scanner.getInt("¿Que vuelo desea comprar? : ") - 1;/// -1 por que los vuelos empiezan con 0 y se los imprime con un +1
-            vueloDeseado = vuelosDisponibles.get(intVueloDeseado); // Selecciona el vuelo elegido dentro de la lista de posibles vuelos segun los criterios de busqueda
-        } catch (Exception e) {
+           if (currentMaxEscalas == 0) {
+               vueloDeseado = vuelosDisponibles.get(intVueloDeseado); // Selecciona el vuelo elegido dentro de la lista de posibles vuelos segun los criterios de busqueda
+           }
+           else {
+               combinacionDeVuelos = vuelosCombinados.get(intVueloDeseado);
+           }
+        }
+        catch (Exception e) {
             System.out.println("Opcion invalida");
             menuDeVueloIda();
         }
@@ -419,15 +445,28 @@ public class ClientApp {
     //Lista de vuelos que matchean con los criterios de busqueda y los imprime en pantalla
     private  void validarVuelo() {
         try {
-            vuelosDisponibles = server.buscarVuelos(diaSalida, mesSalida, anoSalida, currentDesde, currentHasta, cantidadDePersonas);
+            if (currentMaxEscalas == 0) {
+                vuelosDisponibles = server.buscarVuelos(diaSalida, mesSalida, anoSalida, currentDesde, currentHasta, cantidadDePersonas);
 
-            menuSort();
-            int opcion = 1;
-            for (Vuelo v : vuelosDisponibles) {
-                System.out.println(opcion + " " + v);
-                opcion++;
+                menuSort();
+                int opcion = 1;
+                for (Vuelo v : vuelosDisponibles) {
+                    System.out.println(opcion + " " + v);
+                    opcion++;
+                }
             }
-        } catch (RuntimeException e) {
+            else {
+                vuelosCombinados = server.buscarVuelosconEscala(diaSalida, mesSalida, anoSalida, currentDesde, currentHasta, cantidadDePersonas);
+
+                for (int i = 0; i < vuelosCombinados.size(); i++) {
+                    System.out.print((i+1)+"- ");
+                    for (Vuelo vuelo:vuelosCombinados.get(i)) {
+                        System.out.print(vuelo.toString() +", ");
+                    }
+                }
+            }
+        }
+         catch(RuntimeException e) {
             System.out.println(e.getMessage());
             mostrarMenu();
         }

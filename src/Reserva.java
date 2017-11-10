@@ -28,7 +28,7 @@ public class Reserva{
         uniques.addAll(pasajes);
 
 
-        String result = "Reserva para " + uniques.get(0).getCliente().getNombre() +
+        String result = "\nReserva para " + uniques.get(0).getCliente().getNombre() +
                 "\nDesde: " + uniques.get(0).getVuelo().getUbicacionSalida()
                 + " Hasta: " + uniques.get(0).getVuelo().getUbicacionLlegada() + "\n";
         for (Pasaje pasaje: uniques) {
