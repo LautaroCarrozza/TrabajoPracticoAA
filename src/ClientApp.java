@@ -100,6 +100,7 @@ public class ClientApp {
                 System.out.println("Reserva para " + r.getCliente().getNumeroDeCliente());
                 System.out.println("Desde: " + r.getPasajes().get(0).getVuelo().getUbicacionSalida());
                 System.out.println("Hasta: " + r.getPasajes().get(0).getVuelo().getUbicacionLlegada());
+                System.out.println("Fecha de salida (año/mes/dia): " + r.getPasajes().get(0).getVuelo().getFechaSalida());
                 for (Pasaje pasaje:r.getPasajes()) {
                     System.out.println(pasaje.toString() + " Precio: $" + server.getPreciodeTarifa(pasaje.getVuelo().getCodigoDeVuelo(), pasaje.getAsiento().getCategoria()));
                 }
