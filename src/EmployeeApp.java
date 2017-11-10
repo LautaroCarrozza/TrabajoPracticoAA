@@ -110,7 +110,7 @@ public class EmployeeApp {
                 int codigoEmpleado = Scanner.getInt("Ingrese el codigo del empleado: ");
                 String nombreArea = Scanner.getString("Ingrese el nombre del area del empleado:");
                 for (AreaAdministrativa area:server.getAreasAdministrativas()) {
-                    if(server.getAreaAdministrativa(nombreArea).equals(area.getNombre())){
+                    if(server.getAreaAdministrativa(nombreArea).getNombre().equals(area.getNombre())){
                         server.addEmpleado(dniEmpleado,nombreEmpleado,codigoEmpleado,nombreArea);
                         mostrarMenuAcciones();
                     }
@@ -119,7 +119,7 @@ public class EmployeeApp {
             throw new RuntimeException("Area de empleado invalida");
         }catch (RuntimeException e){
             System.out.println(e.getMessage());
-            mostrarMenu();
+            mostrarMenuAcciones();
         }
         System.out.println("Empleado cargado");
         mostrarMenu();
@@ -147,7 +147,7 @@ public class EmployeeApp {
             throw new RuntimeException("Area de empleado invalida");
         }catch (RuntimeException e){
             System.out.println(e.getMessage());
-            mostrarMenu();
+            mostrarMenuAcciones();
         }
         System.out.println("Area Administrativa cargada");
         mostrarMenu();
