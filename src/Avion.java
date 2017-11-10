@@ -113,5 +113,15 @@ public class Avion implements Saveable{
         result = 31 * result + (asientos != null ? asientos.hashCode() : 0);
         return result;
     }
+
+    public boolean tieneEconomy() {
+        if (tipoDeAvion.getCantidadFilasEconomy() != 0){return true;}return false;
+    }
+    public boolean tieneBussiness() {
+        if (tipoDeAvion.getCantidadFilasBussiness() != 0){return true;}return false;
+    }
+    public boolean tieneFirst() {
+        if (tipoDeAvion.getCantidadFilasFirst() != 0){return true;}return false;
+    }
 }
 

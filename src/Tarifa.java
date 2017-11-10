@@ -2,12 +2,12 @@ import java.util.ArrayList;
 import java.util.List;
 
     public class Tarifa implements Saveable {
-        String codigoTarifa;
-        String categoria;
-        String codigoDeVuelo;
-        int precio;
+        private String codigoTarifa;
+        private String categoria;
+        private int codigoDeVuelo;
+        private int precio;
 
-        Tarifa(String categoria, String vuelo, int precio) {
+        Tarifa(String categoria, int vuelo, int precio)         {
             this.categoria = categoria;
             this.precio = precio;
             this.codigoDeVuelo = vuelo;
@@ -47,9 +47,8 @@ import java.util.List;
                     }
                 }
 
-
                 String field1 = elemento.substring(0, corte1);
-                String field2 = elemento.substring(corte1 + 1, corte2);
+                int field2 = Integer.parseInt(elemento.substring(corte1 + 1, corte2));
                 String field3 = elemento.substring(corte2 + 1, elemento.length() - 1);
 
                 Tarifa tarifa = new Tarifa(field1,field2, Integer.parseInt(field3));
@@ -71,7 +70,13 @@ import java.util.List;
             return categoria != null ? categoria.equals(tarifa.categoria) : tarifa.categoria == null;
         }
 
-
+        @Override
+        public int hashCode() {
+            int result = categoria != null ? categoria.hashCode() : 0;
+            result = 31 * result + codigoDeVuelo;
+            result = 31 * result + precio;
+            return result;
+        }
     }
 
 

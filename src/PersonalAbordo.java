@@ -86,7 +86,8 @@ public class PersonalAbordo extends Persona implements Saveable{
 
     }
 
-    public void addVuelo(Vuelo vuelo){
+    public void
+    addVuelo(Vuelo vuelo){
         vuelos.add(vuelo);
     }
 }

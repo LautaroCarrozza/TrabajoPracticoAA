@@ -294,7 +294,7 @@ public class ClientApp {
         System.out.println();
 
         for (Asiento asiento : asientosDisponibles) {
-            System.out.println(asiento);
+            System.out.println(asiento +  " Precio: $ " + server.getPreciodeTarifa(vueloDeseado.getCodigoDeVuelo(), asiento.getCategoria()));
         }
         comprarAsiento(vueloDeseado);
     }
