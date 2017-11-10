@@ -188,7 +188,7 @@ public class ClientApp {
         for (int i = 0; i < cantidadDePersonas; i++) {
             asientosDisponiblesIda();
         }
-        //falta guardar reserva
+
         System.out.println("Operacion realizada satisfactoriamente");
         mostrarMenu();
     }
