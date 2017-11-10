@@ -38,7 +38,7 @@ public class Pasaje implements Saveable {
 
     @Override
     public String toString() {
-        return "Asiento: " + asiento.toString() + "\nCodigo de ticket: " + codigo + "\n";
+        return "Asiento: " + asiento.toString() + "\nCodigo de ticket: " + codigo;
     }
 
     public static List<Pasaje> build(List<String> elementosStr, ServerInterface server) {

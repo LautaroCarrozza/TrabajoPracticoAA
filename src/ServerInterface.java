@@ -44,4 +44,5 @@ public interface ServerInterface {
     List<Avion> getAviones();
     List<Aeropuerto> getAeropuertos();
     List<Vuelo> getVuelos();
-    }
+    void sort(List<Vuelo> asientosDisponibles, String criteri);
+}

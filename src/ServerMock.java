@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ServerMock implements ServerInterface{
@@ -410,5 +411,21 @@ public class ServerMock implements ServerInterface{
 
     public List<Vuelo> getVuelos() {
         return vuelos;
+    }
+
+    @Override
+    public void sort(List<Vuelo> asientosDisponibles, String criteria) {
+
+        switch (criteria){
+            case "Escalas":break;
+
+
+
+
+
+
+
+        }
+
     }
 }

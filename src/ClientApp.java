@@ -1,5 +1,6 @@
 import sun.applet.Main;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class ClientApp {
@@ -16,7 +17,7 @@ public class ClientApp {
     private static ServerInterface server;
     private static List<Vuelo> vuelosDisponibles, vuelosDisponiblesVuelta;
     private static Vuelo vueloDeseado, vueloDeseadoVuelta;
-    private static String currentDesde, currentHasta;
+    private static String currentDesde, currentHasta, currentCategoria;
 
     public ClientApp(ServerInterface server) {
         this.server = server;
@@ -94,8 +95,15 @@ public class ClientApp {
         List<Reserva> reservas = server.getReservas(currentCliente);
 
         if (reservas.size() != 0) {
+
             for (Reserva r : reservas) {
-                System.out.println(r);
+                System.out.println("Reserva para " + r.getCliente().getNumeroDeCliente());
+                System.out.println("Desde: " + r.getPasajes().get(0).getVuelo().getUbicacionSalida());
+                System.out.println("Hasta: " + r.getPasajes().get(0).getVuelo().getUbicacionLlegada());
+                for (Pasaje pasaje:r.getPasajes()) {
+                    System.out.println(pasaje.toString() + " Precio: $" + server.getPreciodeTarifa(pasaje.getVuelo().getCodigoDeVuelo(), pasaje.getAsiento().getCategoria()));
+                }
+
             }
         } else {
             System.out.println("Aun no tiene ninguna reserva");
@@ -178,6 +186,7 @@ public class ClientApp {
 
     private  void buscarSoloIda() {
 
+        comprarCategoria();
         comprarcuantos();
         comprarDesde();
         comprarHasta();
@@ -193,8 +202,31 @@ public class ClientApp {
         mostrarMenu();
     }
 
+    private void comprarCategoria() {
+        System.out.println("1- Economy");
+        System.out.println("2- Bussiness");
+        System.out.println("3- First");
+        try {
+            int option = Scanner.getInt("Igrese la categoria para su(s) pasajes");
+            switch (option) {
+                case 1:
+                    currentCategoria = "Economy";break;
+                case 2:
+                    currentCategoria = "Bussiness";break;
+                case 3:
+                    currentCategoria = "First";break;
+                default:
+                    throw new RuntimeException("Categoria invalida");
+            }
+        }catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            comprarCategoria();
+        }
+    }
+
     private  void buscarIdayVuelta() {
 
+        comprarCategoria();
         comprarcuantos();
         comprarDesde();
         comprarHasta();
@@ -216,15 +248,20 @@ public class ClientApp {
         System.out.println("Asientos disponibles para el vuelo de Ida: \n");
 
         for (Asiento asientoIda : asientosDisponiblesIda) {
-            System.out.println(asientoIda);
+            if (asientoIda.getCategoria().equals(currentCategoria)) {
+                System.out.println(asientoIda);
+            }
         }
+
         comprarAsiento(vueloDeseado);
 
         //Asientos Vuelta
         List<Asiento> asientosDisponiblesVuelta = vueloDeseadoVuelta.asientosDisponibles();
         System.out.println("\nAsientos disponibles para el vuelo de Regreso:\n");
         for (Asiento asientoVuelta : asientosDisponiblesVuelta) {
-            System.out.println(asientoVuelta);
+            if (asientoVuelta.getCategoria().equals(currentCategoria)) {
+                System.out.println(asientoVuelta);
+            }
         }
         comprarAsiento(vueloDeseadoVuelta);
 
@@ -254,6 +291,9 @@ public class ClientApp {
 
     private  void validarVueloIdayVuelta() {
         try {
+
+            menuSort();
+
             vuelosDisponibles = server.buscarVuelos(diaSalida, mesSalida, anoSalida, currentDesde, currentHasta, cantidadDePersonas);
             //El lugar de salida y llegada intercambiado para la vuelta
             vuelosDisponiblesVuelta = server.buscarVuelos(diaVuelta, mesVuelta, anoVuelta, currentHasta, currentDesde, cantidadDePersonas);
@@ -263,6 +303,9 @@ public class ClientApp {
                 System.out.println(opcion + " " + v);
                 opcion++;
             }
+
+            menuSort();
+
             System.out.println("\nVuelos de vuelta: \n");
             int opcionvuelta = 1;
             for (Vuelo v : vuelosDisponiblesVuelta) {
@@ -290,11 +333,20 @@ public class ClientApp {
     private  void asientosDisponiblesIda() {
         List<Asiento> asientosDisponibles = vueloDeseado.asientosDisponibles();
 
+        asientosDisponibles.sort(new Comparator<Asiento>() {
+            @Override
+            public int compare(Asiento o1, Asiento o2) {
+                return  o1.getFila() - o2.getFila();
+            }
+        });
+
         System.out.println("Asientos disponibles: ");
         System.out.println();
 
         for (Asiento asiento : asientosDisponibles) {
-            System.out.println(asiento +  " Precio: $ " + server.getPreciodeTarifa(vueloDeseado.getCodigoDeVuelo(), asiento.getCategoria()));
+            if (asiento.getCategoria().equals(currentCategoria)) {
+                System.out.println(asiento + " Precio: $ " + server.getPreciodeTarifa(vueloDeseado.getCodigoDeVuelo(), asiento.getCategoria()));
+            }
         }
         comprarAsiento(vueloDeseado);
     }
@@ -352,6 +404,7 @@ public class ClientApp {
 
     //CLiente selecciona el vuelo que desee mostrados en la consola
     private  void seleccionarVuelo() {
+
         try {
             intVueloDeseado = Scanner.getInt("¿Que vuelo desea comprar? : ") - 1;/// -1 por que los vuelos empiezan con 0 y se los imprime con un +1
             vueloDeseado = vuelosDisponibles.get(intVueloDeseado); // Selecciona el vuelo elegido dentro de la lista de posibles vuelos segun los criterios de busqueda
@@ -365,6 +418,8 @@ public class ClientApp {
     private  void validarVuelo() {
         try {
             vuelosDisponibles = server.buscarVuelos(diaSalida, mesSalida, anoSalida, currentDesde, currentHasta, cantidadDePersonas);
+
+            menuSort();
             int opcion = 1;
             for (Vuelo v : vuelosDisponibles) {
                 System.out.println(opcion + " " + v);
@@ -402,6 +457,23 @@ public class ClientApp {
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
             comprarDesde();
+        }
+    }
+
+    private void menuSort(){
+        System.out.println("1-Precio");
+        System.out.println("2-Escalas");
+        System.out.println("3-Duracion");
+
+        int sortOption = Scanner.getInt("Ingrese criterio para ordenar los resultados de su busqueda");
+
+        switch (sortOption){
+            case 1: server.sort(vuelosDisponibles, "Precio");break;
+            case 2: server.sort(vuelosDisponibles, "Escalas");break;
+            case 3: server.sort(vuelosDisponibles, "Duracion");break;
+            default:
+                System.out.println("Categoria invalida");
+                menuSort();
         }
     }
 }

@@ -95,18 +95,9 @@ public class Vuelo implements Saveable{
                 asientosDisponibles.add(a);
             }
         }
-        sort(asientosDisponibles);
         return asientosDisponibles;
     }
 
-    private void sort(List<Asiento> asientosDisponibles) {
-
-        Collections.sort(asientosDisponibles, new Comparator<Asiento>() {
-            public int compare(Asiento o1, Asiento o2) {
-                return o1.getFila() - o2.getFila();
-            }
-        });
-    }
 
     public Asiento getAsiento(int fila, char columna){
         for (Asiento asiento: avion.getAsientos()) {

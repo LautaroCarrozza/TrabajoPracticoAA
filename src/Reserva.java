@@ -6,6 +6,7 @@ import java.util.Set;
 public class Reserva{
 
     private List<Pasaje> pasajes;
+    private Cliente cliente;
     private List<Asiento> asientos = new ArrayList<>();
     private int cantidadDePersonas;
 
@@ -16,6 +17,7 @@ public class Reserva{
         for (Pasaje pasaje:pasajes) {
             asientos.add(pasaje.getAsiento());
         }
+        cliente = pasajes.get(0).getCliente();
     }
 
     @Override
@@ -41,5 +43,9 @@ public class Reserva{
 
     public void setPasajes(List<Pasaje> pasajes) {
         this.pasajes = pasajes;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
     }
 }
