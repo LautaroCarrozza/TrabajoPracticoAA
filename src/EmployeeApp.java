@@ -33,12 +33,13 @@ public class EmployeeApp {
 
     public void mostrarMenu(){
         System.out.println("    1- Iniciar Sesion");
-        System.out.println("    2- Exit");
+        System.out.println("    -------------------");
+        System.out.println("    9- Exit");
 
         int option = Scanner.getInt("Ingrese opcion deseada");
         switch (option){
             case 1:iniciarSesion();break;
-            case 2:MainApp.mostrarMenu();break;
+            case 9:MainApp.mostrarMenu();break;
         }
 
 
