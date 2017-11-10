@@ -57,21 +57,6 @@ import java.util.List;
             }
             return elementos;
         }
-
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            Tarifa tarifa = (Tarifa) o;
-
-            if (codigoDeVuelo != tarifa.codigoDeVuelo) return false;
-            if (precio != tarifa.precio) return false;
-            return categoria != null ? categoria.equals(tarifa.categoria) : tarifa.categoria == null;
-        }
-
-
     }
 
 

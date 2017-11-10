@@ -38,6 +38,18 @@ public class ServerMock implements ServerInterface{
     }
 
     public void setUp(){
+
+        areasAdministrativas = AreaAdministrativa.build(areasAdministrativasSaver.get(), this);
+        aeropuertos = Aeropuerto.build(aeropuertosSaver.get(), this);
+        clientes = Cliente.build(clientesSaver.get(), this);
+        empleados = Empleado.build(empleadosSaver.get(), this);
+        tiposDeAvion = TipoDeAvion.build(tiposDeAvionSaver.get(), this);
+        aviones = Avion.build(avionesSaver.get(), this);
+        vuelos = Vuelo.build(vuelosSaver.get(), this);
+        pasajes = Pasaje.build(pasajesSaver.get(), this);
+        personalAbordoLista = PersonalAbordo.build(personalDeAbordoSaver.get(), this);
+
+
         addCliente(1, "a", 1);
         addPersonalAbordo(1, "a", "piloto", 1);
         addAeropuerto("aaa", "aaa", "aaa");
@@ -47,20 +59,10 @@ public class ServerMock implements ServerInterface{
         addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30,60, "1", 1, 3);
         addVuelo("bbb","aaa",2,2,2018, 22, 30, 60, "1", 2, 3);
         addVuelo("bbb", "aaa", 2, 2, 2018, 22, 30, 60, "1", 2, 3);
-        addAreaAdministrativa("gerencia", true);
-        addEmpleado(1, "gerente", 1, "gerencia");
-        addEmpleado(2,"b",2,"area2");
-
-        aeropuertos = Aeropuerto.build(aeropuertosSaver.get(), this);
-        clientes = Cliente.build(clientesSaver.get(), this);
-        empleados = Empleado.build(empleadosSaver.get(), this);
-        tiposDeAvion = TipoDeAvion.build(tiposDeAvionSaver.get(), this);
-        aviones = Avion.build(avionesSaver.get(), this);
-        vuelos = Vuelo.build(vuelosSaver.get(), this);
-        pasajes = Pasaje.build(pasajesSaver.get(), this);
-        personalAbordoLista = PersonalAbordo.build(personalDeAbordoSaver.get(), this);
-        areasAdministrativas = AreaAdministrativa.build(areasAdministrativasSaver.get(), this);
-
+        addAreaAdministrativa("area1", true);
+        addAreaAdministrativa("Gerencia", true);
+        addEmpleado(1, "Gerente", 1, "Gerencia");
+        addEmpleado(2,"b",2,"area1");
 
 
         asignarReseras();
@@ -82,14 +84,9 @@ public class ServerMock implements ServerInterface{
     }
 
     public void addEmpleado(int dni, String nombre, int codigoEmpleado, String nombreArea){
-        for (AreaAdministrativa area:areasAdministrativas) {
-          if(area.getNombre().equals(nombreArea)){
-              Empleado empleado = new Empleado(dni, nombre, codigoEmpleado,area);
-              empleados.add(empleado);
-              empleadosSaver.save(empleado);
-              break;
-          }
-        }
+
+        AreaAdministrativa area = getAreaAdministrativa(nombreArea);
+        Empleado empleado = new Empleado(dni, nombre, codigoEmpleado, area);
     }
 
     public void addCliente(int dni, String nombre, int numeroDeCliente) {
@@ -356,6 +353,7 @@ public class ServerMock implements ServerInterface{
         areasAdministrativas.add(areaAdministrativa);
         areasAdministrativasSaver.save(areaAdministrativa);
     }
+
     public List<AreaAdministrativa> getAreasAdministrativas() {
         return areasAdministrativas;
     }

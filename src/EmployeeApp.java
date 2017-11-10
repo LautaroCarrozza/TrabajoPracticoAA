@@ -116,8 +116,11 @@ public class EmployeeApp {
                     }
                 }
             }
+
             throw new RuntimeException("Area de empleado invalida");
-        }catch (RuntimeException e){
+        }
+
+        catch (RuntimeException e){
             System.out.println(e.getMessage());
             mostrarMenu();
         }
