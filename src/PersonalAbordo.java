@@ -36,9 +36,9 @@ public class PersonalAbordo extends Persona implements Saveable{
 
     @Override
     public String toString() {
-        String result = "Nombre: " + getNombre() + "\n" + "Vuelos: ";
+        String result = "Nombre: " + getNombre() + "\n" + "Vuelos:\n";
         for (Vuelo v:vuelos) {
-            result = result + v.getCodigoDeVuelo();
+            result = result + "Codigo de vuelo: " + v.getCodigoDeVuelo() + "\n" + "Fecha de salida: " + v.getFechaSalida() + "\n";
         }
         return result;
     }
