@@ -43,7 +43,6 @@ public class PersonalAbordoApp {
                     throw new RuntimeException("Opcion invalida");
             }
         } catch (RuntimeException e) {
-            borrarPantalla();
             System.out.println(e.getMessage());
             mostrarMenu();
         }
@@ -51,6 +50,7 @@ public class PersonalAbordoApp {
 
     private void verItinerarioDeViajes() {
         System.out.println(server.getPersonalAbordo(currentSesion).toString());
+        mostrarMenu();
     }
 
     private void cerrarSesion() {

@@ -42,13 +42,14 @@ public class ServerMock implements ServerInterface{
     public void setUp(){
         addCliente(1, "a", 1);
         addPersonalAbordo(1, "a", "piloto", 1);
-        addPersonalAbordo(2, "b", "personal", 2);
+        addPersonalAbordo(2, "b", "piloto", 2);
         addPersonalAbordo(3, "c", "personal", 3);
         addPersonalAbordo(4, "d", "personal", 4);
         addPersonalAbordo(5, "e", "personal", 5);
+        addPersonalAbordo(6, "f", "personal", 6);
         addAeropuerto("aaa", "aaa", "aaa");
         addAeropuerto("bbb", "bbb", "bbb");
-        addTipoDeAvion(2, 2, 2, 2, 2, 2, 1, "a");
+        addTipoDeAvion(2, 2, 2, 2, 2, 2, 3, "a");
         addAvion("1", "a");
         addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30,60, "1", 1, 3, 100, 200, 300);
         addVuelo("bbb","aaa",2,2,2018, 22, 30, 60, "1", 2, 3, 100, 200, 300);
@@ -277,7 +278,9 @@ public class ServerMock implements ServerInterface{
     @Override
     public PersonalAbordo getPersonalAbordo(int numeroDeEmpleado) {
         for (PersonalAbordo personalDeAbordo:personalAbordoLista) {
-            if (personalDeAbordo.getNumeroDeEmpleado() == numeroDeEmpleado)return personalDeAbordo;
+            if (personalDeAbordo.getNumeroDeEmpleado() == numeroDeEmpleado) {
+                return personalDeAbordo;
+            }
         }
         throw new RuntimeException("No existe el personal de abordo");
     }
@@ -365,17 +368,19 @@ public class ServerMock implements ServerInterface{
     @Override
     public void addTripulacion(Vuelo vuelo) {
         addPiloto(vuelo);
-        for (int i = 0; i < vuelo.getCantidadPersonal() -1 ; i++) {
+        for (int i = 0; i < vuelo.getCantidadPersonal(); i++) {
             addPersonalAbordoenVuelo(vuelo);
+            return;
         }
     }
 
     @Override
     public void addPersonalAbordoenVuelo(Vuelo vuelo) {
         for (PersonalAbordo personal:getPersonalAbordoLista()) {
-            if (!personal.getCargo().equals("Piloto") && personal.available(vuelo.getFechaSalida())){
+            if (!personal.getCargo().equals("piloto") && personal.available(vuelo.getFechaSalida())){
                 vuelo.addTripulacion(personal);
                 personal.addVuelo(vuelo);
+                return;
             }
         }
         throw new RuntimeException("No existe personal de abordo disponible para el vuelo");
@@ -383,10 +388,13 @@ public class ServerMock implements ServerInterface{
 
     @Override
     public void addPiloto(Vuelo vuelo) {
-        for (PersonalAbordo piloto:getPersonalAbordoLista()) {
-            if (piloto.getCargo().equals("Piloto") && piloto.available(vuelo.getFechaSalida())) {
+
+        for (PersonalAbordo piloto:personalAbordoLista) {
+            if (piloto.getCargo().equals("piloto") && piloto.available(vuelo.getFechaSalida())) {
                 vuelo.addTripulacion(piloto);
                 piloto.addVuelo(vuelo);
+
+                return;
             }
         }
         throw new RuntimeException("No existen pilotos disponibles");
