@@ -11,7 +11,6 @@ public interface ServerInterface {
     void comprarAsiento(int codigoVuelo, int codigoCliente, int fila, String columna, int cantidadDePersonas);
     Vuelo getVuelo(int codigoDeVuelo);
     void addEmpleado(int dni, String nombre, int codigoEmpleado, String nombreArea);
-    void guardarReserva(int codigoCliente, Vuelo vuelo);
     void validarSesionEmpleado(int currentSesion);
     TipoDeAvion getTipoDeAvion(String tipoDeAvion);
     void addAvion(String codigo, String tipoDeAvionStr);
@@ -40,7 +39,9 @@ public interface ServerInterface {
     void addTripulacion(Vuelo vuelo);
     void addPersonalAbordoenVuelo(Vuelo vuelo);
     void addPiloto(Vuelo vuelo);
-}
-
-
-
+    List<Empleado> getEmpleados();
+    List<Cliente> getClientes();
+    List<Avion> getAviones();
+    List<Aeropuerto> getAeropuertos();
+    List<Vuelo> getVuelos();
+    }

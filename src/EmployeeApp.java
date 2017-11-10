@@ -14,9 +14,6 @@ public class EmployeeApp {
     }
 
     public  void iniciarSesion(){
-
-
-
       try {
       currentSesion = Scanner.getInt("Ingrese su numero de empleado: ");
       server.validarSesionEmpleado(currentSesion);
@@ -24,7 +21,7 @@ public class EmployeeApp {
       }
       catch (RuntimeException e){
           System.out.println(e.getMessage());
-          iniciarSesion();
+          mostrarMenu();
       }
     }
 
@@ -35,8 +32,8 @@ public class EmployeeApp {
     }
 
     public void mostrarMenu(){
-        System.out.println("    -1 Iniciar Sesion");
-        System.out.println("    -2 Exit");
+        System.out.println("    1- Iniciar Sesion");
+        System.out.println("    2- Exit");
 
         int option = Scanner.getInt("Ingrese opcion deseada");
         switch (option){
@@ -108,9 +105,14 @@ public class EmployeeApp {
                 int dniEmpleado = Scanner.getInt("Ingrese el dni del empleado: ");
                 String nombreEmpleado = Scanner.getString("Ingrese el nombre del empleado: ");
                 int codigoEmpleado = Scanner.getInt("Ingrese el codigo del empleado: ");
+                for (Empleado empleado:server.getEmpleados()) {
+                    if(empleado.getCodigoEmpleado() == codigoEmpleado){
+                        throw new RuntimeException("Ya existe un empleado con ese codigo");
+                    }
+                }
                 String nombreArea = Scanner.getString("Ingrese el nombre del area del empleado:");
                 for (AreaAdministrativa area:server.getAreasAdministrativas()) {
-                    if(server.getAreaAdministrativa(nombreArea).equals(area.getNombre())){
+                    if(server.getAreaAdministrativa(nombreArea).getNombre().equals(area.getNombre())){
                         server.addEmpleado(dniEmpleado,nombreEmpleado,codigoEmpleado,nombreArea);
                         mostrarMenuAcciones();
                     }
@@ -122,7 +124,7 @@ public class EmployeeApp {
 
         catch (RuntimeException e){
             System.out.println(e.getMessage());
-            mostrarMenu();
+            mostrarMenuAcciones();
         }
         System.out.println("Empleado cargado");
         mostrarMenu();
@@ -132,6 +134,11 @@ public class EmployeeApp {
         try{
             if(server.getEmployee(currentSesion).getArea().getNombre().equals("gerencia")) {
                 String nombre = Scanner.getString("Ingrese un nombre para el area: ");
+                for (AreaAdministrativa area:server.getAreasAdministrativas()) {
+                    if(area.getNombre().equals(nombre)){
+                        throw new RuntimeException("Ya existe un area con ese nombre");
+                    }
+                }
                 System.out.println("¿Esta habilitado para vender?");
                 System.out.println();
                 System.out.println("Si");
@@ -150,7 +157,7 @@ public class EmployeeApp {
             throw new RuntimeException("Area de empleado invalida");
         }catch (RuntimeException e){
             System.out.println(e.getMessage());
-            mostrarMenu();
+            mostrarMenuAcciones();
         }
         System.out.println("Area Administrativa cargada");
         mostrarMenu();
@@ -168,8 +175,6 @@ public class EmployeeApp {
         for (int i = 0; i < cantidadDePasajeros; i++) {
             venderAsiento();
         }
-
-        server.guardarReserva(currentClient, vueloDeseado);
         mostrarMenu();
     }
 
@@ -215,8 +220,7 @@ public class EmployeeApp {
         for (int i = 0; i < cantidadDePasajeros; i++) {
             venderAsientoVuelta();
         }
-        server.guardarReserva(currentClient, vueloDeseadoIda);
-        server.guardarReserva(currentClient, vueloDeseadoVuelta);
+
         System.out.println("Las reservas se a guardadon correctamente");
 
         mostrarMenu();
@@ -434,6 +438,11 @@ public class EmployeeApp {
             int minutesDuration = Scanner.getInt("Ingrese los minutos de la duracion del viaje: ");
             String plane = Scanner.getString("Ingrese el codigo del avion a utilizar: ");
             int flightCode = Scanner.getInt("Ingrese el codigo del vuelo: ");
+            for (Vuelo vuelo:server.getVuelos()) {
+                if(vuelo.getCodigoDeVuelo() == flightCode){
+                    throw new RuntimeException("Ya existe un vuelo con ese codigo");
+                }
+            }
             int cantidadDeSemanas = Scanner.getInt("Durante cuantas semanas va a repetirse el vuelo?");
             LocalDate localDate = LocalDate.of(ano, mes, dia);
             server.getAvion(plane).confirmarDisponibilidad(localDate);
@@ -455,6 +464,11 @@ public class EmployeeApp {
         try {
 
             String codigoDeAeropuerto = Scanner.getString("Ingrese el codigo del aeropuerto: ");
+            for (Aeropuerto aeropuerto:server.getAeropuertos()) {
+                if(aeropuerto.getCodigo().equals(codigoDeAeropuerto)){
+                    throw new RuntimeException("Ya existe un aeropuerto con ese codigo");
+                }
+            }
             String ubicacion = Scanner.getString("Ingrese la ubicacion del aeropuerto: ");
             String nombre = Scanner.getString("Ingrese el nombre del aeropuerto:");
             server.addAeropuerto(codigoDeAeropuerto, ubicacion, nombre);
@@ -469,10 +483,14 @@ public class EmployeeApp {
     }
 
     private  void ingresarAvion() {
-
-        String codigoAvion = Scanner.getString("Ingrese el codigo del avion: ");
-        String tipoDeAvion = Scanner.getString("Ingrese el tipo de avion para este avion: ");
         try {
+            String codigoAvion = Scanner.getString("Ingrese el codigo del avion: ");
+            for (Avion avion:server.getAviones()) {
+                if(avion.getCodigo().equals(codigoAvion)){
+                    throw new RuntimeException("Ya existe un avion con ese codigo");
+                }
+            }
+            String tipoDeAvion = Scanner.getString("Ingrese el tipo de avion para este avion: ");
             server.addAvion(codigoAvion, tipoDeAvion);
             System.out.println("Avion cargado");
             mostrarMenu();

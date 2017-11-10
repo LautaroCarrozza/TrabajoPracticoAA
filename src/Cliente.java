@@ -1,9 +1,11 @@
+import com.sun.org.apache.regexp.internal.RE;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Cliente extends Persona implements Saveable{
     private int numeroDeCliente;
-    private List<Reserva> reservas = new ArrayList<>();
+    private List<Pasaje> pasajes = new ArrayList<>();
 
     public Cliente(int dni, String nombre, int numeroDeCliente) {
         super(dni, nombre);
@@ -11,25 +13,30 @@ public class Cliente extends Persona implements Saveable{
     }
 
     public List<Reserva> getReservas() {
+
+        List<Vuelo> vuelos = new ArrayList<>();
+        for (Pasaje pasaje:pasajes) {
+            if (!vuelos.contains(pasaje.getVuelo())){vuelos.add(pasaje.getVuelo());}
+        }
+
+
+        List<Reserva> reservas = new ArrayList<>();
+        for (Vuelo vuelo: vuelos){
+            List<Pasaje> aReservar = new ArrayList<>();
+            for (Pasaje pasaje:pasajes) {
+                if (pasaje.getVuelo().getCodigoDeVuelo() == vuelo.getCodigoDeVuelo() && pasaje.getVuelo().getFechaSalida().getDayOfMonth() == pasaje.getVuelo().getFechaSalida().getDayOfMonth()){
+                    aReservar.add(pasaje);
+                }
+            }
+            Reserva reserva = new Reserva(aReservar);
+            reservas.add(reserva);
+        }
+
         return reservas;
     }
 
     public int getNumeroDeCliente() {
         return numeroDeCliente;
-    }
-
-    public void guardarReserva(List<Pasaje> pasajes, Vuelo vuelo) {
-        for (Reserva reserva:reservas) {
-
-            for (Pasaje pasaje:pasajes) {
-                if (!reserva.getPasajes().contains(pasaje)){
-                    return;
-                }
-
-            }
-        }
-        Reserva reserva = new Reserva(pasajes, vuelo);
-        reservas.add(reserva);
     }
 
     public static List<Cliente> build(List<String> elementosStr, ServerInterface server) {
@@ -77,5 +84,9 @@ public class Cliente extends Persona implements Saveable{
     @Override
     public int hashCode() {
         return numeroDeCliente;
+    }
+
+    public void addPasaje(Pasaje pasaje) {
+        pasajes.add(pasaje);
     }
 }

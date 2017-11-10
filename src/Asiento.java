@@ -34,25 +34,4 @@ public class Asiento {
         return code;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Asiento asiento = (Asiento) o;
-
-        if (fila != asiento.fila) return false;
-        if (columna != asiento.columna) return false;
-        if (categoria != null ? !categoria.equals(asiento.categoria) : asiento.categoria != null) return false;
-        return code != null ? code.equals(asiento.code) : asiento.code == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = categoria != null ? categoria.hashCode() : 0;
-        result = 31 * result + fila;
-        result = 31 * result + (int) columna;
-        result = 31 * result + (code != null ? code.hashCode() : 0);
-        return result;
-    }
 }

@@ -72,7 +72,7 @@ public class ClientApp {
                     menuDeBusqueda();
                     break;
                 case 9:
-                    return;
+                    MainApp.mostrarMenu();
                 default:
                     throw new RuntimeException("Opcion invalida");
             }
@@ -105,12 +105,23 @@ public class ClientApp {
     }
 
     private  void registroDeCliente() {
-        int dni = Scanner.getInt("Ingresar DNI: ");
-        String nombre = Scanner.getString("Ingrese su nombre: ");
-        int codigo = Scanner.getInt("Ingrese su numero de cliente: ");
-        server.addCliente(dni, nombre, codigo);
-        borrarPantalla();
-        menuDeInicio();
+        try{
+            int dni = Scanner.getInt("Ingresar DNI: ");
+            String nombre = Scanner.getString("Ingrese su nombre: ");
+            int codigo = Scanner.getInt("Ingrese su numero de cliente: ");
+            for (Cliente cliente:server.getClientes()) {
+                if(cliente.getNumeroDeCliente() == codigo){
+                    throw new RuntimeException("Ya existe un cliente con ese codigo");
+                }
+            }
+            server.addCliente(dni, nombre, codigo);
+
+            menuDeInicio();
+        }catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            menuDeInicio();
+        }
+
     }
 
     private  void iniciarSesion() {
@@ -177,8 +188,7 @@ public class ClientApp {
         for (int i = 0; i < cantidadDePersonas; i++) {
             asientosDisponiblesIda();
         }
-        //falta guardar reserva
-        server.guardarReserva(currentCliente, vueloDeseado);
+
         System.out.println("Operacion realizada satisfactoriamente");
         mostrarMenu();
     }
@@ -196,7 +206,7 @@ public class ClientApp {
         for (int i = 0; i < cantidadDePersonas; i++) {
             asientosDisponiblesIdayVuelta();
         }
-
+        System.out.println("La compra se realizo exitosamente");
         mostrarMenu();
     }
 
@@ -295,7 +305,6 @@ public class ClientApp {
             String columna = Scanner.getString("Ingresar columna deseada: ");
             if (!(vuelo.getOcupacion(fila, columna))) {
                 server.comprarAsiento(vuelo.getCodigoDeVuelo(), currentCliente, fila, columna, cantidadDePersonas);
-                mostrarMenu();
             } else {
                 throw new RuntimeException("Seleccion de asiento no disponible");
             }

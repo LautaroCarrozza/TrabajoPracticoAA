@@ -9,11 +9,11 @@ public class MainApp {
 
     public static void mostrarMenu() {
         try {
-            System.out.println("    -1 Aplicacion para clientes");
-            System.out.println("    -2 Aplicacion para empleados");
-            System.out.println("    -3 Aplicacion para tripulacion");
+            System.out.println("    1- Aplicacion para clientes");
+            System.out.println("    2- Aplicacion para empleados");
+            System.out.println("    3- Aplicacion para tripulacion");
             System.out.println();
-            System.out.println("    -4 Exit");
+            System.out.println("    9- Exit");
             int app = Scanner.getInt("¿Que aplicacion desea utilizar?");
 
             switch (app) {
@@ -28,7 +28,7 @@ public class MainApp {
                     PersonalAbordoApp personalAbordoApp = new PersonalAbordoApp(server);
                     personalAbordoApp.iniciarSesion();
                     break;
-                case 4:
+                case 9:
                     System.exit(0);
                 default:
                     throw new RuntimeException("Ingrese una opcion valida");

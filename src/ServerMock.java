@@ -38,18 +38,6 @@ public class ServerMock implements ServerInterface{
     }
 
     public void setUp(){
-
-        areasAdministrativas = AreaAdministrativa.build(areasAdministrativasSaver.get(), this);
-        aeropuertos = Aeropuerto.build(aeropuertosSaver.get(), this);
-        clientes = Cliente.build(clientesSaver.get(), this);
-        empleados = Empleado.build(empleadosSaver.get(), this);
-        tiposDeAvion = TipoDeAvion.build(tiposDeAvionSaver.get(), this);
-        aviones = Avion.build(avionesSaver.get(), this);
-        vuelos = Vuelo.build(vuelosSaver.get(), this);
-        pasajes = Pasaje.build(pasajesSaver.get(), this);
-        personalAbordoLista = PersonalAbordo.build(personalDeAbordoSaver.get(), this);
-
-
         addCliente(1, "a", 1);
         addPersonalAbordo(1, "a", "piloto", 1);
         addAeropuerto("aaa", "aaa", "aaa");
@@ -58,19 +46,36 @@ public class ServerMock implements ServerInterface{
         addAvion("1", "a");
         addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30,60, "1", 1, 3);
         addVuelo("bbb","aaa",2,2,2018, 22, 30, 60, "1", 2, 3);
-        addVuelo("bbb", "aaa", 2, 2, 2018, 22, 30, 60, "1", 2, 3);
-        addAreaAdministrativa("area1", true);
-        addAreaAdministrativa("Gerencia", true);
-        addEmpleado(1, "Gerente", 1, "Gerencia");
-        addEmpleado(2,"b",2,"area1");
+        addAreaAdministrativa("gerencia", true);
+        addAreaAdministrativa("areaInhabilitada",false);
+        addEmpleado(1, "gerente", 1, "gerencia");
+        addEmpleado(2,"b",2,"areaInhabilitada");
 
+        aeropuertos = Aeropuerto.build(aeropuertosSaver.get(), this);
+        clientes = Cliente.build(clientesSaver.get(), this);
+        empleados = Empleado.build(empleadosSaver.get(), this);
+        tiposDeAvion = TipoDeAvion.build(tiposDeAvionSaver.get(), this);
+        aviones = Avion.build(avionesSaver.get(), this);
+        vuelos = Vuelo.build(vuelosSaver.get(), this);
+        pasajes = Pasaje.build(pasajesSaver.get(), this);
+        personalAbordoLista = PersonalAbordo.build(personalDeAbordoSaver.get(), this);
+        areasAdministrativas = AreaAdministrativa.build(areasAdministrativasSaver.get(), this);
 
-        asignarReseras();
+        ocuparAsientos();
+
+        addPasajes();
     }
 
-    private void asignarReseras() {
-        /// tiene que buscar en todos los pasajes y crear las reservas que sean del mismo cliente y del mismo vuelo con cliente.GuardarReserva();
-        // el guardarReserva no toma dos repetidas (podes agregar todas y A LA VERGA)
+    private void addPasajes() {
+        for (Pasaje pasaje:pasajes) {
+            pasaje.getCliente().addPasaje(pasaje);
+        }
+    }
+
+    private void ocuparAsientos() {
+        for (Pasaje pasaje: pasajes) {
+            pasaje.getVuelo().ocupar(pasaje.getAsiento());
+        }
     }
 
     public void validarSesionCliente(int numero) {
@@ -84,9 +89,14 @@ public class ServerMock implements ServerInterface{
     }
 
     public void addEmpleado(int dni, String nombre, int codigoEmpleado, String nombreArea){
-
-        AreaAdministrativa area = getAreaAdministrativa(nombreArea);
-        Empleado empleado = new Empleado(dni, nombre, codigoEmpleado, area);
+        for (AreaAdministrativa area:areasAdministrativas) {
+          if(area.getNombre().equals(nombreArea)){
+              Empleado empleado = new Empleado(dni, nombre, codigoEmpleado,area);
+              empleados.add(empleado);
+              empleadosSaver.save(empleado);
+              break;
+          }
+        }
     }
 
     public void addCliente(int dni, String nombre, int numeroDeCliente) {
@@ -117,6 +127,7 @@ public class ServerMock implements ServerInterface{
             vuelo.ocupar(fila, columna);
             Pasaje pasaje = new Pasaje(vuelo, fila, columna, getCliente(codigoCliente));
             pasajes.add(pasaje);
+            getCliente(codigoCliente).addPasaje(pasaje);
             pasajesSaver.save(pasaje);
         }
         else{throw new RuntimeException("El asiento esta ocupado");}
@@ -132,16 +143,6 @@ public class ServerMock implements ServerInterface{
         throw new RuntimeException("No existen vuelos con ese codigo");
     }
 
-    public void guardarReserva(int codigoCliente, Vuelo vuelo) {
-
-        List<Pasaje> pasajesReservados = new ArrayList<>();
-        for (Pasaje pasaje:pasajes) {
-            if (pasaje.getCliente().getNumeroDeCliente() == codigoCliente && pasaje.getVuelo().getCodigoDeVuelo() == vuelo.getCodigoDeVuelo()){
-                pasajesReservados.add(pasaje);
-            }
-        }
-        getCliente(codigoCliente).guardarReserva(pasajesReservados, vuelo);
-    }
 
     public void validarSesionEmpleado(int currentSesion) {
 
@@ -286,12 +287,7 @@ public class ServerMock implements ServerInterface{
     }
 
     public List<Reserva> getReservas(int numeroDeCliente) {
-        for (Pasaje pasaje : pasajes){
-            if (pasaje.getCliente().getNumeroDeCliente() == numeroDeCliente){
-                guardarReserva(numeroDeCliente, pasaje.getVuelo());
-            }
-        }
-        return getCliente(numeroDeCliente).getReservas();
+       return getCliente(numeroDeCliente).getReservas();
     }
 
     public List<PersonalAbordo> getPersonalAbordoLista() {
@@ -353,7 +349,6 @@ public class ServerMock implements ServerInterface{
         areasAdministrativas.add(areaAdministrativa);
         areasAdministrativasSaver.save(areaAdministrativa);
     }
-
     public List<AreaAdministrativa> getAreasAdministrativas() {
         return areasAdministrativas;
     }
@@ -387,5 +382,25 @@ public class ServerMock implements ServerInterface{
         }
         throw new RuntimeException("No existen pilotos disponibles");
 
+    }
+
+    public List<Empleado> getEmpleados() {
+        return empleados;
+    }
+
+    public List<Cliente> getClientes() {
+        return clientes;
+    }
+
+    public List<Avion> getAviones() {
+        return aviones;
+    }
+
+    public List<Aeropuerto> getAeropuertos() {
+        return aeropuertos;
+    }
+
+    public List<Vuelo> getVuelos() {
+        return vuelos;
     }
 }

@@ -12,7 +12,7 @@ public class Pasaje implements Saveable {
         this.asiento = asiento;
         this.cliente = cliente;
         this.asiento = vuelo.getAsiento(fila, columna.charAt(0));
-        codigo = vuelo.hashCode()*7 + asiento.hashCode()*5 + cliente.hashCode()*11 / 1000;
+        codigo = Math.abs(vuelo.hashCode()*7 + asiento.hashCode()*5 + cliente.hashCode()*11 / 1000);
     }
 
     public Vuelo getVuelo() {
@@ -38,7 +38,7 @@ public class Pasaje implements Saveable {
 
     @Override
     public String toString() {
-        return asiento.toString() + "  Codigo de ticket: " + codigo;
+        return "Asiento: " + asiento.toString() + "\nCodigo de ticket: " + codigo + "\n";
     }
 
     public static List<Pasaje> build(List<String> elementosStr, ServerInterface server) {
