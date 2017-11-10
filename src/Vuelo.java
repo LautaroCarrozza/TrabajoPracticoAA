@@ -74,7 +74,7 @@ public class Vuelo implements Saveable{
     public void ocupar(int fila, String columna) {
         for (Asiento asiento:asientos
              ) {
-        if (asiento.getFila() == fila && asiento.getColumna() == columna.charAt(0));{
+        if (asiento.getFila() == fila && asiento.getColumna() == columna.charAt(0)){
             ocupacion.put(asiento, true);
             }
         }
@@ -82,7 +82,7 @@ public class Vuelo implements Saveable{
     public void ocupar(Asiento newasiento) {
         for (Asiento asiento:asientos
                 ) {
-            if (asiento.getFila() == newasiento.getFila() && asiento.getColumna() == newasiento.getColumna());{
+            if (newasiento.equals(asiento)){
                 ocupacion.put(asiento, true);
             }
         }
