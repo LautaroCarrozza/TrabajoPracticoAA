@@ -51,7 +51,6 @@ public class ServerMock implements ServerInterface{
         vuelos = Vuelo.build(vuelosSaver.get(), this);
         pasajes = Pasaje.build(pasajesSaver.get(), this);
 
-
         ocuparAsientos();
         addPasajes();
         reasingarTripulaciones();
