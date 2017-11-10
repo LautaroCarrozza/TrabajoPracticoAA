@@ -51,11 +51,12 @@ public class EmployeeApp {
         System.out.println("4- Ingresar vuelo");
         System.out.println("- - - - - - - - - - - - - - - - - -");
         System.out.println("5- Ingresar area administrativa");
-        System.out.println("6- Ingresar empleado");
+        System.out.println("6- Ingresar empleado administrativo");
+        System.out.println("7- Ingresar tripulacion");
         System.out.println("- - - - - - - - - - - - - - - - - -");
-        System.out.println("7- VenderPasaje");
+        System.out.println("8- VenderPasaje");
         System.out.println("- - - - - - - - - - - - - - - - - -");
-        System.out.println("8- Cerrar Sesion");
+        System.out.println("10- Cerrar Sesion");
         System.out.println("9- Exit");
         System.out.println();
 
@@ -81,14 +82,19 @@ public class EmployeeApp {
                     break;
                 case 6:
                     ingresarEmpleado();
+                    break;
                 case 7:
-                    menuDeVenta();
+                    ingresarTripulacion();
                     break;
                 case 8:
-                    cerrarSesion();
+                    menuDeVenta();
                     break;
                 case 9:
                     mostrarMenu();
+                    break;
+                case 10:
+                    cerrarSesion();
+                    break;
                 default:
                     throw new RuntimeException("Opcion invalida");
             }
@@ -130,6 +136,41 @@ public class EmployeeApp {
         mostrarMenuAcciones();
     }
 
+    private void ingresarTripulacion(){
+        try{
+
+            if(server.getEmployee(currentSesion).getArea().getNombre().equals("gerencia")) {
+                int dniEmpleado = Scanner.getInt("Ingrese el dni del empleado: ");
+                String nombreEmpleado = Scanner.getString("Ingrese el nombre del empleado: ");
+                int codigoEmpleado = Scanner.getInt("Ingrese el codigo del empleado: ");
+                for (PersonalAbordo personalAbordo : server.getPersonalAbordoLista()) {
+                    if (personalAbordo.getNumeroDeEmpleado() == codigoEmpleado) {
+                        throw new RuntimeException("Ya existe un empleado con ese codigo");
+                    }
+                }
+
+                System.out.println("1- Piloto");
+                System.out.println("2- Tripulacion");
+                int option = Scanner.getInt("Ingrese un cargo: ");
+                String cargo;
+                switch (option) {
+                    case 1:
+                         cargo = "piloto";break;
+                    case 2:
+                         cargo = "personal";break;
+                         default: throw new RuntimeException("Opcion invalida");
+                }
+                server.addPersonalAbordo(dniEmpleado, nombreEmpleado, cargo, codigoEmpleado);
+                System.out.println("Tripulante ingresado satisfactoriamente");
+                mostrarMenuAcciones();
+            }
+        }catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            mostrarMenuAcciones();
+        }
+        mostrarMenuAcciones();
+     }
+
     private  void ingresarAreaAdministrativa() {
         try{
             if(server.getEmployee(currentSesion).getArea().getNombre().equals("gerencia")) {
@@ -141,16 +182,16 @@ public class EmployeeApp {
                 }
                 System.out.println("¿Esta habilitado para vender?");
                 System.out.println();
-                System.out.println("Si");
-                System.out.println("No");
-                String opcion = Scanner.getString("Elija una opcion: ");
+                System.out.println("1- Si");
+                System.out.println("2- No");
+                int opcion = Scanner.getInt("Elija una opcion: ");
                 System.out.println();
-                if (opcion.equals("Si")) {
+                if (opcion == (1)) {
                     server.addAreaAdministrativa(nombre, true);
                     System.out.println("Area Administrativa cargada");
                     mostrarMenuAcciones();
                 }
-                if (opcion.equals("No")) {
+                if (opcion == (2)) {
                     server.addAreaAdministrativa(nombre, false);
                     System.out.println("Area Administrativa cargada");
                     mostrarMenuAcciones();
