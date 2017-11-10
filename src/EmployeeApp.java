@@ -469,16 +469,31 @@ public class EmployeeApp {
             int minutesDuration = Scanner.getInt("Ingrese los minutos de la duracion del viaje: ");
             String plane = Scanner.getString("Ingrese el codigo del avion a utilizar: ");
             int flightCode = Scanner.getInt("Ingrese el codigo del vuelo: ");
+            int precioEconomy = 0;
+            int precioBussiness = 0;
+            int precioFirst = 0;
+
+            if (server.getAvion(plane).tieneEconomy()) {
+                 precioEconomy = Scanner.getInt("Ingrese el precio para Economy");
+            }
+            if (server.getAvion(plane).tieneBussiness()) {
+                 precioBussiness = Scanner.getInt("Ingrese el precio para Bussiness");
+            }
+            if (server.getAvion(plane).tieneFirst()) {
+                 precioFirst = Scanner.getInt("Ingrese el precio para First");
+            }
+
             for (Vuelo vuelo:server.getVuelos()) {
                 if(vuelo.getCodigoDeVuelo() == flightCode){
                     throw new RuntimeException("Ya existe un vuelo con ese codigo");
                 }
             }
+
             int cantidadDeSemanas = Scanner.getInt("Durante cuantas semanas va a repetirse el vuelo?");
             LocalDate localDate = LocalDate.of(ano, mes, dia);
             server.getAvion(plane).confirmarDisponibilidad(localDate);
             server.validarDisponibilidadTripulacion(localDate, server.getAvion(plane).getCantidadDePersonal());
-            server.addVuelo(aeropuertoDeSalida, aeropuertoDeLlegada, dia, mes, ano, hours, minutes,minutesDuration, plane, flightCode, cantidadDeSemanas);
+            server.addVuelo(aeropuertoDeSalida, aeropuertoDeLlegada, dia, mes, ano, hours, minutes,minutesDuration, plane, flightCode, cantidadDeSemanas, precioEconomy, precioBussiness, precioFirst);
             server.addTripulacion(server.getVuelo(flightCode));
             server.getAvion(plane).agregarVuelo(server.getVuelo(flightCode));
         }

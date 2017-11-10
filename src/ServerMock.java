@@ -13,6 +13,7 @@ public class ServerMock implements ServerInterface{
     private List<Aeropuerto> aeropuertos= new ArrayList<>();
     private List<PersonalAbordo> personalAbordoLista = new ArrayList<>();
     private List<AreaAdministrativa> areasAdministrativas = new ArrayList<>();
+    private Tarifario tarifario;
 
     Saver<Cliente> clientesSaver ;
     Saver<Empleado> empleadosSaver ;
@@ -25,6 +26,7 @@ public class ServerMock implements ServerInterface{
     Saver<AreaAdministrativa> areasAdministrativasSaver;
 
     public ServerMock() {
+        tarifario = new Tarifario();
         aeropuertosSaver = new Saver<Aeropuerto>("Aeropuertos");
         clientesSaver = new Saver<>("Clientes");
         vuelosSaver = new Saver<Vuelo>("Vuelos");
@@ -34,7 +36,6 @@ public class ServerMock implements ServerInterface{
         empleadosSaver = new Saver<Empleado>("Empleados");
         personalDeAbordoSaver = new Saver<PersonalAbordo>("PersonalDeAbordo");
         areasAdministrativasSaver = new Saver<>("AreasAdministrativas");
-
     }
 
     public void setUp(){
@@ -44,8 +45,8 @@ public class ServerMock implements ServerInterface{
         addAeropuerto("bbb", "bbb", "bbb");
         addTipoDeAvion(2, 2, 2, 2, 2, 2, 1, "a");
         addAvion("1", "a");
-        addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30,60, "1", 1, 3);
-        addVuelo("bbb","aaa",2,2,2018, 22, 30, 60, "1", 2, 3);
+        addVuelo("aaa", "bbb", 1, 1, 2018, 22, 30,60, "1", 1, 3, 100, 200, 300);
+        addVuelo("bbb","aaa",2,2,2018, 22, 30, 60, "1", 2, 3, 100, 200, 300);
         addAreaAdministrativa("gerencia", true);
         addAreaAdministrativa("areaInhabilitada",false);
         addEmpleado(1, "gerente", 1, "gerencia");
@@ -143,7 +144,6 @@ public class ServerMock implements ServerInterface{
         throw new RuntimeException("No existen vuelos con ese codigo");
     }
 
-
     public void validarSesionEmpleado(int currentSesion) {
 
         for (Empleado empleado: empleados ) {
@@ -182,8 +182,11 @@ public class ServerMock implements ServerInterface{
         aeropuertos.add(aeropuerto);
     }
 
-    public void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes,int minutesDuration, String plane, int flightCode, int repeticiones) {
+    public void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes,int minutesDuration, String plane, int flightCode, int repeticiones, int precioEconomy, int precioBussines, int precioFirst) {
         LocalDate localDate = LocalDate.of(ano, mes, dia);
+        tarifario.addTarifa("Economy", flightCode, precioEconomy);
+        tarifario.addTarifa("Bussiness", flightCode, precioBussines);
+        tarifario.addTarifa("First", flightCode, precioFirst);
 
         for (int i = 0; i <= repeticiones; i++) {
             Vuelo vuelo = new Vuelo(getAeropuerto(aeropuertoDeSalida), getAeropuerto(aeropuertoDeLlegada), localDate.plusDays(i*7).getDayOfMonth(), localDate.plusDays(i*7).getMonthValue(), localDate.plusDays(i*7).getYear(), hours, minutes,minutesDuration, getAvion(plane), flightCode);
@@ -308,13 +311,13 @@ public class ServerMock implements ServerInterface{
     }
 
     @Override
-    public void addTarifa(String first, int codigoDeVuelo, int precioFirst) {
-
+    public void addTarifa(String categoria, int codigoDeVuelo, int precio) {
+        tarifario.addTarifa(categoria, codigoDeVuelo, precio);
     }
 
     @Override
-    public int getPreciodeTarifa(String codigo, String first) {
-        return 0;
+    public int getPreciodeTarifa(int vuelo, String categoria) {
+        return tarifario.getPreciodeTarifa(vuelo+"-"+categoria);
     }
 
     @Override
