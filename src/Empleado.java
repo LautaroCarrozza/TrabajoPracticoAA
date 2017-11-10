@@ -4,8 +4,6 @@ import java.util.List;
 public class Empleado extends Persona implements Saveable {
     private AreaAdministrativa area;
     private int codigoEmpleado;
-    static ServerInterface server = new ServerMock();
-
 
     public Empleado(int dni, String nombre, int codigoEmpleado, AreaAdministrativa area) {
         super(dni, nombre);
@@ -25,7 +23,8 @@ public class Empleado extends Persona implements Saveable {
     public String getSavingFormat() {
         return dni + "," + nombre + "," + codigoEmpleado + "," + area.getNombre() + ".";
     }
-    public static List<Empleado> build(List<String> elementosStr){
+
+    public static List<Empleado> build(List<String> elementosStr, ServerInterface server){
         List<Empleado> elementos = new ArrayList<>();
         for (String elemento :elementosStr ) {
             int corte1 = 0;

@@ -46,7 +46,7 @@ public class PersonalAbordo extends Persona implements Saveable{
         return dni + "," + nombre + ","+ cargo + "," + numeroDeEmpleado + ".";
     }
 
-    public static List<PersonalAbordo> build(List<String> elementosStr){
+    public static List<PersonalAbordo> build(List<String> elementosStr, ServerInterface server){
 
         List<PersonalAbordo> elementos = new ArrayList<>();
         for (String elemento :elementosStr ) {

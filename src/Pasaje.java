@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pasaje implements Saveable {
-    static ServerInterface server = new ServerMock();
     private int codigo;
     private Vuelo vuelo;
     private Asiento asiento;
@@ -42,7 +41,7 @@ public class Pasaje implements Saveable {
         return asiento.toString() + "  Codigo de ticket: " + codigo;
     }
 
-    public static List<Pasaje> build(List<String> elementosStr) {
+    public static List<Pasaje> build(List<String> elementosStr, ServerInterface server) {
         List<Pasaje> elementos = new ArrayList<>();
         for (String elemento : elementosStr) {
             int corte1 = 0;

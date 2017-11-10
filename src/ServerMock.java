@@ -1,10 +1,5 @@
-import com.sun.org.apache.regexp.internal.RE;
-
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class ServerMock implements ServerInterface{
@@ -18,28 +13,28 @@ public class ServerMock implements ServerInterface{
     private List<Aeropuerto> aeropuertos= new ArrayList<>();
     private List<PersonalAbordo> personalAbordoLista = new ArrayList<>();
     private List<AreaAdministrativa> areasAdministrativas = new ArrayList<>();
-    private List<Saver> savers = new ArrayList<>();
 
-    Saver clientesSaver ;
-    Saver empleadosSaver ;
-    Saver vuelosSaver ;
-    Saver pasajesSaver ;
-    Saver tiposDeAvionSaver;
-    Saver avionesSaver ;
-    Saver aeropuertosSaver ;
-    Saver personalDeAbordoSaver;
-    Saver areasAdministrativasSaver;
+    Saver<Cliente> clientesSaver ;
+    Saver<Empleado> empleadosSaver ;
+    Saver<Vuelo> vuelosSaver ;
+    Saver<Pasaje> pasajesSaver ;
+    Saver<TipoDeAvion> tiposDeAvionSaver;
+    Saver<Avion> avionesSaver ;
+    Saver<Aeropuerto> aeropuertosSaver ;
+    Saver<PersonalAbordo> personalDeAbordoSaver;
+    Saver<AreaAdministrativa> areasAdministrativasSaver;
 
     public ServerMock() {
-        aeropuertosSaver = new Saver("Aeropuertos");
-        clientesSaver = new Saver("Clientes");
-        vuelosSaver = new Saver("Vuelos");
-        tiposDeAvionSaver = new Saver("TiposDeAvion");
-        avionesSaver = new Saver("Aviones");
-        pasajesSaver = new Saver("Pasajes");
-        empleadosSaver = new Saver("Empleados");
-        personalDeAbordoSaver = new Saver("PersonalDeAbordo");
-        areasAdministrativasSaver = new Saver("AreasAdministrativas");
+        aeropuertosSaver = new Saver<Aeropuerto>("Aeropuertos");
+        clientesSaver = new Saver<>("Clientes");
+        vuelosSaver = new Saver<Vuelo>("Vuelos");
+        tiposDeAvionSaver = new Saver<>("TiposDeAvion");
+        avionesSaver = new Saver<Avion>("Aviones");
+        pasajesSaver = new Saver<Pasaje>("Pasajes");
+        empleadosSaver = new Saver<Empleado>("Empleados");
+        personalDeAbordoSaver = new Saver<PersonalAbordo>("PersonalDeAbordo");
+        areasAdministrativasSaver = new Saver<>("AreasAdministrativas");
+
     }
 
     public void setUp(){
@@ -56,31 +51,24 @@ public class ServerMock implements ServerInterface{
         addEmpleado(1, "Gerente", 1, "Gerencia");
         addEmpleado(2,"b",2,"area2");
 
-        aeropuertos = Aeropuerto.build(aeropuertosSaver.get());
-        savers.add(aeropuertosSaver);
+        aeropuertos = Aeropuerto.build(aeropuertosSaver.get(), this);
+        clientes = Cliente.build(clientesSaver.get(), this);
+        empleados = Empleado.build(empleadosSaver.get(), this);
+        tiposDeAvion = TipoDeAvion.build(tiposDeAvionSaver.get(), this);
+        aviones = Avion.build(avionesSaver.get(), this);
+        vuelos = Vuelo.build(vuelosSaver.get(), this);
+        pasajes = Pasaje.build(pasajesSaver.get(), this);
+        personalAbordoLista = PersonalAbordo.build(personalDeAbordoSaver.get(), this);
+        areasAdministrativas = AreaAdministrativa.build(areasAdministrativasSaver.get(), this);
 
-        clientes = Cliente.build(clientesSaver.get());
-        savers.add(clientesSaver);
 
-        empleados = Empleado.build(empleadosSaver.get());
-        savers.add(empleadosSaver);
 
-        tiposDeAvion = TipoDeAvion.build(tiposDeAvionSaver.get());
-        savers.add(vuelosSaver);
-
-        aviones = Avion.build(avionesSaver.get());
-        savers.add(avionesSaver);
-
-        vuelos = Vuelo.build(vuelosSaver.get());
-        savers.add(vuelosSaver);
-
-        pasajes = Pasaje.build(pasajesSaver.get());
-        savers.add(pasajesSaver);
         asignarReseras();
     }
 
     private void asignarReseras() {
-
+        /// tiene que buscar en todos los pasajes y crear las reservas que sean del mismo cliente y del mismo vuelo con cliente.GuardarReserva();
+        // el guardarReserva no toma dos repetidas (podes agregar todas y A LA VERGA)
     }
 
     public void validarSesionCliente(int numero) {
@@ -94,7 +82,6 @@ public class ServerMock implements ServerInterface{
     }
 
     public void addEmpleado(int dni, String nombre, int codigoEmpleado, String nombreArea){
-        areasAdministrativas = AreaAdministrativa.build(areasAdministrativasSaver.get());
         for (AreaAdministrativa area:areasAdministrativas) {
           if(area.getNombre().equals(nombreArea)){
               Empleado empleado = new Empleado(dni, nombre, codigoEmpleado,area);
@@ -195,11 +182,6 @@ public class ServerMock implements ServerInterface{
         Aeropuerto aeropuerto = new Aeropuerto(codigoDeAeropuerto, ubicacion, nombre);
         aeropuertosSaver.save(aeropuerto);
         aeropuertos.add(aeropuerto);
-    }
-
-    @Override
-    public void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes, int minutesDuration, String plane, int flightCode, int repeticiones, int precioEconomy, int precioBussiness, int precioFirst) {
-
     }
 
     public void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes,int minutesDuration, String plane, int flightCode, int repeticiones) {
@@ -345,7 +327,6 @@ public class ServerMock implements ServerInterface{
 
     @Override
     public AreaAdministrativa getAreaAdministrativa(String nombreArea) {
-        areasAdministrativas = AreaAdministrativa.build(areasAdministrativasSaver.get());
         for (AreaAdministrativa area:areasAdministrativas) {
             if(area.getNombre().equals(nombreArea)){
                 return area;
@@ -371,12 +352,42 @@ public class ServerMock implements ServerInterface{
     }
 
     public void addAreaAdministrativa(String nombre, boolean habilitadoVenta){
-        areasAdministrativas = AreaAdministrativa.build(areasAdministrativasSaver.get());
         AreaAdministrativa areaAdministrativa = new AreaAdministrativa(nombre,habilitadoVenta);
         areasAdministrativas.add(areaAdministrativa);
         areasAdministrativasSaver.save(areaAdministrativa);
     }
     public List<AreaAdministrativa> getAreasAdministrativas() {
         return areasAdministrativas;
+    }
+
+    @Override
+    public void addTripulacion(Vuelo vuelo) {
+        addPiloto(vuelo);
+        for (int i = 0; i < vuelo.getCantidadPersonal() -1 ; i++) {
+            addPersonalAbordoenVuelo(vuelo);
+        }
+    }
+
+    @Override
+    public void addPersonalAbordoenVuelo(Vuelo vuelo) {
+        for (PersonalAbordo personal:getPersonalAbordoLista()) {
+            if (!personal.getCargo().equals("Piloto") && personal.available(vuelo.getFechaSalida())){
+                vuelo.addTripulacion(personal);
+                personal.addVuelo(vuelo);
+            }
+        }
+        throw new RuntimeException("No existe personal de abordo disponible para el vuelo");
+    }
+
+    @Override
+    public void addPiloto(Vuelo vuelo) {
+        for (PersonalAbordo piloto:getPersonalAbordoLista()) {
+            if (piloto.getCargo().equals("Piloto") && piloto.available(vuelo.getFechaSalida())) {
+                vuelo.addTripulacion(piloto);
+                piloto.addVuelo(vuelo);
+            }
+        }
+        throw new RuntimeException("No existen pilotos disponibles");
+
     }
 }

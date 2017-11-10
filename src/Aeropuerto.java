@@ -34,7 +34,7 @@ public class Aeropuerto implements Saveable{
         return codigo + "," + ubicacion + "," + nombre + ".";
     }
 
-    public static List<Aeropuerto> build (List<String> elementosStr){
+    public static List<Aeropuerto> build (List<String> elementosStr, ServerInterface server){
         List<Aeropuerto> elementos = new ArrayList<>();
         for (String elemento :elementosStr ) {
         int corte1 = 0;

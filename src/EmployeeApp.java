@@ -3,35 +3,51 @@ import java.util.List;
 
 public class EmployeeApp {
 
-    public static void main(String[] args) {
 
-       server = new ServerMock();
-       server.setUp();
-       iniciarSesion();
+    private ServerInterface server;
+    private int currentSesion, currentClient, diaSalida, mesSalida, anoSalida, cantidadDePasajeros, diaSalidaIda, diaSalidaVuelta, mesSalidaIda, mesSalidaVuelta, anoSalidaIda, anoSalidaVuelta;
+    public  String currentDesde, currentHasta;
+    public  Vuelo vueloDeseado, vueloDeseadoIda, vueloDeseadoVuelta;
+
+    public EmployeeApp(ServerInterface server) {
+        this.server = server;
     }
-    private static ServerInterface server;
-    private static int currentSesion, currentClient, diaSalida, mesSalida, anoSalida, cantidadDePasajeros, diaSalidaIda, diaSalidaVuelta, mesSalidaIda, mesSalidaVuelta, anoSalidaIda, anoSalidaVuelta;
-    public static String currentDesde, currentHasta;
-    public static Vuelo vueloDeseado, vueloDeseadoIda, vueloDeseadoVuelta;
 
-    private static void iniciarSesion(){
+    public  void iniciarSesion(){
+
+
 
       try {
       currentSesion = Scanner.getInt("Ingrese su numero de empleado: ");
       server.validarSesionEmpleado(currentSesion);
-      mostrarMenu();
+      mostrarMenuAcciones();
       }
       catch (RuntimeException e){
           System.out.println(e.getMessage());
           iniciarSesion();
       }
     }
-    private static void cerrarSesion() {
+
+    private  void cerrarSesion() {
         borrarPantalla();
         System.out.println("Sesion cerrada");
         iniciarSesion();
     }
-    private static void mostrarMenu() {
+
+    public void mostrarMenu(){
+        System.out.println("    -1 Iniciar Sesion");
+        System.out.println("    -2 Exit");
+
+        int option = Scanner.getInt("Ingrese opcion deseada");
+        switch (option){
+            case 1:iniciarSesion();break;
+            case 2:MainApp.mostrarMenu();break;
+        }
+
+
+    }
+
+    private  void mostrarMenuAcciones() {
         System.out.println("1- Ingresar tipo de avion");
         System.out.println("2- Ingresar avion");
         System.out.println("3- Ingresar Aeropuerto");
@@ -75,8 +91,7 @@ public class EmployeeApp {
                     cerrarSesion();
                     break;
                 case 9:
-                    System.exit(0);
-                    break;
+                    mostrarMenu();
                 default:
                     throw new RuntimeException("Opcion invalida");
             }
@@ -87,7 +102,7 @@ public class EmployeeApp {
         }
     }
 
-    private static void ingresarEmpleado() {
+    private  void ingresarEmpleado() {
         try{
             if(server.getEmployee(currentSesion).getArea().equals("Gerencia")){
                 int dniEmpleado = Scanner.getInt("Ingrese el dni del empleado: ");
@@ -109,7 +124,7 @@ public class EmployeeApp {
         mostrarMenu();
     }
 
-    private static void ingresarAreaAdministrativa() {
+    private  void ingresarAreaAdministrativa() {
         try{
             if(server.getEmployee(currentSesion).getArea().equals("Gerencia")) {
                 String nombre = Scanner.getString("Ingrese un nombre para el area: ");
@@ -135,7 +150,7 @@ public class EmployeeApp {
         mostrarMenu();
     }
 
-    private static void venderPasajeIda() {
+    private  void venderPasajeIda() {
 
         venderACliente();
         venderACuantosPasajeros();
@@ -152,7 +167,7 @@ public class EmployeeApp {
         mostrarMenu();
     }
 
-    private static void menuDeVenta() {
+    private  void menuDeVenta() {
         try {
             System.out.println("1- Vender pasaje solo ida");
             System.out.println("2- Vender pasaje ida y vuela");
@@ -174,7 +189,7 @@ public class EmployeeApp {
         }
     }
 
-    private static void venderPasajeIdaYVuelta() {
+    private  void venderPasajeIdaYVuelta() {
 
         venderACliente();
         venderACuantosPasajeros();
@@ -202,7 +217,7 @@ public class EmployeeApp {
 
     }
 
-    private static void seleccionarVuelo() {
+    private  void seleccionarVuelo() {
         List<Vuelo> vuelosDisponibles = server.buscarVuelos(diaSalida, mesSalida, anoSalida,currentDesde,currentHasta, cantidadDePasajeros);
         int opcion = 1;
         for (Vuelo v: vuelosDisponibles
@@ -214,7 +229,7 @@ public class EmployeeApp {
         vueloDeseado = vuelosDisponibles.get(intVueloDeseado);
     }
 
-    private static void seleccionarVueloIda() {
+    private  void seleccionarVueloIda() {
         List<Vuelo> vuelosDisponibles = server.buscarVuelos(diaSalidaIda, mesSalidaIda, anoSalidaIda,currentDesde,currentHasta, cantidadDePasajeros);
         int opcion = 1;
         for (Vuelo v: vuelosDisponibles
@@ -226,7 +241,7 @@ public class EmployeeApp {
         vueloDeseadoIda = vuelosDisponibles.get(intVueloDeseado);
     }
 
-    private static void seleccionarVueloVuelta() {
+    private  void seleccionarVueloVuelta() {
         List<Vuelo> vuelosDisponibles = server.buscarVuelos(diaSalidaVuelta, mesSalidaVuelta, anoSalidaVuelta,currentHasta,currentDesde, cantidadDePasajeros);
         int opcion = 1;
         for (Vuelo v: vuelosDisponibles
@@ -238,7 +253,7 @@ public class EmployeeApp {
         vueloDeseadoVuelta = vuelosDisponibles.get(intVueloDeseado);
     }
 
-    private static void venderAsiento(){
+    private  void venderAsiento(){
         List<Asiento> asientosDisponibles = vueloDeseado.asientosDisponibles();
 
         System.out.println("Asientos disponibles: ");
@@ -264,7 +279,7 @@ public class EmployeeApp {
 
     }
 
-    private static void venderAsientoIda(){
+    private  void venderAsientoIda(){
         List<Asiento> asientosDisponibles = vueloDeseadoIda.asientosDisponibles();
 
         System.out.println("Asientos disponibles para la ida: ");
@@ -290,7 +305,7 @@ public class EmployeeApp {
 
     }
 
-    private static void venderAsientoVuelta(){
+    private  void venderAsientoVuelta(){
         List<Asiento> asientosDisponibles = vueloDeseadoVuelta.asientosDisponibles();
 
         System.out.println("Asientos disponibles para la vuelta: ");
@@ -316,7 +331,7 @@ public class EmployeeApp {
 
     }
 
-    private static void validarVuelo(){
+    private  void validarVuelo(){
         try{
             server.buscarVuelos(diaSalida, mesSalida, anoSalida,currentDesde,currentHasta, cantidadDePasajeros);
         }
@@ -326,7 +341,7 @@ public class EmployeeApp {
         }
     }
 
-    private static void validarVueloIda(){
+    private  void validarVueloIda(){
         try{
             server.buscarVuelos(diaSalidaIda, mesSalidaIda, anoSalidaIda,currentDesde,currentHasta, cantidadDePasajeros);
         }
@@ -336,7 +351,7 @@ public class EmployeeApp {
         }
     }
 
-    private static void validarVueloVuelta(){
+    private  void validarVueloVuelta(){
         try{
             server.buscarVuelos(diaSalidaVuelta, mesSalidaVuelta, anoSalidaVuelta,currentHasta,currentDesde, cantidadDePasajeros);
         }
@@ -346,29 +361,29 @@ public class EmployeeApp {
         }
     }
 
-    private static void venderACuantosPasajeros(){
+    private  void venderACuantosPasajeros(){
         cantidadDePasajeros = Scanner.getInt("Ingrese la cantidad de pasajeros: ");
     }
 
-    private static void venderCuando(){
+    private  void venderCuando(){
         diaSalida = Scanner.getInt("Ingrese dia de salida: ");
         mesSalida = Scanner.getInt("Ingrese mes de salida: ");
         anoSalida = Scanner.getInt("Ingrese año de salida: ");
     }
 
-    private static void venderCuandoIda(){
+    private  void venderCuandoIda(){
         diaSalidaIda = Scanner.getInt("Ingrese dia de salida de la ida: ");
         mesSalidaIda = Scanner.getInt("Ingrese mes de salida de la ida: ");
         anoSalidaIda = Scanner.getInt("Ingrese año de salida de la ida: ");
     }
 
-    private static void venderCuandoVuelta(){
+    private  void venderCuandoVuelta(){
         diaSalidaVuelta = Scanner.getInt("Ingrese dia de salida de la vuelta: ");
         mesSalidaVuelta = Scanner.getInt("Ingrese mes de salida de la vuelta: ");
         anoSalidaVuelta = Scanner.getInt("Ingrese año de salida de la vuelta: ");
     }
 
-    private static void venderHasta() {
+    private  void venderHasta() {
         try {
             currentHasta = Scanner.getString("Ingrese lugar de llegada: ");
             server.validarLugarDeLlegada(currentHasta);
@@ -378,7 +393,7 @@ public class EmployeeApp {
         }
     }
 
-    private static void venderDesde() {
+    private  void venderDesde() {
         try {
             currentDesde = Scanner.getString("Ingrese lugar de partida: ");
             server.validarLugarDePartida(currentDesde);
@@ -389,7 +404,7 @@ public class EmployeeApp {
         }
     }
 
-    private static void venderACliente() {
+    private  void venderACliente() {
         try{
             currentClient = Scanner.getInt("Ingresar el numero del cliente: ");
             server.validarCliente(currentClient);
@@ -400,7 +415,7 @@ public class EmployeeApp {
         }
     }
 
-    private static void ingresarVuelo() {
+    private  void ingresarVuelo() {
 
         try {
             String aeropuertoDeSalida = Scanner.getString("Ingrese el codigo del aeropuerto de salida: ");
@@ -417,8 +432,8 @@ public class EmployeeApp {
             LocalDate localDate = LocalDate.of(ano, mes, dia);
             server.getAvion(plane).confirmarDisponibilidad(localDate);
             server.validarDisponibilidadTripulacion(localDate, server.getAvion(plane).getCantidadDePersonal());
-            server.addVuelo(aeropuertoDeSalida, aeropuertoDeLlegada, dia, mes, ano, hours, minutes,minutesDuration, plane, flightCode, cantidadDeSemanas, 100, 200, 300);
-            server.getVuelo(flightCode).addTripulacion();
+            server.addVuelo(aeropuertoDeSalida, aeropuertoDeLlegada, dia, mes, ano, hours, minutes,minutesDuration, plane, flightCode, cantidadDeSemanas);
+            server.addTripulacion(server.getVuelo(flightCode));
             server.getAvion(plane).agregarVuelo(server.getVuelo(flightCode));
         }
         catch (RuntimeException e){
@@ -429,7 +444,7 @@ public class EmployeeApp {
         mostrarMenu();
     }
 
-    private static void ingresarAeropuerto(){
+    private  void ingresarAeropuerto(){
 
         try {
 
@@ -447,7 +462,7 @@ public class EmployeeApp {
 
     }
 
-    private static void ingresarAvion() {
+    private  void ingresarAvion() {
 
         String codigoAvion = Scanner.getString("Ingrese el codigo del avion: ");
         String tipoDeAvion = Scanner.getString("Ingrese el tipo de avion para este avion: ");
@@ -464,7 +479,7 @@ public class EmployeeApp {
 
     }
 
-    private static void ingresarTipoDeAvion() {
+    private  void ingresarTipoDeAvion() {
 
         try {
 
@@ -487,7 +502,7 @@ public class EmployeeApp {
         mostrarMenu();
     }
 
-    private static void borrarPantalla() {
+    private  void borrarPantalla() {
         // TODO: 9/10/17
 
         for (int i = 0; i < 100; i++) {

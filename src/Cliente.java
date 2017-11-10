@@ -19,11 +19,20 @@ public class Cliente extends Persona implements Saveable{
     }
 
     public void guardarReserva(List<Pasaje> pasajes, Vuelo vuelo) {
+        for (Reserva reserva:reservas) {
+
+            for (Pasaje pasaje:pasajes) {
+                if (!reserva.getPasajes().contains(pasaje)){
+                    return;
+                }
+
+            }
+        }
         Reserva reserva = new Reserva(pasajes, vuelo);
         reservas.add(reserva);
     }
 
-    public static List<Cliente> build(List<String> elementosStr) {
+    public static List<Cliente> build(List<String> elementosStr, ServerInterface server) {
         List<Cliente> elementos = new ArrayList<>();
 
         for (String elemento :elementosStr ) {

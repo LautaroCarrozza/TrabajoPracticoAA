@@ -22,7 +22,7 @@ public class AreaAdministrativa implements Saveable {
     public String getSavingFormat() {
         return nombre + "," + habilitacionVenta + ".";
     }
-    public static List<AreaAdministrativa> build(List<String> elements){
+    public static List<AreaAdministrativa> build(List<String> elements, ServerInterface server){
         List<AreaAdministrativa> elementos = new ArrayList<>();
         for (String elemento:elements) {
             int corte1 = 0;

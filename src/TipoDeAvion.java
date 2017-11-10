@@ -12,7 +12,6 @@ public class TipoDeAvion implements Saveable{
     private ArrayList<ArrayList<Asiento>> asientos = new ArrayList<ArrayList<Asiento>>();
     private String nombre;
     private int cantidadDePersonalAbordo;
-    ServerInterface server = new ServerMock();
 
     public int getCantidadDePersonalAbordo() {
         return cantidadDePersonalAbordo;
@@ -61,7 +60,7 @@ public class TipoDeAvion implements Saveable{
     public String getSavingFormat() {
         return cantidadFilasEconomy + "," + cantidadAsientosPorFilaEconomy + "," + cantidadFilasBussiness + "," + cantidadAsientosPorFilaBussiness + "," + cantidadFilasFirst + "," + cantidadDeAsientosPorFilaFirst + "," +cantidadDePersonalAbordo + "," + nombre + ".";
     }
-    public static List<TipoDeAvion> build(List<String> elementosStr){
+    public static List<TipoDeAvion> build(List<String> elementosStr, ServerInterface server){
         List<TipoDeAvion> elementos = new ArrayList<>();
         for (String elemento :elementosStr ) {
             int corte1 = 0;

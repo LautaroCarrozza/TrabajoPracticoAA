@@ -1,14 +1,12 @@
 public class PersonalAbordoApp {
-    private static ServerInterface server;
-    private static int currentSesion;
+    private  ServerInterface server;
+    private  int currentSesion;
 
-    public static void main(String[] args) {
-        server = new ServerMock();
-        server.setUp();
-        iniciarSesion();
+    public PersonalAbordoApp(ServerInterface server) {
+        this.server= server;
     }
 
-    private static void iniciarSesion() {
+    public void iniciarSesion() {
         try {
             currentSesion = Scanner.getInt("Ingese el numero de empleado: ");
             server.validarSesionEmpleadoAbordo(currentSesion);
@@ -22,7 +20,7 @@ public class PersonalAbordoApp {
         mostrarMenu();
     }
 
-    private static void mostrarMenu() {
+    private void mostrarMenu() {
         System.out.println("1- Ver itinerario de viajes");
         System.out.println("2- Cerrar sesion");
         System.out.println("- - - - - - - - - - - - - - - - - -");
@@ -39,7 +37,7 @@ public class PersonalAbordoApp {
                     cerrarSesion();
                     break;
                 case 9:
-                    System.exit(0);
+                    MainApp.mostrarMenu();
                     break;
                 default:
                     throw new RuntimeException("Opcion invalida");
@@ -51,17 +49,17 @@ public class PersonalAbordoApp {
         }
     }
 
-    private static void verItinerarioDeViajes() {
+    private void verItinerarioDeViajes() {
         System.out.println(server.getPersonalAbordo(currentSesion).toString());
     }
 
-    private static void cerrarSesion() {
+    private void cerrarSesion() {
         borrarPantalla();
         System.out.println("Sesion cerrada");
         iniciarSesion();
     }
 
-    public static void borrarPantalla() {
+    public  void borrarPantalla() {
         // TODO: 9/10/17
 
         for (int i = 0; i < 100; i++) {

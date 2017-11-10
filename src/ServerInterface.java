@@ -17,7 +17,7 @@ public interface ServerInterface {
     void addAvion(String codigo, String tipoDeAvionStr);
     void addTipoDeAvion(int cantidadFilasEconomy, int cantidadAsientosPorFilaDeEconomy, int cantidadFilasBussiness, int cantidadAsientosPorFilaDeBussiness, int cantidadFilasFirst, int cantidadAsientosPorFilaDeFirst,int cantidadPersonalAbordo, String nombre);
     void addAeropuerto(String codigoDeAeropuerto, String ubicacion, String nombre);
-    void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes,int minutesDuration, String plane, int flightCode, int repeticiones, int precioEconomy, int precioBussiness, int precioFirst);
+    void addVuelo(String aeropuertoDeSalida, String aeropuertoDeLlegada, int dia, int mes, int ano, int hours, int minutes,int minutesDuration, String plane, int flightCode, int repeticiones);
     Empleado getEmployee(int currentSesion);
     Cliente getCliente(int numeroCliente);
     void validarCliente(int numeroCliente);
@@ -37,8 +37,10 @@ public interface ServerInterface {
     AreaAdministrativa getAreaAdministrativa(String nombreArea);
     void addAreaAdministrativa(String nombre, boolean habilitacionVenta);
     List<AreaAdministrativa> getAreasAdministrativas();
-
-    }
+    void addTripulacion(Vuelo vuelo);
+    void addPersonalAbordoenVuelo(Vuelo vuelo);
+    void addPiloto(Vuelo vuelo);
+}
 
 
 

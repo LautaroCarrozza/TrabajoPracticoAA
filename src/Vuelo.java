@@ -13,8 +13,8 @@ public class Vuelo implements Saveable{
     private List<PersonalAbordo> listaPersonalAbordo = new ArrayList<>();
     private int mes;
     private int minutosDuracion;
-    static ServerInterface server = new ServerMock();
     private List<Asiento> asientos = new ArrayList<>();
+
 
     public Vuelo(Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, int dia, int mes, int ano, int hora, int minutos,int minutosDuracion, Avion avion, int codigoDeVuelo) {
         this.fechaSalida = LocalDate.of(ano,mes,dia);
@@ -119,29 +119,6 @@ public class Vuelo implements Saveable{
         throw new RuntimeException("No existe el asiento");
     }
 
-    private void addPiloto(){
-        for (PersonalAbordo piloto:server.getPersonalAbordoLista()) {
-            if (piloto.getCargo().equals("Piloto") && piloto.available(fechaSalida)) {
-               listaPersonalAbordo.add(piloto);
-               piloto.addVuelo(this);
-            }
-        }
-        throw new RuntimeException("No existen pilotos disponibles");
-    }
-
-    public void addTripulacion(){
-       addPiloto();
-        for (int i = 0; i < getCantidadPersonal() -1 ; i++) {
-            addPersonalAbordo();
-        }
-    }
-
-    private void addPersonalAbordo() {
-        for (PersonalAbordo personal:server.getPersonalAbordoLista()) {
-            if (!personal.getCargo().equals("Piloto") && personal.available(fechaSalida)){listaPersonalAbordo.add(personal);personal.addVuelo(this);}
-        }
-        throw new RuntimeException("No existe personal de abordo disponible para el vuelo");
-    }
 
     public int getCantidadPersonal(){return  avion.getTipoDeAvion().getCantidadDePersonalAbordo();}
 
@@ -154,7 +131,8 @@ public class Vuelo implements Saveable{
         return aeropuertoSalida.getCodigo() + "," + aeropuertoLlegada.getCodigo() + "," + fechaSalida.getDayOfMonth() + "," + mes + ","+fechaSalida.getYear() + "," + horarioSalida.getHour() + "," + horarioSalida.getMinute()+ "," + minutosDuracion + "," + avion.getCodigo() + "," + codigoDeVuelo + ".";
     }
 
-    public static List<Vuelo> build(List<String> elementosStr){
+    public static List<Vuelo> build(List<String> elementosStr, ServerInterface server){
+
         List<Vuelo> elementos = new ArrayList<>();
         for (String elemento :elementosStr ) {
             int corte1 = 0;
@@ -244,42 +222,8 @@ public class Vuelo implements Saveable{
         return elementos;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Vuelo vuelo = (Vuelo) o;
-
-        if (codigoDeVuelo != vuelo.codigoDeVuelo) return false;
-        if (mes != vuelo.mes) return false;
-        if (minutosDuracion != vuelo.minutosDuracion) return false;
-        if (!aeropuertoSalida.equals(vuelo.aeropuertoSalida)) return false;
-        if (!aeropuertoLlegada.equals(vuelo.aeropuertoLlegada)) return false;
-        if (!fechaSalida.equals(vuelo.fechaSalida)) return false;
-        if (!avion.equals(vuelo.avion)) return false;
-        if (!ocupacion.equals(vuelo.ocupacion)) return false;
-        if (!horarioSalida.equals(vuelo.horarioSalida)) return false;
-        if (!listaPersonalAbordo.equals(vuelo.listaPersonalAbordo)) return false;
-        if (!server.equals(vuelo.server)) return false;
-        return asientos.equals(vuelo.asientos);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = aeropuertoSalida.hashCode();
-        result = 31 * result + aeropuertoLlegada.hashCode();
-        result = 31 * result + fechaSalida.hashCode();
-        result = 31 * result + avion.hashCode();
-        result = 31 * result + codigoDeVuelo;
-        result = 31 * result + ocupacion.hashCode();
-        result = 31 * result + horarioSalida.hashCode();
-        result = 31 * result + listaPersonalAbordo.hashCode();
-        result = 31 * result + mes;
-        result = 31 * result + minutosDuracion;
-        result = 31 * result + server.hashCode();
-        result = 31 * result + asientos.hashCode();
-        return result;
+    public void addTripulacion(PersonalAbordo piloto) {
+        listaPersonalAbordo.add(piloto);
     }
 }
 

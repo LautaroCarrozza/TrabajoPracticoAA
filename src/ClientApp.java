@@ -1,3 +1,5 @@
+import sun.applet.Main;
+
 import java.util.List;
 
 public class ClientApp {
@@ -16,15 +18,15 @@ public class ClientApp {
     private static Vuelo vueloDeseado, vueloDeseadoVuelta;
     private static String currentDesde, currentHasta;
 
-    public static void main(String[] args) {
-        server = new ServerMock();
-        server.setUp();
-        menuDeInicio();
+    public ClientApp(ServerInterface server) {
+        this.server = server;
     }
 
-    private static void menuDeInicio() {
+    public  void menuDeInicio() {
         System.out.println("1- Iniciar sesion: ");
         System.out.println("2- Registrarse");
+
+        System.out.println("9- Exit");
 
         int opcion = Scanner.getInt("Seleccione una opcion: ");
         try {
@@ -34,6 +36,9 @@ public class ClientApp {
                     break;
                 case 2:
                     registroDeCliente();
+                    break;
+                case 9:
+                    MainApp.mostrarMenu();
                     break;
                 default:
                     throw new RuntimeException("Opcion invalida");
@@ -45,7 +50,7 @@ public class ClientApp {
         }
     }
 
-    private static void mostrarMenu() {
+    private  void mostrarMenu() {
         System.out.println("1- Ver reservas");
         System.out.println("2- Cerrar sesion");
         System.out.println("3- Buscar Vuelo");
@@ -67,8 +72,7 @@ public class ClientApp {
                     menuDeBusqueda();
                     break;
                 case 9:
-                    System.exit(0);
-                    break;
+                    return;
                 default:
                     throw new RuntimeException("Opcion invalida");
             }
@@ -79,13 +83,13 @@ public class ClientApp {
         }
     }
 
-    private static void cerrarSesion() {
+    private  void cerrarSesion() {
         borrarPantalla();
         System.out.println("Sesion cerrada");
         iniciarSesion();
     }
 
-    private static void verReservas() {
+    private  void verReservas() {
 
         List<Reserva> reservas = server.getReservas(currentCliente);
 
@@ -100,7 +104,7 @@ public class ClientApp {
         mostrarMenu();
     }
 
-    private static void registroDeCliente() {
+    private  void registroDeCliente() {
         int dni = Scanner.getInt("Ingresar DNI: ");
         String nombre = Scanner.getString("Ingrese su nombre: ");
         int codigo = Scanner.getInt("Ingrese su numero de cliente: ");
@@ -109,7 +113,7 @@ public class ClientApp {
         menuDeInicio();
     }
 
-    private static void iniciarSesion() {
+    private  void iniciarSesion() {
         System.out.println("\nBienvenido a AustralisAirlines");
         System.out.println();
 
@@ -126,7 +130,7 @@ public class ClientApp {
         mostrarMenu();
     }
 
-    private static void borrarPantalla() {
+    private  void borrarPantalla() {
         // TODO: 9/10/17
 
         for (int i = 0; i < 100; i++) {
@@ -135,7 +139,7 @@ public class ClientApp {
     }
 
     //Opcion de compra de solo ida o ida y vuelta
-    private static void menuDeBusqueda() {
+    private  void menuDeBusqueda() {
         System.out.println("\n1- Busqueda pasaje solo ida");
         System.out.println("2- Busqueda pasaje ida y vuelta");
         System.out.println("3- Volver al menu\n");
@@ -161,7 +165,7 @@ public class ClientApp {
         }
     }
 
-    private static void buscarSoloIda() {
+    private  void buscarSoloIda() {
 
         comprarcuantos();
         comprarDesde();
@@ -179,7 +183,7 @@ public class ClientApp {
         mostrarMenu();
     }
 
-    private static void buscarIdayVuelta() {
+    private  void buscarIdayVuelta() {
 
         comprarcuantos();
         comprarDesde();
@@ -196,7 +200,7 @@ public class ClientApp {
         mostrarMenu();
     }
 
-    private static void asientosDisponiblesIdayVuelta() {
+    private  void asientosDisponiblesIdayVuelta() {
         //asientos ida
         List<Asiento> asientosDisponiblesIda = vueloDeseado.asientosDisponibles();
         System.out.println("Asientos disponibles para el vuelo de Ida: \n");
@@ -216,7 +220,7 @@ public class ClientApp {
 
     }
 
-    private static void menuDeVueloIdayVuelta() {
+    private  void menuDeVueloIdayVuelta() {
 
         System.out.println("1 - Comprar vuelo");
         System.out.println("2 - Volver al menu");
@@ -238,7 +242,7 @@ public class ClientApp {
         }
     }
 
-    private static void validarVueloIdayVuelta() {
+    private  void validarVueloIdayVuelta() {
         try {
             vuelosDisponibles = server.buscarVuelos(diaSalida, mesSalida, anoSalida, currentDesde, currentHasta, cantidadDePersonas);
             //El lugar de salida y llegada intercambiado para la vuelta
@@ -262,18 +266,18 @@ public class ClientApp {
     }
 
     //Fecha de Regreso
-    private static void comprarCuandoVuelta() {
+    private  void comprarCuandoVuelta() {
         diaVuelta = Scanner.getInt("Ingrese el dia de la fecha de su vuelta de viaje: ");
         mesVuelta = Scanner.getInt("Ingrese el mes de la fecha de su vuelta de viaje: ");
         anoVuelta = Scanner.getInt("Ingrese el año de la fecha de su vuelta de viaje: ");
     }
 
     //Selecciona cantidad de pasajeros
-    private static void comprarcuantos() {
+    private  void comprarcuantos() {
         cantidadDePersonas = Scanner.getInt("Ingrese la cantidad de pasajeros: ");
     }
 
-    private static void asientosDisponiblesIda() {
+    private  void asientosDisponiblesIda() {
         List<Asiento> asientosDisponibles = vueloDeseado.asientosDisponibles();
 
         System.out.println("Asientos disponibles: ");
@@ -285,7 +289,7 @@ public class ClientApp {
         comprarAsiento(vueloDeseado);
     }
 
-    private static void comprarAsiento(Vuelo vuelo) {
+    private  void comprarAsiento(Vuelo vuelo) {
         try {
             int fila = Scanner.getInt("Ingresar fila deseada: ");
             String columna = Scanner.getString("Ingresar columna deseada: ");
@@ -302,7 +306,7 @@ public class ClientApp {
     }
 
     //Opcion de compra o volver a menu - la opcion de compra va a seleccionar vuelo.
-    private static void menuDeVueloIda() {
+    private  void menuDeVueloIda() {
         System.out.println();
         System.out.println("1 - Comprar vuelo");
         System.out.println("2 - Volver al menu");
@@ -324,7 +328,7 @@ public class ClientApp {
         }
     }
 
-    private static void seleccionarVueloIdayVuelta() {
+    private  void seleccionarVueloIdayVuelta() {
         try {
             intVueloDeseado = Scanner.getInt("Seleccione su vuelo de Ida: ") - 1;/// -1 por que los vuelos empiezan con 0 y se los imprime con un +1
             int intVueloDeseadoVuelta = Scanner.getInt("Seleccione su vuelo de Regreso: ") - 1;
@@ -338,7 +342,7 @@ public class ClientApp {
     }
 
     //CLiente selecciona el vuelo que desee mostrados en la consola
-    private static void seleccionarVuelo() {
+    private  void seleccionarVuelo() {
         try {
             intVueloDeseado = Scanner.getInt("¿Que vuelo desea comprar? : ") - 1;/// -1 por que los vuelos empiezan con 0 y se los imprime con un +1
             vueloDeseado = vuelosDisponibles.get(intVueloDeseado); // Selecciona el vuelo elegido dentro de la lista de posibles vuelos segun los criterios de busqueda
@@ -349,7 +353,7 @@ public class ClientApp {
     }
 
     //Lista de vuelos que matchean con los criterios de busqueda y los imprime en pantalla
-    private static void validarVuelo() {
+    private  void validarVuelo() {
         try {
             vuelosDisponibles = server.buscarVuelos(diaSalida, mesSalida, anoSalida, currentDesde, currentHasta, cantidadDePersonas);
             int opcion = 1;
@@ -364,14 +368,14 @@ public class ClientApp {
     }
 
     //Seleccion de fecha
-    private static void comprarCuando() {
+    private  void comprarCuando() {
         diaSalida = Scanner.getInt("Ingrese el dia de la fecha del viaje: ");
         mesSalida = Scanner.getInt("Ingrese el mes de la fecha del viaje: ");
         anoSalida = Scanner.getInt("Ingrese el año de la fecha del viaje: ");
     }
 
     //Seleccion y validacion de Regreso
-    private static void comprarHasta() {
+    private  void comprarHasta() {
         try {
             currentHasta = Scanner.getString("Ingrese el lugar de llegada: ");
             server.validarLugarDeLlegada(currentHasta);
@@ -382,7 +386,7 @@ public class ClientApp {
     }
 
     //Seleccion y validacion de Salida
-    private static void comprarDesde() {
+    private  void comprarDesde() {
         try {
             currentDesde = Scanner.getString("Ingrese el lugar de partida: ");
             server.validarLugarDePartida(currentDesde);
