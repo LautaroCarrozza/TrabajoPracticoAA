@@ -66,9 +66,10 @@ public class ServerMock implements ServerInterface{
         asignarReseras();
     }
 
+    /// tiene que buscar en todos los pasajes y crear las reservas que sean del mismo cliente y del mismo vuelo con cliente.GuardarReserva();
+    // el guardarReserva no toma dos repetidas (podes agregar todas y A LA VERGA)
     private void asignarReseras() {
-        /// tiene que buscar en todos los pasajes y crear las reservas que sean del mismo cliente y del mismo vuelo con cliente.GuardarReserva();
-        // el guardarReserva no toma dos repetidas (podes agregar todas y A LA VERGA)
+
     }
 
     public void validarSesionCliente(int numero) {
@@ -114,7 +115,7 @@ public class ServerMock implements ServerInterface{
 
     public void comprarAsiento(int codigoVuelo, int codigoCliente, int fila, String columna, int cantidadDePersonas) {
 
-        Vuelo vuelo = getVuelo(codigoVuelo);
+      Vuelo vuelo =  getVuelo(codigoVuelo);
 
         if (!vuelo.getOcupacion(fila, columna)){
             vuelo.ocupar(fila, columna);

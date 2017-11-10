@@ -21,10 +21,9 @@ public class Reserva{
     @Override
     public String toString() {
         String result = "Reserva para " + pasajes.get(0).getCliente().getNombre() +
-                "\n" + ", Desde: " + pasajes.get(0).getVuelo().getUbicacionSalida().toString()
-                + " Hasta: " + pasajes.get(0).getVuelo().getUbicacionLlegada().toString();
-        for (Pasaje pasaje: pasajes
-             ) {
+                "\nDesde: " + pasajes.get(0).getVuelo().getUbicacionSalida()
+                + " Hasta: " + pasajes.get(0).getVuelo().getUbicacionLlegada() + "\n";
+        for (Pasaje pasaje: pasajes) {
             result += pasaje.toString();
         }
         return result;

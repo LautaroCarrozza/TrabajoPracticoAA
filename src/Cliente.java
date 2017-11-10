@@ -19,8 +19,8 @@ public class Cliente extends Persona implements Saveable{
     }
 
     public void guardarReserva(List<Pasaje> pasajes, Vuelo vuelo) {
-        for (Reserva reserva:reservas) {
 
+        for (Reserva reserva:reservas) {
             for (Pasaje pasaje:pasajes) {
                 if (!reserva.getPasajes().contains(pasaje)){
                     return;

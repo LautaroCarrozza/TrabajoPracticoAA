@@ -49,10 +49,9 @@ public class Asiento {
 
     @Override
     public int hashCode() {
-        int result = categoria != null ? categoria.hashCode() : 0;
+        int result = 1;
         result = 31 * result + fila;
         result = 31 * result + (int) columna;
-        result = 31 * result + (code != null ? code.hashCode() : 0);
         return result;
     }
 }

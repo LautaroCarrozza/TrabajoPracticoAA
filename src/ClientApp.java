@@ -72,7 +72,7 @@ public class ClientApp {
                     menuDeBusqueda();
                     break;
                 case 9:
-                    return;
+                    MainApp.mostrarMenu();
                 default:
                     throw new RuntimeException("Opcion invalida");
             }
@@ -196,7 +196,8 @@ public class ClientApp {
         for (int i = 0; i < cantidadDePersonas; i++) {
             asientosDisponiblesIdayVuelta();
         }
-
+        server.guardarReserva(currentCliente, vueloDeseado);
+        server.guardarReserva(currentCliente, vueloDeseadoVuelta);
         mostrarMenu();
     }
 
