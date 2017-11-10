@@ -14,9 +14,6 @@ public class EmployeeApp {
     }
 
     public  void iniciarSesion(){
-
-
-
       try {
       currentSesion = Scanner.getInt("Ingrese su numero de empleado: ");
       server.validarSesionEmpleado(currentSesion);
@@ -24,7 +21,7 @@ public class EmployeeApp {
       }
       catch (RuntimeException e){
           System.out.println(e.getMessage());
-          iniciarSesion();
+          mostrarMenu();
       }
     }
 
