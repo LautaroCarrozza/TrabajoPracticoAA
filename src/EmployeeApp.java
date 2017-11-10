@@ -162,7 +162,7 @@ public class EmployeeApp {
 
     private  void venderPasajeIda() {
 
-        venderACliente();
+        ingresoRegistroDelCliente();
         venderACuantosPasajeros();
         venderDesde();
         venderHasta();
@@ -172,6 +172,8 @@ public class EmployeeApp {
         for (int i = 0; i < cantidadDePasajeros; i++) {
             venderAsiento();
         }
+        System.out.println("La compra se realizo correctamente");
+        System.out.println("");
         mostrarMenu();
     }
 
@@ -197,9 +199,22 @@ public class EmployeeApp {
         }
     }
 
+    private void ingresoRegistroDelCliente(){
+        System.out.println("1- Si");
+        System.out.println("2- No");
+        int opcion = Scanner.getInt("El cliente ya esta registrado?");
+        switch(opcion){
+            case 1: venderACliente();break;
+            case 2: registrarCliente();break;
+            default:
+                System.out.println("Opcion invalida");
+                ingresoRegistroDelCliente();
+        }
+    }
+
     private  void venderPasajeIdaYVuelta() {
 
-        venderACliente();
+        ingresoRegistroDelCliente();
         venderACuantosPasajeros();
         venderDesde();
         venderHasta();
@@ -272,8 +287,7 @@ public class EmployeeApp {
             int fila = Scanner.getInt("Ingresar flia deseada: ");
             String columna = Scanner.getString("Ingresar columna deseada: ");
             if( !vueloDeseado.getOcupacion(fila, columna)){
-                vueloDeseado.ocupar(fila, columna);
-                mostrarMenuAcciones();
+                server.comprarAsiento(vueloDeseado.getCodigoDeVuelo(), currentClient, fila, columna, cantidadDePasajeros);
             }
             else {
                 throw new RuntimeException("Seleccion de asiento no disponible");
@@ -298,8 +312,7 @@ public class EmployeeApp {
             int fila = Scanner.getInt("Ingresar flia deseada: ");
             String columna = Scanner.getString("Ingresar columna deseada: ");
             if( !vueloDeseadoIda.getOcupacion(fila, columna)){
-                vueloDeseadoIda.ocupar(fila, columna);
-                mostrarMenuAcciones();
+                server.comprarAsiento(vueloDeseadoIda.getCodigoDeVuelo(), currentClient, fila, columna, cantidadDePasajeros);
             }
             else {
                 throw new RuntimeException("Seleccion de asiento no disponible");
@@ -418,7 +431,25 @@ public class EmployeeApp {
         }
         catch(RuntimeException e){
             System.out.println(e.getMessage());
+            registrarCliente();
+        }
+    }
+
+    private void registrarCliente(){
+        try{
+            int dni = Scanner.getInt("Ingresar DNI del cliente: ");
+            String nombre = Scanner.getString("Ingrese el nombre del cliente: ");
+            int codigo = Scanner.getInt("Ingrese el numero del cliente: ");
+            for (Cliente cliente:server.getClientes()) {
+                if(cliente.getNumeroDeCliente() == codigo){
+                    throw new RuntimeException("Ya existe un cliente con ese codigo");
+                }
+            }
+            server.addCliente(dni, nombre, codigo);
             venderACliente();
+        }catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            registrarCliente();
         }
     }
 
