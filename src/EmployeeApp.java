@@ -36,7 +36,7 @@ public class EmployeeApp {
         System.out.println("    -------------------");
         System.out.println("    9- Exit");
 
-        int option = Scanner.getInt("Ingrese opcion deseada");
+        int option = Scanner.getInt("Ingrese opcion deseada: ");
         switch (option){
             case 1:iniciarSesion();break;
             case 9:MainApp.mostrarMenu();break;
