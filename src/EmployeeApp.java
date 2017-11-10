@@ -124,7 +124,7 @@ public class EmployeeApp {
             mostrarMenuAcciones();
         }
         System.out.println("Empleado cargado");
-        mostrarMenu();
+        mostrarMenuAcciones();
     }
 
     private  void ingresarAreaAdministrativa() {
@@ -157,7 +157,7 @@ public class EmployeeApp {
             mostrarMenuAcciones();
         }
         System.out.println("Area Administrativa cargada");
-        mostrarMenu();
+        mostrarMenuAcciones();
     }
 
     private  void venderPasajeIda() {
@@ -174,7 +174,7 @@ public class EmployeeApp {
         }
         System.out.println("La compra se realizo correctamente");
         System.out.println("");
-        mostrarMenu();
+        mostrarMenuAcciones();
     }
 
     private  void menuDeVenta() {
@@ -235,7 +235,7 @@ public class EmployeeApp {
 
         System.out.println("Las reservas se a guardadon correctamente");
 
-        mostrarMenu();
+        mostrarMenuAcciones();
 
     }
 
@@ -313,6 +313,8 @@ public class EmployeeApp {
             String columna = Scanner.getString("Ingresar columna deseada: ");
             if( !vueloDeseadoIda.getOcupacion(fila, columna)){
                 server.comprarAsiento(vueloDeseadoIda.getCodigoDeVuelo(), currentClient, fila, columna, cantidadDePasajeros);
+                mostrarMenuAcciones();
+                server.comprarAsiento(vueloDeseadoIda.getCodigoDeVuelo(), currentClient, fila, columna, cantidadDePasajeros);
             }
             else {
                 throw new RuntimeException("Seleccion de asiento no disponible");
@@ -337,7 +339,7 @@ public class EmployeeApp {
             int fila = Scanner.getInt("Ingresar flia deseada: ");
             String columna = Scanner.getString("Ingresar columna deseada: ");
             if( !vueloDeseadoVuelta.getOcupacion(fila, columna)){
-                vueloDeseadoVuelta.ocupar(fila, columna);
+                server.comprarAsiento(vueloDeseadoVuelta.getCodigoDeVuelo(), currentClient, fila, columna, cantidadDePasajeros);
                 mostrarMenuAcciones();
             }
             else {
@@ -357,7 +359,7 @@ public class EmployeeApp {
         }
         catch (RuntimeException e){
             System.out.println(e.getMessage());
-            mostrarMenu();
+            mostrarMenuAcciones();
         }
     }
 
@@ -367,7 +369,7 @@ public class EmployeeApp {
         }
         catch (RuntimeException e){
             System.out.println(e.getMessage());
-            mostrarMenu();
+            mostrarMenuAcciones();
         }
     }
 
@@ -377,7 +379,7 @@ public class EmployeeApp {
         }
         catch (RuntimeException e){
             System.out.println(e.getMessage());
-            mostrarMenu();
+            mostrarMenuAcciones();
         }
     }
 
@@ -481,10 +483,10 @@ public class EmployeeApp {
         }
         catch (RuntimeException e){
             System.out.println(e.getMessage());
-            mostrarMenu();
+            mostrarMenuAcciones();
         }
         System.out.println("Vuelos cargado");
-        mostrarMenu();
+        mostrarMenuAcciones();
     }
 
     private  void ingresarAeropuerto(){
@@ -503,10 +505,10 @@ public class EmployeeApp {
         }
         catch (RuntimeException e){
             System.out.println(e.getMessage());
-            mostrarMenu();
+            mostrarMenuAcciones();
         }
             System.out.println("Aeropuerto cargado");
-            mostrarMenu();
+            mostrarMenuAcciones();
 
     }
 
@@ -521,11 +523,11 @@ public class EmployeeApp {
             String tipoDeAvion = Scanner.getString("Ingrese el tipo de avion para este avion: ");
             server.addAvion(codigoAvion, tipoDeAvion);
             System.out.println("Avion cargado");
-            mostrarMenu();
+            mostrarMenuAcciones();
         }
         catch (RuntimeException e){
             System.out.println(e.getMessage());
-            mostrarMenu();
+            mostrarMenuAcciones();
         }
 
 
@@ -548,10 +550,10 @@ public class EmployeeApp {
         }
         catch (RuntimeException e){
             System.out.println(e.getMessage());
-            mostrarMenu();
+            mostrarMenuAcciones();
         }
         System.out.println("Tipo de avion cargado");
-        mostrarMenu();
+        mostrarMenuAcciones();
     }
 
     private  void borrarPantalla() {

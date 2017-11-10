@@ -40,6 +40,10 @@ public class ServerMock implements ServerInterface{
     public void setUp(){
         addCliente(1, "a", 1);
         addPersonalAbordo(1, "a", "piloto", 1);
+        addPersonalAbordo(2, "b", "personal", 2);
+        addPersonalAbordo(3, "c", "personal", 3);
+        addPersonalAbordo(4, "d", "personal", 4);
+        addPersonalAbordo(5, "e", "personal", 5);
         addAeropuerto("aaa", "aaa", "aaa");
         addAeropuerto("bbb", "bbb", "bbb");
         addTipoDeAvion(2, 2, 2, 2, 2, 2, 1, "a");
@@ -302,8 +306,8 @@ public class ServerMock implements ServerInterface{
 
     public void validarDisponibilidadTripulacion(LocalDate fechaDeSalida, int cantidadDePersonal){
       validarDisponibilidadPiloto(fechaDeSalida);
-        for (int i = 0; i < cantidadDePersonal -1; i++) {
-            validadDisponibilidadPersonalDeAbordo(fechaDeSalida);
+        for (int i = 0; i < cantidadDePersonal; i++) {
+            validarDisponibilidadPersonalDeAbordo(fechaDeSalida);
         }
     }
 
@@ -327,20 +331,22 @@ public class ServerMock implements ServerInterface{
         throw new RuntimeException("No existe area con ese nombre");
     }
 
-    private void validadDisponibilidadPersonalDeAbordo(LocalDate fechaDeSalida) {
-        for (PersonalAbordo personal:getPersonalAbordoLista()) {
-            if (!personal.getCargo().equals("Piloto") && personal.available(fechaDeSalida)){return;}
+    private void validarDisponibilidadPersonalDeAbordo(LocalDate fechaDeSalida) {
+        for (PersonalAbordo personal:personalAbordoLista) {
+            if (!personal.getCargo().equals("piloto") && personal.available(fechaDeSalida)){
+                return;
+            }
         }
         throw new RuntimeException("No existe personal de abordo disponible para el vuelo");
     }
 
     private void validarDisponibilidadPiloto(LocalDate fechaDeSalida) {
-        for (PersonalAbordo piloto:getPersonalAbordoLista()) {
-            if (piloto.getCargo().equals("Piloto") && piloto.available(fechaDeSalida)) {
+        for (PersonalAbordo piloto:personalAbordoLista) {
+            if (piloto.getCargo().equals("piloto") && piloto.available(fechaDeSalida)) {
                 return;
             }
         }
-        throw new RuntimeException("No hay suficientes tripulantes disponibles");
+        throw new RuntimeException("No hay suficientes pilotos disponibles");
     }
 
     public void addAreaAdministrativa(String nombre, boolean habilitadoVenta){

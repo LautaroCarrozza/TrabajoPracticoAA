@@ -27,7 +27,9 @@ public class PersonalAbordo extends Persona implements Saveable{
 
     public boolean available(LocalDate fechaDeSalida){
         for (Vuelo vuelo:vuelos) {
-            if (vuelo.getFechaSalida().equals(fechaDeSalida))return false;
+            if (vuelo.getFechaSalida().equals(fechaDeSalida)) {
+                return false;
+            }
         }
         return true;
     }
