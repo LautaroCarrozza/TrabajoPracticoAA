@@ -53,7 +53,7 @@ public class ServerMock implements ServerInterface{
         addPersonalAbordo(10, "juana", "piloto", 10);
         addPersonalAbordo(11, "kevin", "personal", 11);
         addPersonalAbordo(12, "lino", "personal", 12);
-        addPersonalAbordo(13, "mariana", "personal", 13;
+        addPersonalAbordo(13, "mariana", "personal", 13);
         addPersonalAbordo(14, "nicolas", "personal", 14);
         addPersonalAbordo(15, "osvaldo", "personal", 15);
         addPersonalAbordo(16, "pablo", "personal", 16);
